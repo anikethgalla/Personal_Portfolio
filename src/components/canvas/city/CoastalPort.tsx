@@ -5,25 +5,42 @@ import { RigidBody } from '@react-three/rapier';
 export const CoastalPort: React.FC = () => {
   return (
     <group>
-      {/* 1. Expansive Low-Poly Water Basin (Far West Coastline) */}
-      <group position={[-48, 0.06, 0]}>
-        {/* Ocean Water Surface Plane */}
-        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[32, 90]} />
+      {/* 1. Expansive Ocean Water Basin (Extends Wall-to-Wall: North Wall to South Wall) */}
+      <group position={[-54, 0, 0]}>
+        {/* Ocean Deep Seabed Floor (Replaces grass beneath ocean) */}
+        <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[46, 126]} />
+          <meshStandardMaterial color="#075985" roughness={0.9} />
+        </mesh>
+
+        {/* Ocean Water Surface Plane (Full Wall-to-Wall coverage: z = -63 to +63, x = -77 to -31) */}
+        <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[46, 126]} />
           <meshStandardMaterial
             color="#0ea5e9"
-            roughness={0.12}
-            metalness={0.8}
+            roughness={0.08}
+            metalness={0.75}
             transparent
             opacity={0.88}
           />
         </mesh>
 
-        {/* Shoreline Stone Quay Embankment Wall */}
-        <mesh position={[15.8, 0.15, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.8, 0.5, 90]} />
-          <meshStandardMaterial color="#94a3b8" roughness={0.8} />
-        </mesh>
+        {/* Shoreline Stone Quay Embankment Wall (Wall to Wall with Pier Opening) */}
+        {/* North Sea Wall Section (z = -63 to -4) */}
+        <RigidBody type="fixed" friction={0.8} position={[21.8, 0.25, -33.5]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[0.8, 0.6, 59]} />
+            <meshStandardMaterial color="#94a3b8" roughness={0.8} />
+          </mesh>
+        </RigidBody>
+
+        {/* South Sea Wall Section (z = 4 to +63) */}
+        <RigidBody type="fixed" friction={0.8} position={[21.8, 0.25, 33.5]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[0.8, 0.6, 59]} />
+            <meshStandardMaterial color="#94a3b8" roughness={0.8} />
+          </mesh>
+        </RigidBody>
       </group>
 
       {/* 2. Drivable Wooden Pier Deck & Ramp */}
