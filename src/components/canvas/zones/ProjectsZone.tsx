@@ -49,7 +49,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
   return (
     <group>
       {/* Zone Title Sign */}
-      <group position={[15, 6.2, 0]}>
+      <group position={[25, 6.8, 0]}>
         <Text
           fontSize={1.4}
           fontWeight={800}
@@ -74,9 +74,9 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       {/* ======================================================== */}
       {/* STRUCTURE 1: THE RETRO DRIVE-IN CINEMA (TrueForge)       */}
       {/* ======================================================== */}
-      <group position={[16, 0, -12]}>
-        {/* Drive-in Parking Bay at [10, 0, -12] (relative: [-6, 0, 0]) */}
-        <group position={[-6, 0.02, 0]}>
+      <group position={[28, 0, -16]}>
+        {/* Drive-in Parking Bay at [20, 0, -16] (relative: [-8, 0, 0]) */}
+        <group position={[-8, 0.02, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial
@@ -243,9 +243,9 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       {/* STRUCTURE 2: THE GOURMET FOOD TRUCK (Robosurge)          */}
       {/* Stationary Fixed Physics Body - Cannot be moved by WASD  */}
       {/* ======================================================== */}
-      <group position={[18, 0, -2]}>
-        {/* Customer Parking Bay at [14, 0, -2] (relative: [-4, 0, 0]) */}
-        <group position={[-4, 0.02, 0]}>
+      <group position={[30, 0, 0]}>
+        {/* Customer Parking Bay at [23, 0, 0] (relative: [-7, 0, 0]) */}
+        <group position={[-7, 0.02, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial
@@ -526,9 +526,9 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       {/* ======================================================== */}
       {/* STRUCTURE 3: THE CLASSIC CLAY DINER (Distributed Backend) */}
       {/* ======================================================== */}
-      <group position={[18, 0, 10]}>
-        {/* Drive-Up Parking Stall at [12, 0, 10] (relative: [-6, 0, 0]) */}
-        <group position={[-6, 0.02, 0]}>
+      <group position={[28, 0, 16]}>
+        {/* Drive-Up Parking Stall at [20, 0, 16] (relative: [-8, 0, 0]) */}
+        <group position={[-8, 0.02, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial

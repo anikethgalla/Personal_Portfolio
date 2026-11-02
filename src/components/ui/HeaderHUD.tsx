@@ -46,28 +46,28 @@ export const HeaderHUD: React.FC = () => {
       {/* Center: Quick Teleport Navigation */}
       <nav className="pointer-events-auto hidden md:flex items-center gap-1.5 bg-[#ded7cb]/90 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-[#c5b9a8] clay-shadow">
         <button
-          onClick={() => teleportTo([0, 1.0, 6])}
+          onClick={() => teleportTo([0, 1.0, 14])}
           className="px-3 py-1.5 text-xs font-semibold rounded-xl text-[#3d3630] hover:bg-[#c9bfae] transition-colors flex items-center gap-1.5"
         >
           <Compass className="w-3.5 h-3.5 text-[#ea580c]" />
           Spawn
         </button>
         <button
-          onClick={() => teleportTo([12, 1.2, -6])}
+          onClick={() => teleportTo([23, 1.2, 0])}
           className="px-3 py-1.5 text-xs font-semibold rounded-xl text-[#3d3630] hover:bg-[#c9bfae] transition-colors flex items-center gap-1.5"
         >
           <Briefcase className="w-3.5 h-3.5 text-[#ea580c]" />
           Projects
         </button>
         <button
-          onClick={() => teleportTo([-16, 1.2, -4])}
+          onClick={() => teleportTo([-20, 1.2, -4])}
           className="px-3 py-1.5 text-xs font-semibold rounded-xl text-[#3d3630] hover:bg-[#c9bfae] transition-colors flex items-center gap-1.5"
         >
           <Hammer className="w-3.5 h-3.5 text-[#ea580c]" />
           Skills
         </button>
         <button
-          onClick={() => teleportTo([0, 1.2, 16])}
+          onClick={() => teleportTo([0, 1.2, 28])}
           className="px-3 py-1.5 text-xs font-semibold rounded-xl text-[#3d3630] hover:bg-[#c9bfae] transition-colors flex items-center gap-1.5"
         >
           <Sparkles className="w-3.5 h-3.5 text-[#ea580c]" />

@@ -109,7 +109,7 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
 
   const resetVehicle = (customPosition?: [number, number, number]) => {
     if (!rigidBodyRef.current) return;
-    const pos = customPosition || [0, 1.0, 6];
+    const pos = customPosition || [0, 1.0, 14];
     rigidBodyRef.current.setTranslation({ x: pos[0], y: pos[1], z: pos[2] }, true);
     rigidBodyRef.current.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
     rigidBodyRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
@@ -170,11 +170,11 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     // Current physics linear velocity
     const linvel = rigidBodyRef.current.linvel();
 
-    // Smooth arcade acceleration / braking model
-    const maxForwardSpeed = 18;
-    const maxReverseSpeed = -9;
-    const acceleration = 32;
-    const deceleration = 24;
+    // Smooth arcade acceleration / braking model (Tuned for expansive city roads)
+    const maxForwardSpeed = 28;
+    const maxReverseSpeed = -12;
+    const acceleration = 45;
+    const deceleration = 32;
 
     if (inputForward > 0.05 && !isBraking) {
       currentForwardSpeed.current = Math.min(
@@ -272,7 +272,7 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
       restitution={0.2}
       linearDamping={0.3}
       angularDamping={1.5}
-      position={[0, 1.0, 6]}
+      position={[0, 1.0, 14]}
       onCollisionEnter={(payload) => {
         const totalVel = payload.target.rigidBody?.linvel();
         if (totalVel) {

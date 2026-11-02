@@ -14,13 +14,13 @@ import { CoastalPort } from './city/CoastalPort';
 import { GreenParkAndSuburb } from './city/GreenParkAndSuburb';
 
 export const Scene: React.FC = () => {
-  const [vehiclePos, setVehiclePos] = useState<THREE.Vector3 | null>(new THREE.Vector3(0, 1.0, 6));
+  const [vehiclePos, setVehiclePos] = useState<THREE.Vector3 | null>(new THREE.Vector3(0, 1.0, 14));
 
   return (
     <div className="absolute inset-0 w-full h-full bg-[#ded6cb]">
       <Canvas
         shadows
-        camera={{ position: [0, 12, 16], fov: 45, near: 0.1, far: 200 }}
+        camera={{ position: [0, 18, 24], fov: 48, near: 0.1, far: 350 }}
         dpr={[1, 2]}
         gl={{
           antialias: true,
@@ -29,22 +29,22 @@ export const Scene: React.FC = () => {
         }}
       >
         {/* Warm Studio Lighting Setup - Bruno Simon Palette */}
-        <ambientLight intensity={0.7} color="#fff7ed" />
+        <ambientLight intensity={0.75} color="#fff7ed" />
 
-        {/* Primary Sun / Studio Key Light */}
+        {/* Primary Sun / Studio Key Light with Expanded Coverage */}
         <directionalLight
-          position={[25, 35, 20]}
+          position={[35, 55, 30]}
           intensity={1.8}
           color="#fffdf7"
           castShadow
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-camera-near={0.5}
-          shadow-camera-far={120}
-          shadow-camera-left={-40}
-          shadow-camera-right={40}
-          shadow-camera-top={40}
-          shadow-camera-bottom={-40}
+          shadow-camera-far={180}
+          shadow-camera-left={-75}
+          shadow-camera-right={75}
+          shadow-camera-top={75}
+          shadow-camera-bottom={-75}
           shadow-bias={-0.0002}
         />
 

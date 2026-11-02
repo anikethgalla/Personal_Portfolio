@@ -20,16 +20,16 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
 
       if (fpvProject.id === 'robosurge') {
         // Food Truck FPV: Right in front of the serving counter looking inside at the terminal monitor
-        desiredFpvPos.set(14.5, 1.62, -2.0);
-        desiredFpvLookAt.set(17.4, 1.62, -2.0);
+        desiredFpvPos.set(25.8, 1.62, 0.0);
+        desiredFpvLookAt.set(29.12, 1.62, 0.0);
       } else if (fpvProject.id === 'trueforge') {
         // Drive-In Cinema FPV: Driver's seat looking up at the giant projection screen
-        desiredFpvPos.set(8.8, 1.7, -12.0);
-        desiredFpvLookAt.set(16.0, 3.2, -12.0);
+        desiredFpvPos.set(19.0, 1.8, -16.0);
+        desiredFpvLookAt.set(27.58, 3.2, -16.0);
       } else if (fpvProject.id === 'distributed-backend') {
         // Diner FPV: Peering into the diner drive-through counter monitor
-        desiredFpvPos.set(12.8, 1.65, 10.0);
-        desiredFpvLookAt.set(17.4, 1.65, 10.0);
+        desiredFpvPos.set(22.2, 1.65, 16.0);
+        desiredFpvLookAt.set(25.55, 1.65, 16.0);
       }
 
       // Smooth cinematic camera glide
@@ -39,10 +39,10 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
       return;
     }
 
-    // 2. Standard Vehicle Follow Mode
+    // 2. Standard Vehicle Follow Mode (Expanded City Bird's-Eye View)
     if (!targetPosition) return;
 
-    const cameraOffset = new THREE.Vector3(0, 11.5, 14.5);
+    const cameraOffset = new THREE.Vector3(0, 16.5, 20.5);
     const desiredPos = targetPosition.clone().add(cameraOffset);
 
     camera.position.lerp(desiredPos, delta * 3.5);

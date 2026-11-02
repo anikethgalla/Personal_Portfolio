@@ -4,45 +4,97 @@ import { RigidBody } from '@react-three/rapier';
 export const Ground: React.FC = () => {
   return (
     <group>
-      {/* Physics Ground Plane */}
+      {/* 1. Large Physics Ground Plane (200m x 200m) */}
       <RigidBody type="fixed" friction={1.2} restitution={0.1}>
         <mesh position={[0, -0.25, 0]} receiveShadow>
-          <boxGeometry args={[100, 0.5, 100]} />
-          <meshStandardMaterial color="#ded7cb" roughness={0.9} metalness={0.05} />
+          <boxGeometry args={[200, 0.5, 200]} />
+          <meshStandardMaterial color="#dcd4c7" roughness={0.9} metalness={0.05} />
         </mesh>
       </RigidBody>
 
-      {/* Decorative Ground Decals / Track Markings */}
-      {/* Central Roundabout */}
-      <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <ringGeometry args={[5, 5.25, 64]} />
-        <meshBasicMaterial color="#cfc5b5" />
+      {/* 2. City Road Network Decals */}
+      {/* Central Traffic Roundabout */}
+      <group position={[0, 0.015, 0]}>
+        {/* Outer Roundabout Ring Road */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <ringGeometry args={[6.5, 12.5, 48]} />
+          <meshStandardMaterial color="#475569" roughness={0.8} />
+        </mesh>
+        {/* Inner Island */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <circleGeometry args={[6.4, 48]} />
+          <meshStandardMaterial color="#65a30d" roughness={0.9} />
+        </mesh>
+        {/* Dashed Center Circle */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[9.4, 9.6, 48]} />
+          <meshBasicMaterial color="#eab308" />
+        </mesh>
+      </group>
+
+      {/* North Avenue: Speed Runway to Hero Ramp (width 6m) */}
+      <mesh position={[0, 0.012, -22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[6, 32]} />
+        <meshStandardMaterial color="#475569" roughness={0.8} />
+      </mesh>
+      {/* North Road Dashed Divider Line */}
+      {[-12, -18, -24, -30].map((z) => (
+        <mesh key={`n-dash-${z}`} position={[0, 0.016, z]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.3, 3.2]} />
+          <meshBasicMaterial color="#eab308" />
+        </mesh>
+      ))}
+
+      {/* South Avenue: Route to Contact Garage */}
+      <mesh position={[0, 0.012, 22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[6, 30]} />
+        <meshStandardMaterial color="#475569" roughness={0.8} />
+      </mesh>
+      {/* South Road Dashed Divider Line */}
+      {[14, 20, 26, 32].map((z) => (
+        <mesh key={`s-dash-${z}`} position={[0, 0.016, z]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.3, 3.2]} />
+          <meshBasicMaterial color="#eab308" />
+        </mesh>
+      ))}
+
+      {/* East Boulevard: Highway to Projects Strip */}
+      <mesh position={[24, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[34, 6]} />
+        <meshStandardMaterial color="#475569" roughness={0.8} />
+      </mesh>
+      {/* East Highway Dashed Divider */}
+      {[14, 20, 26, 32, 38].map((x) => (
+        <mesh key={`e-dash-${x}`} position={[x, 0.016, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
+          <planeGeometry args={[0.3, 3.2]} />
+          <meshBasicMaterial color="#eab308" />
+        </mesh>
+      ))}
+
+      {/* Projects Strip Frontage Road (North-South along the Diner, Food Truck, Cinema) */}
+      <mesh position={[25, 0.013, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[6, 44]} />
+        <meshStandardMaterial color="#506175" roughness={0.8} />
       </mesh>
 
-      {/* Hero Driveway Lines */}
-      <mesh position={[0, 0.01, -3]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.3, 4]} />
-        <meshBasicMaterial color="#cfc5b5" />
+      {/* West Boulevard: Parkway to Suburb & Seaport */}
+      <mesh position={[-24, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[34, 6]} />
+        <meshStandardMaterial color="#475569" roughness={0.8} />
       </mesh>
+      {/* West Highway Dashed Divider */}
+      {[-14, -20, -26, -32].map((x) => (
+        <mesh key={`w-dash-${x}`} position={[x, 0.016, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
+          <planeGeometry args={[0.3, 3.2]} />
+          <meshBasicMaterial color="#eab308" />
+        </mesh>
+      ))}
 
-      {/* Zone Path to Projects (North East) */}
-      <mesh position={[8, 0.01, -4]} rotation={[-Math.PI / 2, 0, -Math.PI / 4]}>
-        <planeGeometry args={[1.5, 12]} />
-        <meshBasicMaterial color="#d4c9b9" />
-      </mesh>
-
-      {/* Zone Path to Skills (North West) */}
-      <mesh position={[-8, 0.01, -4]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
-        <planeGeometry args={[1.5, 12]} />
-        <meshBasicMaterial color="#d4c9b9" />
-      </mesh>
-
-      {/* Zone Path to Contact (South) */}
-      <mesh position={[0, 0.01, 10]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[1.5, 10]} />
-        <meshBasicMaterial color="#d4c9b9" />
+      {/* Suburb Coastal Promenade Road (North-South through the suburb) */}
+      <mesh position={[-24, 0.013, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[5, 42]} />
+        <meshStandardMaterial color="#506175" roughness={0.8} />
       </mesh>
     </group>
   );
 };
-

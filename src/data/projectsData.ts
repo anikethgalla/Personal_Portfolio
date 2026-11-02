@@ -25,7 +25,7 @@ export const projectsData: Project[] = [
     githubUrl: "https://github.com/anikethgalla/TrueForge",
     color: "#e06c4b", // warm rust clay
     accentColor: "#ea580c",
-    spawnPosition: [10, 0, -12] // Drive-In Cinema parking bay
+    spawnPosition: [20, 0, -16] // Drive-In Cinema parking bay
   },
   {
     id: "robosurge",
@@ -38,7 +38,7 @@ export const projectsData: Project[] = [
     githubUrl: "https://github.com/anikethgalla/Robosurge",
     color: "#4a7c82", // warm teal clay
     accentColor: "#0284c7",
-    spawnPosition: [14, 0, -2] // Food Truck customer bay
+    spawnPosition: [23, 0, 0] // Food Truck customer bay
   },
   {
     id: "distributed-backend",
@@ -51,7 +51,7 @@ export const projectsData: Project[] = [
     githubUrl: "https://github.com/anikethgalla/Backend",
     color: "#7e6c9a", // muted plum clay
     accentColor: "#7c3aed",
-    spawnPosition: [12, 0, 10] // Classic Diner drive-up bay
+    spawnPosition: [20, 0, 16] // Classic Diner drive-up bay
   },
   {
     id: "langchain-agents",
@@ -64,6 +64,6 @@ export const projectsData: Project[] = [
     githubUrl: "https://github.com/anikethgalla/langchain",
     color: "#b08958", // warm ochre clay
     accentColor: "#d97706",
-    spawnPosition: [12, 0, 18]
+    spawnPosition: [20, 0, 24]
   }
 ];

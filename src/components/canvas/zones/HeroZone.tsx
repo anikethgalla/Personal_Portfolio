@@ -5,10 +5,10 @@ import { RigidBody } from '@react-three/rapier';
 export const HeroZone: React.FC = () => {
   return (
     <group position={[0, 0, 0]}>
-      {/* 3D Elevated Hero Typography - Positioned grandly behind the landing zone */}
-      <group position={[0, 4.2, -18]}>
+      {/* 3D Elevated Hero Typography - Positioned grandly on the northern city horizon */}
+      <group position={[0, 5.2, -28]}>
         <Text
-          fontSize={2.5}
+          fontSize={3.2}
           fontWeight={800}
           color="#332d29"
           anchorX="center"
@@ -18,8 +18,8 @@ export const HeroZone: React.FC = () => {
           ANIKETH GALLA
         </Text>
         <Text
-          position={[0, -1.6, 0]}
-          fontSize={0.8}
+          position={[0, -2.0, 0]}
+          fontSize={1.0}
           fontWeight={600}
           color="#786c62"
           anchorX="center"
@@ -30,91 +30,91 @@ export const HeroZone: React.FC = () => {
         </Text>
       </group>
 
-      {/* Starting Grid Decal on Floor */}
-      <group position={[0, 0.02, 6]}>
+      {/* Starting Grid Decal on Floor (Spacious starting zone) */}
+      <group position={[0, 0.02, 14]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[3, 4]} />
-          <meshBasicMaterial color="#cfc5b5" transparent opacity={0.35} />
+          <planeGeometry args={[4, 6]} />
+          <meshBasicMaterial color="#cbd5e1" transparent opacity={0.4} />
         </mesh>
         <Text
-          position={[0, 0, -2.5]}
+          position={[0, 0, -4]}
           rotation={[-Math.PI / 2, 0, 0]}
-          fontSize={0.45}
+          fontSize={0.55}
           fontWeight={800}
-          color="#a89a88"
+          color="#94a3b8"
           anchorX="center"
           anchorY="middle"
         >
-          ▲ DRIVE FORWARD TO HIT RAMP ▲
+          ▲ FULL SPEEDWAY AHEAD ▲
         </Text>
       </group>
 
-      {/* Physics Launch Ramp */}
-      {/* Ramp rises from z = 0 (ground level) to z = -5.0 (height 1.3m) */}
-      <RigidBody type="fixed" friction={0.5} position={[0, 0.65, -2.5]}>
+      {/* High-Speed Physics Launch Ramp */}
+      {/* Ramp rises from z = -2 (ground level) to z = -8 (height 1.7m) */}
+      <RigidBody type="fixed" friction={0.4} position={[0, 0.85, -5.0]}>
         <mesh rotation={[0.26, 0, 0]} castShadow receiveShadow>
-          <boxGeometry args={[4.8, 0.25, 5.2]} />
+          <boxGeometry args={[5.8, 0.28, 6.8]} />
           <meshStandardMaterial color="#ea580c" roughness={0.4} />
         </mesh>
       </RigidBody>
 
-      {/* Structural Support under the highest part of the ramp */}
-      <mesh position={[0, 0.6, -4.8]} castShadow receiveShadow>
-        <boxGeometry args={[4.8, 1.25, 0.6]} />
+      {/* Structural Support under ramp */}
+      <mesh position={[0, 0.8, -8.2]} castShadow receiveShadow>
+        <boxGeometry args={[5.8, 1.6, 0.8]} />
         <meshStandardMaterial color="#c2410c" roughness={0.5} />
       </mesh>
 
-      {/* Bowling Pins - Placed at landing zone past the ramp (z = -10 to -14) */}
-      <group position={[0, 0, 0]}>
+      {/* Bowling Pins - Placed at landing zone past the ramp (z = -16 to -21) */}
+      <group position={[0, 0, -6]}>
         {/* Row 1 - 1 pin (Head pin) */}
-        <RigidBody colliders="hull" mass={1.8} friction={0.6} restitution={0.3} position={[0, 0.8, -10.5]}>
+        <RigidBody colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[0, 0.8, -10.5]}>
           <mesh castShadow receiveShadow>
-            <cylinderGeometry args={[0.22, 0.26, 1.6, 16]} />
+            <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
             <meshStandardMaterial color="#f8fafc" roughness={0.3} />
           </mesh>
-          <mesh position={[0, 0.45, 0]}>
-            <cylinderGeometry args={[0.23, 0.23, 0.15, 16]} />
+          <mesh position={[0, 0.5, 0]}>
+            <cylinderGeometry args={[0.28, 0.28, 0.16, 16]} />
             <meshBasicMaterial color="#ef4444" />
           </mesh>
         </RigidBody>
 
         {/* Row 2 - 2 pins */}
-        {[-0.7, 0.7].map((x, i) => (
-          <RigidBody key={`r2-${i}`} colliders="hull" mass={1.8} friction={0.6} restitution={0.3} position={[x, 0.8, -11.6]}>
+        {[-0.85, 0.85].map((x, i) => (
+          <RigidBody key={`r2-${i}`} colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[x, 0.8, -11.8]}>
             <mesh castShadow receiveShadow>
-              <cylinderGeometry args={[0.22, 0.26, 1.6, 16]} />
+              <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
               <meshStandardMaterial color="#f8fafc" roughness={0.3} />
             </mesh>
-            <mesh position={[0, 0.45, 0]}>
-              <cylinderGeometry args={[0.23, 0.23, 0.15, 16]} />
+            <mesh position={[0, 0.5, 0]}>
+              <cylinderGeometry args={[0.28, 0.28, 0.16, 16]} />
               <meshBasicMaterial color="#ef4444" />
             </mesh>
           </RigidBody>
         ))}
 
         {/* Row 3 - 3 pins */}
-        {[-1.4, 0, 1.4].map((x, i) => (
-          <RigidBody key={`r3-${i}`} colliders="hull" mass={1.8} friction={0.6} restitution={0.3} position={[x, 0.8, -12.7]}>
+        {[-1.7, 0, 1.7].map((x, i) => (
+          <RigidBody key={`r3-${i}`} colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[x, 0.8, -13.1]}>
             <mesh castShadow receiveShadow>
-              <cylinderGeometry args={[0.22, 0.26, 1.6, 16]} />
+              <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
               <meshStandardMaterial color="#f8fafc" roughness={0.3} />
             </mesh>
-            <mesh position={[0, 0.45, 0]}>
-              <cylinderGeometry args={[0.23, 0.23, 0.15, 16]} />
+            <mesh position={[0, 0.5, 0]}>
+              <cylinderGeometry args={[0.28, 0.28, 0.16, 16]} />
               <meshBasicMaterial color="#ef4444" />
             </mesh>
           </RigidBody>
         ))}
 
         {/* Row 4 - 4 pins */}
-        {[-2.1, -0.7, 0.7, 2.1].map((x, i) => (
-          <RigidBody key={`r4-${i}`} colliders="hull" mass={1.8} friction={0.6} restitution={0.3} position={[x, 0.8, -13.8]}>
+        {[-2.55, -0.85, 0.85, 2.55].map((x, i) => (
+          <RigidBody key={`r4-${i}`} colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[x, 0.8, -14.4]}>
             <mesh castShadow receiveShadow>
-              <cylinderGeometry args={[0.22, 0.26, 1.6, 16]} />
+              <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
               <meshStandardMaterial color="#f8fafc" roughness={0.3} />
             </mesh>
-            <mesh position={[0, 0.45, 0]}>
-              <cylinderGeometry args={[0.23, 0.23, 0.15, 16]} />
+            <mesh position={[0, 0.5, 0]}>
+              <cylinderGeometry args={[0.28, 0.28, 0.16, 16]} />
               <meshBasicMaterial color="#ef4444" />
             </mesh>
           </RigidBody>

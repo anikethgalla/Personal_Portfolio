@@ -17,8 +17,8 @@ export const SkillsZone: React.FC<SkillsZoneProps> = ({ vehiclePosition }) => {
   // Proximity check for zone discovery
   useFrame(() => {
     if (!vehiclePosition) return;
-    const skillsCenter = new THREE.Vector3(-16, 0, -4);
-    if (vehiclePosition.distanceTo(skillsCenter) < 10) {
+    const skillsCenter = new THREE.Vector3(-20, 0, -4);
+    if (vehiclePosition.distanceTo(skillsCenter) < 12) {
       markZoneDiscovered('skills');
     }
   });
@@ -42,7 +42,7 @@ export const SkillsZone: React.FC<SkillsZoneProps> = ({ vehiclePosition }) => {
   const brickDepth = 0.8;
 
   return (
-    <group position={[-16, 0, -4]}>
+    <group position={[-20, 0, -4]}>
       {/* Zone Sign */}
       <group position={[0, 5.8, -3]}>
         <Text

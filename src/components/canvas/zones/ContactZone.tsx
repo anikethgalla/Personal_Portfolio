@@ -15,14 +15,14 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
 
   useFrame(() => {
     if (!vehiclePosition) return;
-    const contactCenter = new THREE.Vector3(0, 0, 18);
-    if (vehiclePosition.distanceTo(contactCenter) < 8) {
+    const contactCenter = new THREE.Vector3(0, 0, 32);
+    if (vehiclePosition.distanceTo(contactCenter) < 10) {
       markZoneDiscovered('contact');
     }
   });
 
   return (
-    <group position={[0, 0, 18]}>
+    <group position={[0, 0, 32]}>
       {/* Zone Sign */}
       <group position={[0, 4.8, -4]}>
         <Text
