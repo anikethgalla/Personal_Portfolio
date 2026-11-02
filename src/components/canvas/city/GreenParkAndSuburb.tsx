@@ -228,8 +228,6 @@ export const GreenParkAndSuburb: React.FC = () => {
       {/* South-East Garden & Diner Parklet Trees */}
       <LowPolyTree position={[8, 0, 10]} scale={1.25} color="#65a30d" />
       <LowPolyTree position={[14, 0, 10]} scale={1.1} color="#4d7c0f" />
-      <LowPolyTree position={[8, 0, 22]} scale={1.2} color="#4d7c0f" />
-      <LowPolyTree position={[15, 0, 22]} scale={1.3} color="#3f6212" />
 
       {/* Horizon Background Pine Trees (Far North) */}
       <LowPolyTree position={[-24, 0, -36]} scale={1.4} color="#3f6212" />
@@ -237,9 +235,8 @@ export const GreenParkAndSuburb: React.FC = () => {
       <LowPolyTree position={[14, 0, -36]} scale={1.45} color="#4d7c0f" />
       <LowPolyTree position={[24, 0, -36]} scale={1.4} color="#3f6212" />
 
-      {/* Garage Flanking Trees (Far South) */}
+      {/* South-West Trees (West of South Avenue) */}
       <LowPolyTree position={[-10, 0, 28]} scale={1.2} color="#4d7c0f" />
-      <LowPolyTree position={[10, 0, 28]} scale={1.2} color="#4d7c0f" />
 
       {/* ======================================================== */}
       {/* 4. PARK FURNITURE & STREET LIGHTING                      */}

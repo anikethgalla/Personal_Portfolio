@@ -599,8 +599,8 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* Street Trees & Lamps along Corporate Skyline Sidewalks (x=+-6 and +-20) */}
-      {[-20, -6, 6, 20].map((tx) => (
+      {/* Street Trees & Lamps along Corporate Skyline Sidewalks */}
+      {[-20, -6, 24].map((tx) => (
         <group key={`skyline-tree-${tx}`} position={[tx, 0, 36.5]}>
           <mesh position={[0, 0.8, 0]} castShadow>
             <cylinderGeometry args={[0.2, 0.26, 1.6, 8]} />
