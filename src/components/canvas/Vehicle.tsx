@@ -255,8 +255,14 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
       }
     });
 
-    // Notify position to parent / camera
+    // Void safety net: If car ever falls through or drops below -3m, instantly respawn
     const translation = rigidBodyRef.current.translation();
+    if (translation.y < -3.0) {
+      resetVehicle();
+      return;
+    }
+
+    // Notify position to parent / camera
     if (onPositionUpdate) {
       onPositionUpdate(new THREE.Vector3(translation.x, translation.y, translation.z));
     }
@@ -266,13 +272,14 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     <RigidBody
       ref={rigidBodyRef}
       colliders={false}
+      ccd={true}
       canSleep={false}
       mass={12}
-      friction={0.1}
-      restitution={0.2}
-      linearDamping={0.3}
-      angularDamping={1.5}
-      position={[0, 1.0, 14]}
+      friction={0.2}
+      restitution={0.1}
+      linearDamping={0.4}
+      angularDamping={2.0}
+      position={[0, 0.8, 14]}
       onCollisionEnter={(payload) => {
         const totalVel = payload.target.rigidBody?.linvel();
         if (totalVel) {
@@ -283,8 +290,8 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
         }
       }}
     >
-      {/* Explicit Cuboid Collider - perfectly fitting the car body without ground dragging */}
-      <CuboidCollider args={[0.65, 0.22, 1.15]} position={[0, 0.35, 0]} friction={0.1} restitution={0.2} />
+      {/* Explicit Stable Cuboid Collider - wide base, sits perfectly on wheels, zero floor clipping */}
+      <CuboidCollider args={[0.72, 0.35, 1.15]} position={[0, 0.20, 0]} friction={0.2} restitution={0.1} />
 
       {/* Visual Car Model - Bruno Simon Style Warm Pastel Toy Car */}
       <group ref={chassisRef}>

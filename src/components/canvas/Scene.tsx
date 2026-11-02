@@ -54,8 +54,8 @@ export const Scene: React.FC = () => {
         {/* Camera Tracker */}
         <CameraFollow targetPosition={vehiclePos} />
 
-        {/* Rapier Physics Simulation */}
-        <Physics gravity={[0, -20, 0]} timeStep="vary">
+        {/* Rapier Physics Simulation (Fixed 60Hz deterministic timestep for zero tunneling) */}
+        <Physics gravity={[0, -20, 0]}>
           <Ground />
           <Boundaries />
           <CoastalPort />

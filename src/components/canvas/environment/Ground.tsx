@@ -1,11 +1,12 @@
 import React from 'react';
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody, CuboidCollider } from '@react-three/rapier';
 
 export const Ground: React.FC = () => {
   return (
     <group>
-      {/* 1. Large Physics Ground Base (200m x 200m) at y = 0 */}
-      <RigidBody type="fixed" friction={1.2} restitution={0.1}>
+      {/* 1. Impenetrable Physics Ground Bedrock (10m thick, top surface at y = 0.0) */}
+      <RigidBody type="fixed" colliders={false} friction={1.2} restitution={0.1}>
+        <CuboidCollider args={[150, 5, 150]} position={[0, -5, 0]} friction={1.2} restitution={0.1} />
         <mesh position={[0, -0.25, 0]} receiveShadow>
           <boxGeometry args={[200, 0.5, 200]} />
           <meshStandardMaterial color="#c5b9a8" roughness={0.9} metalness={0.05} />

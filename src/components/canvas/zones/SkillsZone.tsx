@@ -69,7 +69,7 @@ export const SkillsZone: React.FC<SkillsZoneProps> = ({ vehiclePosition }) => {
       {/* Knockable Brick Wall */}
       <group key={`wall-${wallKey}`} position={[0, 0, 0]}>
         {rows.map((row, rowIndex) => {
-          const rowY = rowIndex * (brickHeight + 0.05) + brickHeight / 2;
+          const rowY = rowIndex * (brickHeight + 0.04) + brickHeight / 2 + 0.03;
           const totalRowWidth = row.length * brickWidth;
           const startX = -totalRowWidth / 2 + brickWidth / 2;
 
@@ -82,9 +82,11 @@ export const SkillsZone: React.FC<SkillsZoneProps> = ({ vehiclePosition }) => {
                   <RigidBody
                     key={skill.id}
                     colliders="cuboid"
-                    mass={3.5}
-                    friction={0.7}
-                    restitution={0.2}
+                    mass={4.0}
+                    friction={0.8}
+                    restitution={0.1}
+                    linearDamping={0.6}
+                    angularDamping={1.0}
                     position={[brickX, rowY, 0]}
                   >
                     <mesh castShadow receiveShadow>

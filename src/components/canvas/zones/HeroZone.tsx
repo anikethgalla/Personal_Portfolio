@@ -72,9 +72,18 @@ export const HeroZone: React.FC = () => {
       </mesh>
 
       {/* Bowling Pins - Placed at landing zone past the ramp (z = -16 to -21) */}
+      {/* Elevated to y = 0.92 so cylinder base (y = 0.02) rests perfectly on the ground without floor penetration */}
       <group position={[0, 0, -6]}>
         {/* Row 1 - 1 pin (Head pin) */}
-        <RigidBody colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[0, 0.8, -10.5]}>
+        <RigidBody
+          colliders="hull"
+          mass={2.0}
+          friction={0.6}
+          restitution={0.2}
+          linearDamping={0.4}
+          angularDamping={0.8}
+          position={[0, 0.92, -10.5]}
+        >
           <mesh castShadow receiveShadow>
             <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
             <meshStandardMaterial color="#f8fafc" roughness={0.3} />
@@ -87,7 +96,16 @@ export const HeroZone: React.FC = () => {
 
         {/* Row 2 - 2 pins */}
         {[-0.85, 0.85].map((x, i) => (
-          <RigidBody key={`r2-${i}`} colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[x, 0.8, -11.8]}>
+          <RigidBody
+            key={`r2-${i}`}
+            colliders="hull"
+            mass={2.0}
+            friction={0.6}
+            restitution={0.2}
+            linearDamping={0.4}
+            angularDamping={0.8}
+            position={[x, 0.92, -11.8]}
+          >
             <mesh castShadow receiveShadow>
               <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
               <meshStandardMaterial color="#f8fafc" roughness={0.3} />
@@ -101,7 +119,16 @@ export const HeroZone: React.FC = () => {
 
         {/* Row 3 - 3 pins */}
         {[-1.7, 0, 1.7].map((x, i) => (
-          <RigidBody key={`r3-${i}`} colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[x, 0.8, -13.1]}>
+          <RigidBody
+            key={`r3-${i}`}
+            colliders="hull"
+            mass={2.0}
+            friction={0.6}
+            restitution={0.2}
+            linearDamping={0.4}
+            angularDamping={0.8}
+            position={[x, 0.92, -13.1]}
+          >
             <mesh castShadow receiveShadow>
               <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
               <meshStandardMaterial color="#f8fafc" roughness={0.3} />
@@ -115,7 +142,16 @@ export const HeroZone: React.FC = () => {
 
         {/* Row 4 - 4 pins */}
         {[-2.55, -0.85, 0.85, 2.55].map((x, i) => (
-          <RigidBody key={`r4-${i}`} colliders="hull" mass={2.0} friction={0.6} restitution={0.3} position={[x, 0.8, -14.4]}>
+          <RigidBody
+            key={`r4-${i}`}
+            colliders="hull"
+            mass={2.0}
+            friction={0.6}
+            restitution={0.2}
+            linearDamping={0.4}
+            angularDamping={0.8}
+            position={[x, 0.92, -14.4]}
+          >
             <mesh castShadow receiveShadow>
               <cylinderGeometry args={[0.26, 0.32, 1.8, 16]} />
               <meshStandardMaterial color="#f8fafc" roughness={0.3} />
