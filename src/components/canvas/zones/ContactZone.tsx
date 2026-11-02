@@ -564,27 +564,16 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* BUILDING 4: South City Apartments (West) at [-35, 0, 46] */}
+      {/* Coastal Green Space (Replaced former red apartment tower with open view) */}
       <group position={[-35, 0, 46]}>
-        <RigidBody type="fixed" friction={0.8}>
-          <mesh position={[0, 4.5, 0]} castShadow receiveShadow>
-            <boxGeometry args={[8.0, 9.0, 6.5]} />
-            <meshStandardMaterial color="#c2410c" roughness={0.6} />
-          </mesh>
-          <mesh position={[0, 9.2, 0]} castShadow>
-            <boxGeometry args={[8.4, 0.35, 6.9]} />
-            <meshStandardMaterial color="#7c2d12" roughness={0.5} />
-          </mesh>
-          {/* Balconies */}
-          {[-2.0, 2.0].map((bx, bi) =>
-            [3.0, 6.0].map((by, byi) => (
-              <mesh key={`apt-balc-${bi}-${byi}`} position={[bx, by, -3.4]} castShadow>
-                <boxGeometry args={[2.4, 0.6, 0.6]} />
-                <meshStandardMaterial color="#1e293b" />
-              </mesh>
-            ))
-          )}
-        </RigidBody>
+        <mesh position={[0, 0.8, 0]} castShadow>
+          <cylinderGeometry args={[0.2, 0.28, 1.6, 8]} />
+          <meshStandardMaterial color="#78350f" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, 2.4, 0]} castShadow>
+          <sphereGeometry args={[1.3, 9, 8]} />
+          <meshStandardMaterial color="#4d7c0f" roughness={0.6} />
+        </mesh>
       </group>
 
       {/* BUILDING 5: South City Apartments (East) at [25, 0, 48] */}

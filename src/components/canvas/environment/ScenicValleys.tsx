@@ -345,3 +345,4 @@ export const ScenicValleys: React.FC = () => {
     </group>
   );
 };
+
