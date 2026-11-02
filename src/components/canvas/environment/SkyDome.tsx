@@ -18,9 +18,9 @@ const PuffyClayCloud: React.FC<{ data: CloudData }> = ({ data }) => {
     // Gentle wind drift towards East (+X)
     groupRef.current.position.x += data.speed * delta;
 
-    // Loop wrap seamlessly across the city boundaries (-75m to +75m)
-    if (groupRef.current.position.x > 80) {
-      groupRef.current.position.x = -80;
+    // Loop wrap seamlessly across the expanded world boundaries (-130m to +130m)
+    if (groupRef.current.position.x > 130) {
+      groupRef.current.position.x = -130;
     }
   });
 
@@ -34,45 +34,51 @@ const PuffyClayCloud: React.FC<{ data: CloudData }> = ({ data }) => {
       {/* Left puff */}
       <mesh position={[-2.1, -0.4, 0.4]} castShadow>
         <sphereGeometry args={[2.0, 9, 7]} />
-        <meshStandardMaterial color="#fefefe" roughness={0.7} />
+        <meshStandardMaterial color="#ffffff" roughness={0.7} />
       </mesh>
       {/* Right puff */}
       <mesh position={[2.2, -0.3, -0.3]} castShadow>
         <sphereGeometry args={[2.2, 9, 7]} />
-        <meshStandardMaterial color="#fefefe" roughness={0.7} />
+        <meshStandardMaterial color="#ffffff" roughness={0.7} />
       </mesh>
       {/* Top crown puff */}
       <mesh position={[0.4, 1.3, 0.2]} castShadow>
         <sphereGeometry args={[1.8, 8, 7]} />
         <meshStandardMaterial color="#ffffff" roughness={0.65} />
       </mesh>
-      {/* Flattened underside puff */}
+      {/* Flattened underside puff with soft blue-sky shadow */}
       <mesh position={[-0.2, -1.0, -0.2]} scale={[1.4, 0.6, 1.2]}>
         <sphereGeometry args={[1.9, 8, 6]} />
-        <meshStandardMaterial color="#ede7df" roughness={0.8} />
+        <meshStandardMaterial color="#e0f2fe" roughness={0.8} />
       </mesh>
     </group>
   );
 };
 
 export const SkyDome: React.FC = () => {
-  // Generate stylized clouds scattered above the city
+  // Generate stylized clouds scattered above the city and valleys
   const clouds = useMemo<CloudData[]>(() => [
-    { position: [-45, 26, -30], scale: 1.3, speed: 1.2 },
-    { position: [-15, 30, -20], scale: 1.6, speed: 1.5 },
-    { position: [20, 28, -25], scale: 1.4, speed: 1.1 },
-    { position: [50, 32, -15], scale: 1.2, speed: 1.4 },
-    { position: [-55, 29, 5], scale: 1.5, speed: 1.3 },
-    { position: [-25, 27, 12], scale: 1.2, speed: 1.0 },
-    { position: [10, 33, 18], scale: 1.7, speed: 1.4 },
-    { position: [40, 28, 22], scale: 1.3, speed: 1.2 },
-    { position: [-35, 34, 32], scale: 1.4, speed: 1.3 },
-    { position: [5, 25, 35], scale: 1.2, speed: 1.1 },
-    { position: [45, 31, 35], scale: 1.5, speed: 1.5 },
-    { position: [-10, 35, 0], scale: 1.8, speed: 1.2 },
+    { position: [-70, 28, -70], scale: 1.5, speed: 1.3 },
+    { position: [-25, 32, -60], scale: 1.7, speed: 1.4 },
+    { position: [30, 30, -55], scale: 1.4, speed: 1.1 },
+    { position: [75, 34, -65], scale: 1.6, speed: 1.5 },
+    { position: [-55, 29, -25], scale: 1.3, speed: 1.2 },
+    { position: [-15, 33, -15], scale: 1.8, speed: 1.5 },
+    { position: [20, 28, -20], scale: 1.4, speed: 1.1 },
+    { position: [60, 32, -10], scale: 1.5, speed: 1.4 },
+    { position: [-65, 31, 15], scale: 1.6, speed: 1.3 },
+    { position: [-25, 27, 20], scale: 1.2, speed: 1.0 },
+    { position: [15, 35, 25], scale: 1.7, speed: 1.4 },
+    { position: [55, 29, 30], scale: 1.3, speed: 1.2 },
+    { position: [-45, 32, 55], scale: 1.5, speed: 1.3 },
+    { position: [5, 26, 65], scale: 1.4, speed: 1.1 },
+    { position: [50, 33, 60], scale: 1.6, speed: 1.5 },
+    { position: [-30, 30, 95], scale: 1.5, speed: 1.2 },
+    { position: [25, 34, 105], scale: 1.7, speed: 1.4 },
+    { position: [0, 36, 125], scale: 1.9, speed: 1.3 },
   ], []);
 
-  // Create smooth vertical gradient canvas texture for the sky dome
+  // Create smooth vertical gradient canvas texture for the vibrant blue sky dome
   const skyTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 2;
@@ -80,14 +86,18 @@ export const SkyDome: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       const gradient = ctx.createLinearGradient(0, 0, 0, 512);
-      // Top: Soft Bruno Simon atmospheric pastel sky
-      gradient.addColorStop(0, '#a5c4d8');
-      // Mid-sky: Soft warm morning sky
-      gradient.addColorStop(0.45, '#cce0ee');
-      // Horizon haze: Warm pastel clay cream
-      gradient.addColorStop(0.8, '#ede3d5');
-      // Ground horizon base: Studio matte clay tone
-      gradient.addColorStop(1.0, '#ded6cb');
+      // Top/Zenith: Deep vibrant azure sky blue
+      gradient.addColorStop(0.0, '#0284c7');
+      // Upper-sky: Radiant bright blue
+      gradient.addColorStop(0.28, '#0ea5e9');
+      // Mid-sky: Sunny clear cyan-blue
+      gradient.addColorStop(0.58, '#38bdf8');
+      // Lower-sky: Soft atmospheric sky blue
+      gradient.addColorStop(0.80, '#7dd3fc');
+      // Near horizon: Light cheerful sky haze
+      gradient.addColorStop(0.93, '#bae6fd');
+      // Horizon base: Luminous soft horizon blue
+      gradient.addColorStop(1.0, '#e0f2fe');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 2, 512);
     }
@@ -99,22 +109,22 @@ export const SkyDome: React.FC = () => {
 
   return (
     <group>
-      {/* 1. Large Warm Bruno Simon Studio Sky Dome (Inverted Hemisphere) */}
-      <mesh position={[0, -5, 0]}>
-        <sphereGeometry args={[140, 36, 24, 0, Math.PI * 2, 0, Math.PI / 2]} />
+      {/* 1. Large Vibrant Blue Sky Dome (Inverted Hemisphere with 320m radius) */}
+      <mesh position={[0, -10, 0]}>
+        <sphereGeometry args={[320, 48, 28, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshBasicMaterial map={skyTexture} side={THREE.BackSide} depthWrite={false} />
       </mesh>
 
       {/* 2. Stylized Low-Poly Clay Sun Orb on Horizon */}
-      <group position={[70, 48, -60]}>
+      <group position={[100, 65, -90]}>
         <mesh>
-          <sphereGeometry args={[5.5, 16, 16]} />
+          <sphereGeometry args={[7.5, 16, 16]} />
           <meshBasicMaterial color="#fef08a" />
         </mesh>
-        {/* Soft glowing sun aura halo */}
-        <mesh scale={1.25}>
-          <sphereGeometry args={[5.5, 16, 16]} />
-          <meshBasicMaterial color="#fed7aa" transparent opacity={0.35} />
+        {/* Soft glowing warm sun aura halo */}
+        <mesh scale={1.35}>
+          <sphereGeometry args={[7.5, 16, 16]} />
+          <meshBasicMaterial color="#fde047" transparent opacity={0.3} />
         </mesh>
       </group>
 
