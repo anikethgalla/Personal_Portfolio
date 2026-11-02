@@ -5,17 +5,17 @@ import { RigidBody } from '@react-three/rapier';
 export const CoastalPort: React.FC = () => {
   return (
     <group>
-      {/* 1. Expansive Ocean Water Basin (Extends Wall-to-Wall: North Wall to South Wall) */}
-      <group position={[-54, 0, 0]}>
+      {/* 1. Expansive Ocean Water Basin (Extends out to Western Horizon) */}
+      <group position={[-78, 0, 0]}>
         {/* Ocean Deep Seabed Floor (Replaces grass beneath ocean) */}
         <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[46, 126]} />
+          <planeGeometry args={[94, 240]} />
           <meshStandardMaterial color="#075985" roughness={0.9} />
         </mesh>
 
-        {/* Ocean Water Surface Plane (Full Wall-to-Wall coverage: z = -63 to +63, x = -77 to -31) */}
+        {/* Ocean Water Surface Plane (Boundless Open Sea to Horizon) */}
         <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[46, 126]} />
+          <planeGeometry args={[94, 240]} />
           <meshStandardMaterial
             color="#0ea5e9"
             roughness={0.08}
@@ -25,9 +25,9 @@ export const CoastalPort: React.FC = () => {
           />
         </mesh>
 
-        {/* Shoreline Stone Quay Embankment Wall (Wall to Wall with Pier Opening) */}
+        {/* Shoreline Stone Quay Embankment Wall (Shoreline at x = -32.2) */}
         {/* North Sea Wall Section (z = -63 to -4) */}
-        <RigidBody type="fixed" friction={0.8} position={[21.8, 0.25, -33.5]}>
+        <RigidBody type="fixed" friction={0.8} position={[45.8, 0.25, -33.5]}>
           <mesh castShadow receiveShadow>
             <boxGeometry args={[0.8, 0.6, 59]} />
             <meshStandardMaterial color="#94a3b8" roughness={0.8} />
@@ -35,7 +35,7 @@ export const CoastalPort: React.FC = () => {
         </RigidBody>
 
         {/* South Sea Wall Section (z = 4 to +63) */}
-        <RigidBody type="fixed" friction={0.8} position={[21.8, 0.25, 33.5]}>
+        <RigidBody type="fixed" friction={0.8} position={[45.8, 0.25, 33.5]}>
           <mesh castShadow receiveShadow>
             <boxGeometry args={[0.8, 0.6, 59]} />
             <meshStandardMaterial color="#94a3b8" roughness={0.8} />

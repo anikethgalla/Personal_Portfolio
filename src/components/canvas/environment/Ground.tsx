@@ -4,11 +4,11 @@ import { RigidBody, CuboidCollider } from '@react-three/rapier';
 export const Ground: React.FC = () => {
   return (
     <group>
-      {/* 1. Impenetrable Physics Ground Bedrock (10m thick, full lush green grass landscape) */}
+      {/* 1. Impenetrable Physics Ground Bedrock (Expansive 350m green meadow landscape) */}
       <RigidBody type="fixed" colliders={false} friction={1.2} restitution={0.1}>
-        <CuboidCollider args={[150, 5, 150]} position={[0, -5, 0]} friction={1.2} restitution={0.1} />
+        <CuboidCollider args={[200, 5, 200]} position={[0, -5, 0]} friction={1.2} restitution={0.1} />
         <mesh position={[0, -0.25, 0]} receiveShadow>
-          <boxGeometry args={[200, 0.5, 200]} />
+          <boxGeometry args={[350, 0.5, 350]} />
           <meshStandardMaterial color="#5ea508" roughness={0.9} metalness={0.05} />
         </mesh>
       </RigidBody>

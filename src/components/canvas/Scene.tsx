@@ -14,6 +14,7 @@ import { CoastalPort } from './city/CoastalPort';
 import { GreenParkAndSuburb } from './city/GreenParkAndSuburb';
 import { EastTownDistrict } from './city/EastTownDistrict';
 import { SkyDome } from './environment/SkyDome';
+import { ScenicValleys } from './environment/ScenicValleys';
 
 export const Scene: React.FC = () => {
   const [vehiclePos, setVehiclePos] = useState<THREE.Vector3 | null>(new THREE.Vector3(0, 1.0, 14));
@@ -63,6 +64,7 @@ export const Scene: React.FC = () => {
         <Physics gravity={[0, -20, 0]}>
           <Ground />
           <Boundaries />
+          <ScenicValleys />
           <CoastalPort />
           <GreenParkAndSuburb />
           <EastTownDistrict />
