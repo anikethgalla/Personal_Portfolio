@@ -23,7 +23,9 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     touchControls,
     resetVehicleTrigger,
     teleportTarget,
-    clearTeleport
+    clearTeleport,
+    fpvProject,
+    exitFpv
   } = useGame();
 
   // Keyboard input state
@@ -42,6 +44,11 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't capture when typing in inputs
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
+
+      if (e.key === 'Escape' && fpvProject) {
+        exitFpv();
+        return;
+      }
 
       const code = e.code;
       const key = e.key.toLowerCase();
@@ -67,6 +74,11 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && fpvProject) {
+        exitFpv();
+        return;
+      }
+
       const code = e.code;
       const key = e.key.toLowerCase();
 
@@ -125,6 +137,15 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
 
   useFrame((_, delta) => {
     if (!rigidBodyRef.current) return;
+
+    // Freeze driving physics while exploring FPV screen inside the food truck/diner/cinema
+    if (fpvProject) {
+      const linvel = rigidBodyRef.current.linvel();
+      rigidBodyRef.current.setLinvel({ x: 0, y: linvel.y, z: 0 }, true);
+      rigidBodyRef.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+      soundManager.updateEngine(0);
+      return;
+    }
 
     // Merge keyboard + touch controls
     const inputForward =

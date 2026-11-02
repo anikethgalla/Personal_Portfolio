@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
-import { Project, projectsData } from '../data/projectsData';
+import React, { createContext, useContext, useState } from 'react';
+import { Project } from '../data/projectsData';
 import { soundManager } from '../audio/soundManager';
 
 export type ZoneType = 'hero' | 'projects' | 'skills' | 'contact' | null;
@@ -9,6 +9,9 @@ interface GameContextType {
   setActiveZone: (zone: ZoneType) => void;
   activeProject: Project | null;
   setActiveProject: (project: Project | null) => void;
+  fpvProject: Project | null;
+  enterFpv: (project: Project) => void;
+  exitFpv: () => void;
   isRecruiterDrawerOpen: boolean;
   setIsRecruiterDrawerOpen: (open: boolean) => void;
   isMuted: boolean;
@@ -31,6 +34,7 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeZone, setActiveZone] = useState<ZoneType>('hero');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [fpvProject, setFpvProject] = useState<Project | null>(null);
   const [isRecruiterDrawerOpen, setIsRecruiterDrawerOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(() => soundManager.getMuted());
   const [teleportTarget, setTeleportTarget] = useState<[number, number, number] | null>(null);
@@ -39,12 +43,25 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [resetSkillsTrigger, setResetSkillsTrigger] = useState(0);
   const [discoveredZones, setDiscoveredZones] = useState<Set<string>>(new Set(['hero']));
 
+  const enterFpv = (project: Project) => {
+    setFpvProject(project);
+    soundManager.playChime();
+  };
+
+  const exitFpv = () => {
+    setFpvProject(null);
+    soundManager.playChime();
+  };
+
   const toggleMute = () => {
     const next = soundManager.toggleMute();
     setIsMuted(next);
   };
 
   const teleportTo = (coords: [number, number, number]) => {
+    if (fpvProject) {
+      setFpvProject(null);
+    }
     setTeleportTarget(coords);
   };
 
@@ -53,16 +70,19 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const triggerResetVehicle = () => {
-    setResetVehicleTrigger(c => c + 1);
+    if (fpvProject) {
+      setFpvProject(null);
+    }
+    setResetVehicleTrigger((c) => c + 1);
   };
 
   const triggerResetSkills = () => {
-    setResetSkillsTrigger(c => c + 1);
+    setResetSkillsTrigger((c) => c + 1);
     soundManager.playChime();
   };
 
   const markZoneDiscovered = (zone: string) => {
-    setDiscoveredZones(prev => {
+    setDiscoveredZones((prev) => {
       if (prev.has(zone)) return prev;
       const next = new Set(prev);
       next.add(zone);
@@ -78,6 +98,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setActiveZone,
         activeProject,
         setActiveProject,
+        fpvProject,
+        enterFpv,
+        exitFpv,
         isRecruiterDrawerOpen,
         setIsRecruiterDrawerOpen,
         isMuted,
