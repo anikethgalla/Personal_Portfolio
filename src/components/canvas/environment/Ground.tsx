@@ -101,9 +101,9 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* South Avenue: Towards Gas Station & Petrol Pump (width 8m) */}
-      <mesh position={[0, 0.025, 22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[8, 34]} />
+      {/* South Avenue: Route to Corporate Skyline & Petrol Pump (width 8m) */}
+      <mesh position={[0, 0.025, 27]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[8, 46]} />
         <meshStandardMaterial
           color="#334155"
           roughness={0.75}
@@ -113,7 +113,7 @@ export const Ground: React.FC = () => {
         />
       </mesh>
       {/* South Road Dashed Divider Lines */}
-      {[14, 20, 26, 32].map((z) => (
+      {[14, 20, 26, 32, 38, 44].map((z) => (
         <mesh key={`s-dash-${z}`} position={[0, 0.032, z]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
@@ -249,12 +249,24 @@ export const Ground: React.FC = () => {
         />
       </mesh>
 
-      {/* Gas Station & Petrol Pump Entrance Paved Apron */}
-      <mesh position={[0, 0.025, 33]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[14, 12]} />
+      {/* Gas Station & Petrol Pump Drive-In Apron (Left / East of South Avenue) */}
+      <mesh position={[13, 0.025, 26]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[18, 18]} />
         <meshStandardMaterial
           color="#3b4859"
           roughness={0.8}
+          polygonOffset
+          polygonOffsetFactor={-1}
+          polygonOffsetUnits={-1}
+        />
+      </mesh>
+
+      {/* Corporate Skyline Plaza Apron at South End */}
+      <mesh position={[0, 0.025, 43]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[44, 16]} />
+        <meshStandardMaterial
+          color="#334155"
+          roughness={0.75}
           polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
