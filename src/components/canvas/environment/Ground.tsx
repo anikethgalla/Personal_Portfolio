@@ -309,17 +309,7 @@ export const Ground: React.FC = () => {
         />
       </mesh>
 
-      {/* Hero Bowling Arena Landing Pad (Under pins and behind ramp) */}
-      <mesh position={[0, 0.025, -20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[14, 20]} />
-        <meshStandardMaterial
-          color="#334155"
-          roughness={0.75}
-          polygonOffset
-          polygonOffsetFactor={-1}
-          polygonOffsetUnits={-1}
-        />
-      </mesh>
+
     </group>
   );
 };

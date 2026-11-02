@@ -7,7 +7,7 @@ export const ControlsHelp: React.FC = () => {
   const { discoveredZones } = useGame();
 
   const zones = [
-    { id: 'hero', name: 'Hero Ramp' },
+    { id: 'hero', name: 'Speedway' },
     { id: 'projects', name: 'Projects' },
     { id: 'skills', name: 'Skills Wall' },
     { id: 'contact', name: 'Gas Station' }
