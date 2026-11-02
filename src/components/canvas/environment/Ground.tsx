@@ -77,9 +77,9 @@ export const Ground: React.FC = () => {
         ))}
       </group>
 
-      {/* North Speedway Boulevard: Towards Ramp & Bowling Arena (width 8m) */}
-      <mesh position={[0, 0.025, -22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[8, 34]} />
+      {/* North Speedway Boulevard: Touches North Perimeter Wall at z = -60 (width 8m) */}
+      <mesh position={[0, 0.025, -32.5]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[8, 55]} />
         <meshStandardMaterial
           color="#334155"
           roughness={0.75}
@@ -88,8 +88,8 @@ export const Ground: React.FC = () => {
           polygonOffsetUnits={-1}
         />
       </mesh>
-      {/* North Road Dashed Divider Lines */}
-      {[-12, -18, -24, -30, -36].map((z) => (
+      {/* North Road Dashed Divider Lines (All the way to North Wall) */}
+      {[-12, -18, -24, -30, -36, -42, -48, -54].map((z) => (
         <mesh key={`n-dash-${z}`} position={[0, 0.032, z]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
@@ -101,9 +101,9 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* South Avenue: Route to Corporate Skyline & Petrol Pump (width 8m) */}
-      <mesh position={[0, 0.025, 27]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[8, 46]} />
+      {/* South Avenue: Route to Corporate Skyline & Touches South Wall at z = 60 (width 8m) */}
+      <mesh position={[0, 0.025, 32.5]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[8, 55]} />
         <meshStandardMaterial
           color="#334155"
           roughness={0.75}
@@ -112,8 +112,8 @@ export const Ground: React.FC = () => {
           polygonOffsetUnits={-1}
         />
       </mesh>
-      {/* South Road Dashed Divider Lines */}
-      {[14, 20, 26, 32, 38, 44].map((z) => (
+      {/* South Road Dashed Divider Lines (All the way to South Wall) */}
+      {[12, 18, 24, 30, 36, 42, 48, 54].map((z) => (
         <mesh key={`s-dash-${z}`} position={[0, 0.032, z]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
@@ -261,9 +261,9 @@ export const Ground: React.FC = () => {
         />
       </mesh>
 
-      {/* Corporate Skyline Plaza Apron at South End */}
-      <mesh position={[0, 0.025, 43]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[44, 16]} />
+      {/* Corporate Skyline Plaza Apron at South End (Touching South Wall at z = 60) */}
+      <mesh position={[0, 0.025, 50]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[56, 20]} />
         <meshStandardMaterial
           color="#334155"
           roughness={0.75}

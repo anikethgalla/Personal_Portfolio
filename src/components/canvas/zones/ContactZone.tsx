@@ -47,7 +47,7 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
       {/* 1. PETROL BUNK (GAS STATION) — ON LEFT SIDE OF ROAD (x=13)*/}
       {/* Facing West (-X) towards South Avenue roadway            */}
       {/* ======================================================== */}
-      <group position={[13, 0, 26]} rotation={[0, -Math.PI / 2, 0]}>
+      <group position={[13, 0, 26]} rotation={[0, Math.PI / 2, 0]}>
         {/* Overhead Canopy Roof */}
         <group position={[0, 4.4, 0]}>
           <mesh castShadow receiveShadow>
@@ -73,12 +73,13 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
             <meshStandardMaterial color="#ea580c" roughness={0.4} />
           </mesh>
 
-          {/* 3D Elevated Retro Gas Station Sign Facing the Road */}
+          {/* 3D Elevated Retro Gas Station Sign (Visible from Road and Concourse) */}
           <group position={[0, 0.95, -4.25]}>
             <mesh castShadow>
               <boxGeometry args={[8.8, 1.2, 0.2]} />
               <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
             </mesh>
+            {/* Front side facing road (-Z in group -> -X in world) */}
             <Text
               position={[0, 0.18, -0.12]}
               rotation={[0, Math.PI, 0]}
@@ -102,6 +103,31 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
               letterSpacing={0.1}
             >
               PULL UP TO PUMPS // GITHUB • EMAIL • RESUME
+            </Text>
+            {/* Reverse side facing pumps & mart */}
+            <Text
+              position={[0, 0.18, 0.12]}
+              rotation={[0, 0, 0]}
+              fontSize={0.48}
+              fontWeight={900}
+              color="#ea580c"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.08}
+            >
+              CONTACT & REFUEL
+            </Text>
+            <Text
+              position={[0, -0.25, 0.12]}
+              rotation={[0, 0, 0]}
+              fontSize={0.18}
+              fontWeight={700}
+              color="#38bdf8"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.1}
+            >
+              24/7 DEVELOPER FUEL SERVICE
             </Text>
           </group>
         </group>
@@ -390,11 +416,11 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
 
       {/* ======================================================== */}
       {/* 2. SOUTHERN CORPORATE & APARTMENT SKYLINE (Background)   */}
-      {/* Imposing multi-story offices & high-rises (z = 44 to 48) */}
+      {/* Imposing multi-story offices flanking South Avenue       */}
       {/* ======================================================== */}
 
-      {/* TOWER 1: Tech Tower / Systems HQ (5-story office tower) at center [0, 0, 46] */}
-      <group position={[0, 0, 46]}>
+      {/* TOWER 1: Tech Tower / Systems HQ (5-story office tower) at West side [-14, 0, 50] */}
+      <group position={[-14, 0, 50]}>
         <RigidBody type="fixed" friction={0.8}>
           <mesh position={[0, 7.5, 0]} castShadow receiveShadow>
             <boxGeometry args={[9.5, 15, 8.5]} />
@@ -444,8 +470,8 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* TOWER 2: Modern Corporate Center (4-story) at [-12, 0, 44] */}
-      <group position={[-12, 0, 44]}>
+      {/* TOWER 2: Modern Corporate Center (4-story) at [-25, 0, 48] */}
+      <group position={[-25, 0, 48]}>
         <RigidBody type="fixed" friction={0.8}>
           <mesh position={[0, 6.0, 0]} castShadow receiveShadow>
             <boxGeometry args={[8.8, 12, 7.5]} />
@@ -466,8 +492,8 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* TOWER 3: Executive Tower & Helipad at [13, 0, 45] */}
-      <group position={[13, 0, 45]}>
+      {/* TOWER 3: Executive Tower & Helipad at East side [14, 0, 50] */}
+      <group position={[14, 0, 50]}>
         <RigidBody type="fixed" friction={0.8}>
           <mesh position={[0, 6.5, 0]} castShadow receiveShadow>
             <boxGeometry args={[9.0, 13, 8.0]} />
@@ -504,8 +530,42 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* BUILDING 4: South City Apartments (West) at [-23, 0, 42] */}
-      <group position={[-23, 0, 42]}>
+      {/* OVERHEAD SKYBRIDGE: Connecting Systems HQ [-14] and Executive Tower [14] */}
+      {/* Clearance y = 7.1m allows cars to drive smoothly under to South Wall */}
+      <group position={[0, 8.5, 50]}>
+        <RigidBody type="fixed" friction={0.8}>
+          {/* Skybridge Corridor Body */}
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[18.5, 2.8, 4.0]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.5} />
+          </mesh>
+          {/* North Panorama Glass Curtain */}
+          <mesh position={[0, 0, -2.03]}>
+            <boxGeometry args={[16.5, 1.8, 0.05]} />
+            <meshStandardMaterial color="#0284c7" roughness={0.15} metalness={0.85} />
+          </mesh>
+          {/* South Panorama Glass Curtain */}
+          <mesh position={[0, 0, 2.03]}>
+            <boxGeometry args={[16.5, 1.8, 0.05]} />
+            <meshStandardMaterial color="#0284c7" roughness={0.15} metalness={0.85} />
+          </mesh>
+          {/* Skybridge Sign */}
+          <Text
+            position={[0, 0, -2.08]}
+            fontSize={0.32}
+            fontWeight={900}
+            color="#facc15"
+            anchorX="center"
+            anchorY="middle"
+            letterSpacing={0.1}
+          >
+            SOUTH METROPOLITAN GATEWAY
+          </Text>
+        </RigidBody>
+      </group>
+
+      {/* BUILDING 4: South City Apartments (West) at [-35, 0, 46] */}
+      <group position={[-35, 0, 46]}>
         <RigidBody type="fixed" friction={0.8}>
           <mesh position={[0, 4.5, 0]} castShadow receiveShadow>
             <boxGeometry args={[8.0, 9.0, 6.5]} />
@@ -527,8 +587,8 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* BUILDING 5: South City Apartments (East) at [25, 0, 42] */}
-      <group position={[25, 0, 42]}>
+      {/* BUILDING 5: South City Apartments (East) at [25, 0, 48] */}
+      <group position={[25, 0, 48]}>
         <RigidBody type="fixed" friction={0.8}>
           <mesh position={[0, 4.5, 0]} castShadow receiveShadow>
             <boxGeometry args={[8.0, 9.0, 6.5]} />
@@ -550,8 +610,8 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         </RigidBody>
       </group>
 
-      {/* Street Trees & Lamps along Corporate Skyline Promenade */}
-      {[-18, -6, 6, 18].map((tx) => (
+      {/* Street Trees & Lamps along Corporate Skyline Sidewalks (x=+-6 and +-20) */}
+      {[-20, -6, 6, 20].map((tx) => (
         <group key={`skyline-tree-${tx}`} position={[tx, 0, 36.5]}>
           <mesh position={[0, 0.8, 0]} castShadow>
             <cylinderGeometry args={[0.2, 0.26, 1.6, 8]} />
@@ -563,7 +623,7 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
           </mesh>
         </group>
       ))}
-      {[-12, 0, 12].map((lx) => (
+      {[-6, 6, -18, 18].map((lx) => (
         <group key={`skyline-lamp-${lx}`} position={[lx, 0, 35.5]}>
           <mesh position={[0, 1.5, 0]} castShadow>
             <cylinderGeometry args={[0.06, 0.08, 3.0, 8]} />
