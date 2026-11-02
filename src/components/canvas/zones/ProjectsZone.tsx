@@ -1,24 +1,23 @@
 import React from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text, Html } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { projectsData, Project } from '../../../data/projectsData';
 import { useGame } from '../../../context/GameContext';
-import { ExternalLink, CheckCircle2, Activity, Terminal, Database } from 'lucide-react';
 
 interface ProjectsZoneProps {
   vehiclePosition: THREE.Vector3 | null;
 }
 
 export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) => {
-  const { setActiveProject, activeProject, markZoneDiscovered, fpvProject } = useGame();
+  const { setActiveProject, activeProject, markZoneDiscovered } = useGame();
 
   useFrame(() => {
     if (!vehiclePosition) return;
 
     let closestProject: Project | null = null;
-    let minDistance = 3.6; // Trigger radius for parking spots
+    let minDistance = 4.5; // Trigger radius for parking spots
 
     projectsData.forEach((project) => {
       const projPos = new THREE.Vector3(...project.spawnPosition);
@@ -41,10 +40,6 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
   const isTrueforgeActive = activeProject?.id === 'trueforge';
   const isRobosurgeActive = activeProject?.id === 'robosurge';
   const isBackendActive = activeProject?.id === 'distributed-backend';
-
-  const isRobosurgeFpv = fpvProject?.id === 'robosurge';
-  const isTrueforgeFpv = fpvProject?.id === 'trueforge';
-  const isBackendFpv = fpvProject?.id === 'distributed-backend';
 
   return (
     <group>
@@ -143,88 +138,58 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             <meshStandardMaterial color="#0c1222" roughness={0.9} />
           </mesh>
 
-          {/* Interactive Cinema Screen Content (Drei HTML) */}
-          <group position={[-0.43, 3.2, 0]} rotation={[0, -Math.PI / 2, 0]}>
-            <Html
-              transform
-              occlude={false}
-              distanceFactor={5.2}
-              position={[0, 0, 0.05]}
-              style={{
-                width: '920px',
-                height: '520px',
-                pointerEvents: isTrueforgeFpv ? 'auto' : 'none',
-                userSelect: 'none'
-              }}
+          {/* 3D Native Cinema Screen Typography (Clean & Physically Bounded) */}
+          <group position={[-0.44, 3.2, 0]} rotation={[0, -Math.PI / 2, 0]}>
+            <Text
+              position={[0, 1.4, 0]}
+              fontSize={0.65}
+              fontWeight={900}
+              color="#ea580c"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.05}
             >
-              <div className="w-full h-full bg-[#0b101e] text-white p-7 rounded-2xl border-2 border-orange-500/40 flex flex-col justify-between font-mono shadow-2xl">
-                {/* Top Terminal Bar */}
-                <div className="flex items-center justify-between border-b border-orange-500/30 pb-3">
-                  <div className="flex items-center gap-3">
-                    <span className="w-3 h-3 rounded-full bg-orange-500 animate-pulse" />
-                    <span className="font-bold text-sm tracking-widest text-orange-400">
-                      TRUEFORGE // AUTONOMOUS AGENT BENCHMARK
-                    </span>
-                  </div>
-                  <span className="text-xs px-2.5 py-1 rounded bg-orange-500/20 text-orange-300 font-bold">
-                    DOCKER SANDBOX HARNESS
-                  </span>
-                </div>
+              TRUEFORGE
+            </Text>
+            <Text
+              position={[0, 0.65, 0]}
+              fontSize={0.3}
+              fontWeight={700}
+              color="#f8fafc"
+              anchorX="center"
+              anchorY="middle"
+            >
+              AUTONOMOUS AGENT BENCHMARK
+            </Text>
+            <Text
+              position={[0, -0.05, 0]}
+              fontSize={0.22}
+              fontWeight={500}
+              color="#94a3b8"
+              anchorX="center"
+              anchorY="middle"
+              maxWidth={8.0}
+            >
+              Docker Sandboxes • Test Harness • Multi-Repo Evaluation
+            </Text>
 
-                {/* Main Benchmark Console Feed */}
-                <div className="grid grid-cols-2 gap-4 my-3 text-xs">
-                  <div className="bg-[#12192c] p-4 rounded-xl border border-white/10 space-y-2">
-                    <div className="flex items-center gap-2 text-orange-400 font-bold mb-1">
-                      <Terminal className="w-4 h-4" />
-                      <span>EVALUATION TRACE</span>
-                    </div>
-                    <div className="space-y-1 text-[11px] text-gray-300 font-mono">
-                      <div className="text-emerald-400">✓ [PASS] Isolated Workspace Provision (0.08s)</div>
-                      <div className="text-emerald-400">✓ [PASS] Multi-Repo Test Harness Mount (0.19s)</div>
-                      <div className="text-emerald-400">✓ [PASS] Agent Code Patch Application (0.42s)</div>
-                      <div className="text-emerald-400">✓ [PASS] Regression Suite Validation (0.91s)</div>
-                      <div className="text-cyan-400">● [INFO] Zero-Leakage Scoring Verified</div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#12192c] p-4 rounded-xl border border-white/10 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 text-cyan-400 font-bold mb-2">
-                        <Activity className="w-4 h-4" />
-                        <span>METRICS & ACCURACY</span>
-                      </div>
-                      <p className="text-[11px] text-gray-300 leading-relaxed">
-                        Benchmarking framework built for TrueFoundry Forge-a-thon. Evaluates autonomous coding agents across real-world software repos with isolated container runtimes.
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {['TypeScript', 'Docker', 'Agentic Protocols', 'esbuild', 'CLI'].map((t) => (
-                        <span key={t} className="px-2 py-0.5 rounded bg-white/10 text-[10px] text-gray-200 font-bold">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Action Bar */}
-                <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                  <span className="text-[11px] text-gray-400">
-                    Engineered by Aniketh Galla • TrueFoundry Forge-a-thon
-                  </span>
-                  <a
-                    href="https://github.com/anikethgalla/TrueForge"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs transition-colors pointer-events-auto"
-                  >
-                    <span>Inspect GitHub Repository</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-            </Html>
+            <mesh position={[0, -1.1, 0]}>
+              <boxGeometry args={[4.2, 0.44, 0.04]} />
+              <meshStandardMaterial
+                color={isTrueforgeActive ? '#ea580c' : '#1e293b'}
+                roughness={0.3}
+              />
+            </mesh>
+            <Text
+              position={[0, -1.1, 0.03]}
+              fontSize={0.2}
+              fontWeight={800}
+              color="#ffffff"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {isTrueforgeActive ? '★ PARKED — TAP FOR FPV SCREEN ★' : 'DRIVE IN TO VIEW BENCHMARKS'}
+            </Text>
           </group>
 
           {/* Rear Structural A-Frame Trusses */}
@@ -364,139 +329,60 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </Text>
           </group>
 
-          {/* ======================================================== */}
-          {/* FPV MONITOR INSIDE THE FOOD TRUCK (Robosurge Console)   */}
-          {/* ======================================================== */}
+          {/* In-Counter Terminal Monitor Mesh (Clean & Physically Bounded) */}
           <group position={[-0.88, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
-            {/* Monitor Chassis Frame */}
             <mesh castShadow>
-              <boxGeometry args={[2.9, 1.55, 0.1]} />
+              <boxGeometry args={[2.5, 1.3, 0.08]} />
               <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
             </mesh>
-
-            {/* Glowing Screen Surface */}
-            <mesh position={[0, 0, 0.051]}>
-              <planeGeometry args={[2.8, 1.45]} />
-              <meshStandardMaterial color="#050811" roughness={0.2} emissive="#0284c7" emissiveIntensity={0.06} />
+            <mesh position={[0, 0, 0.045]}>
+              <planeGeometry args={[2.4, 1.2]} />
+              <meshStandardMaterial color="#080d1a" roughness={0.2} emissive="#0284c7" emissiveIntensity={0.08} />
             </mesh>
-
-            {/* Interactive FPV Screen HTML Interface */}
-            <Html
-              transform
-              occlude={false}
-              distanceFactor={2.7}
-              position={[0, 0, 0.06]}
-              style={{
-                width: '800px',
-                height: '440px',
-                pointerEvents: isRobosurgeFpv ? 'auto' : 'none',
-                userSelect: 'none'
-              }}
+            <Text
+              position={[0, 0.35, 0.05]}
+              fontSize={0.14}
+              fontWeight={800}
+              color="#38bdf8"
+              anchorX="center"
+              anchorY="middle"
             >
-              <div className="w-full h-full bg-[#080d1a] text-white p-5 rounded-2xl border-2 border-sky-500/40 flex flex-col justify-between font-mono shadow-2xl">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-sky-500/30 pb-2.5">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
-                    <span className="font-bold text-xs tracking-wider text-cyan-300">
-                      ROBOSURGE MEDICAL CV RIG v2.4
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
-                      ● 60 FPS LIVE
-                    </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold">
-                      WAL SYNC 0.38ms
-                    </span>
-                  </div>
-                </div>
-
-                {/* Dual Camera Simulated Telemetry Feeds */}
-                <div className="grid grid-cols-2 gap-3 my-2">
-                  {/* Cam 0 Feed */}
-                  <div className="bg-[#0f172a] rounded-xl p-3 border border-sky-500/30 flex flex-col justify-between relative overflow-hidden">
-                    <div className="flex justify-between text-[10px] font-bold text-cyan-400 z-10">
-                      <span>[CAM 0: SURGICAL FIELD]</span>
-                      <span>1920x1080</span>
-                    </div>
-
-                    {/* Reticle Graphics */}
-                    <div className="my-3 flex items-center justify-center relative h-20">
-                      <div className="w-16 h-16 rounded-full border border-cyan-500/40 flex items-center justify-center">
-                        <div className="w-8 h-8 rounded-full border border-dashed border-cyan-400 animate-spin" />
-                      </div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-full h-[1px] bg-cyan-500/20" />
-                        <div className="h-full w-[1px] bg-cyan-500/20 absolute" />
-                      </div>
-                      <span className="absolute bottom-1 right-2 text-[9px] text-cyan-300 font-mono">
-                        POS: X+14.2 Y-02.1 Z+48.0
-                      </span>
-                    </div>
-
-                    <div className="text-[10px] text-gray-300 flex justify-between border-t border-white/10 pt-1.5 z-10">
-                      <span>Centroid Lock</span>
-                      <span className="text-emerald-400 font-bold">LOCKED 99.8%</span>
-                    </div>
-                  </div>
-
-                  {/* Cam 1 Feed */}
-                  <div className="bg-[#0f172a] rounded-xl p-3 border border-sky-500/30 flex flex-col justify-between relative overflow-hidden">
-                    <div className="flex justify-between text-[10px] font-bold text-sky-400 z-10">
-                      <span>[CAM 1: TOOL TRACKING]</span>
-                      <span>CALIBRATED</span>
-                    </div>
-
-                    {/* Optical Depth Vector */}
-                    <div className="my-3 flex flex-col justify-center gap-1.5 h-20 px-2">
-                      <div className="text-[10px] text-gray-300 flex justify-between">
-                        <span>Optical Error Delta:</span>
-                        <span className="text-cyan-300 font-bold">±0.038 mm</span>
-                      </div>
-                      <div className="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
-                        <div className="bg-cyan-400 h-full w-[94%]" />
-                      </div>
-                      <div className="text-[9px] text-gray-400 flex justify-between">
-                        <span>WAL Buffer: 1,420 evts/s</span>
-                        <span className="text-emerald-400">Zero Drops</span>
-                      </div>
-                    </div>
-
-                    <div className="text-[10px] text-gray-300 flex justify-between border-t border-white/10 pt-1.5 z-10">
-                      <span>Stereo Triangulation</span>
-                      <span className="text-emerald-400 font-bold">OPTIMAL</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tech Highlights & Actions */}
-                <div className="space-y-2">
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Python', 'OpenCV', 'FastAPI', 'SQLite WAL', 'Dual-Cam Rig'].map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 rounded bg-sky-500/20 text-sky-200 text-[10px] font-bold">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                    <span className="text-[10px] text-gray-400">
-                      Sub-millimeter Surgical Tracking Platform
-                    </span>
-                    <a
-                      href="https://github.com/anikethgalla/Robosurge"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition-colors pointer-events-auto"
-                    >
-                      <span>Open GitHub Repo</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </Html>
+              ROBOSURGE CV RIG
+            </Text>
+            <Text
+              position={[0, 0.12, 0.05]}
+              fontSize={0.09}
+              fontWeight={700}
+              color="#10b981"
+              anchorX="center"
+              anchorY="middle"
+            >
+              ● DUAL-CAM ONLINE (60 FPS)
+            </Text>
+            <Text
+              position={[0, -0.12, 0.05]}
+              fontSize={0.08}
+              fontWeight={500}
+              color="#cbd5e1"
+              anchorX="center"
+              anchorY="middle"
+            >
+              Sub-Millimeter Surgical Tracking
+            </Text>
+            <mesh position={[0, -0.38, 0.05]}>
+              <boxGeometry args={[1.8, 0.22, 0.01]} />
+              <meshStandardMaterial color={isRobosurgeActive ? '#0284c7' : '#1e293b'} />
+            </mesh>
+            <Text
+              position={[0, -0.38, 0.06]}
+              fontSize={0.075}
+              fontWeight={800}
+              color="#ffffff"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {isRobosurgeActive ? 'TAP FOR FPV SCREEN' : 'PULL UP TO VIEW'}
+            </Text>
           </group>
 
           {/* Roof Exhaust Vent Chimney */}
@@ -622,112 +508,60 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </Text>
           </group>
 
-          {/* ======================================================== */}
-          {/* FPV MONITOR INSIDE THE DINER (API Server Status)        */}
-          {/* ======================================================== */}
+          {/* In-Counter Terminal Display Mesh (Clean & Physically Bounded) */}
           <group position={[-2.45, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh castShadow>
-              <boxGeometry args={[3.2, 1.65, 0.1]} />
+              <boxGeometry args={[2.8, 1.4, 0.08]} />
               <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
             </mesh>
-            <mesh position={[0, 0, 0.051]}>
-              <planeGeometry args={[3.1, 1.55]} />
-              <meshStandardMaterial color="#090d16" roughness={0.2} emissive="#7c3aed" emissiveIntensity={0.05} />
+            <mesh position={[0, 0, 0.045]}>
+              <planeGeometry args={[2.7, 1.3]} />
+              <meshStandardMaterial color="#090d16" roughness={0.2} emissive="#7c3aed" emissiveIntensity={0.08} />
             </mesh>
-
-            <Html
-              transform
-              occlude={false}
-              distanceFactor={3.2}
-              position={[0, 0, 0.06]}
-              style={{
-                width: '840px',
-                height: '460px',
-                pointerEvents: isBackendFpv ? 'auto' : 'none',
-                userSelect: 'none'
-              }}
+            <Text
+              position={[0, 0.38, 0.05]}
+              fontSize={0.14}
+              fontWeight={800}
+              color="#a855f7"
+              anchorX="center"
+              anchorY="middle"
             >
-              <div className="w-full h-full bg-[#0a0d17] text-white p-5 rounded-2xl border-2 border-purple-500/40 flex flex-col justify-between font-mono shadow-2xl">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-purple-500/30 pb-2.5">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse" />
-                    <span className="font-bold text-xs tracking-wider text-purple-300">
-                      DISTRIBUTED BACKEND PLATFORM // 24/7 API
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
-                      ● UPTIME 99.98%
-                    </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">
-                      P99 18ms
-                    </span>
-                  </div>
-                </div>
-
-                {/* Live Endpoints Matrix */}
-                <div className="grid grid-cols-2 gap-3 my-2 text-xs">
-                  <div className="bg-[#111626] p-3.5 rounded-xl border border-white/10 space-y-1.5">
-                    <div className="flex items-center gap-2 text-purple-400 font-bold mb-1">
-                      <Database className="w-4 h-4" />
-                      <span>CONNECTION POOL & TRAFFIC</span>
-                    </div>
-                    <div className="text-[11px] text-gray-300 space-y-1 font-mono">
-                      <div className="flex justify-between">
-                        <span>POST /api/v1/auth/rotate</span>
-                        <span className="text-emerald-400">200 OK (8ms)</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>WS /telemetry/stream</span>
-                        <span className="text-cyan-400">101 SW (2ms)</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>GET /api/v1/metrics</span>
-                        <span className="text-emerald-400">200 OK (14ms)</span>
-                      </div>
-                      <div className="flex justify-between pt-1 border-t border-white/10 text-gray-400">
-                        <span>PostgreSQL Pool:</span>
-                        <span className="text-purple-300">48 / 50 Active</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#111626] p-3.5 rounded-xl border border-white/10 flex flex-col justify-between">
-                    <div>
-                      <span className="text-purple-400 font-bold text-xs">CLEAN ARCHITECTURE</span>
-                      <p className="text-[11px] text-gray-300 mt-1 leading-relaxed">
-                        Enterprise microservice tier built with Domain-Driven Design, Hexagonal Boundaries, Prisma ORM, Redis caching, and automated Docker / Kubernetes manifests.
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {['FastAPI', 'Node.js', 'PostgreSQL', 'Prisma', 'Docker', 'Kubernetes'].map((tag) => (
-                        <span key={tag} className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 text-[10px] font-bold">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                  <span className="text-[10px] text-gray-400">
-                    High-Throughput Production Architecture
-                  </span>
-                  <a
-                    href="https://github.com/anikethgalla/Backend"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors pointer-events-auto"
-                  >
-                    <span>View Backend Repo</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-            </Html>
+              BACKEND CLOUD TIER
+            </Text>
+            <Text
+              position={[0, 0.14, 0.05]}
+              fontSize={0.09}
+              fontWeight={700}
+              color="#10b981"
+              anchorX="center"
+              anchorY="middle"
+            >
+              ● 99.98% UPTIME (P99 18ms)
+            </Text>
+            <Text
+              position={[0, -0.1, 0.05]}
+              fontSize={0.08}
+              fontWeight={500}
+              color="#cbd5e1"
+              anchorX="center"
+              anchorY="middle"
+            >
+              FastAPI • PostgreSQL • Kubernetes
+            </Text>
+            <mesh position={[0, -0.38, 0.05]}>
+              <boxGeometry args={[1.8, 0.22, 0.01]} />
+              <meshStandardMaterial color={isBackendActive ? '#7c3aed' : '#1e293b'} />
+            </mesh>
+            <Text
+              position={[0, -0.38, 0.06]}
+              fontSize={0.075}
+              fontWeight={800}
+              color="#ffffff"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {isBackendActive ? 'TAP FOR FPV SCREEN' : 'PULL UP TO VIEW'}
+            </Text>
           </group>
         </RigidBody>
       </group>
