@@ -549,18 +549,65 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
             <boxGeometry args={[16.5, 1.8, 0.05]} />
             <meshStandardMaterial color="#0284c7" roughness={0.15} metalness={0.85} />
           </mesh>
-          {/* Skybridge Sign */}
-          <Text
-            position={[0, 0, -2.08]}
-            fontSize={0.32}
-            fontWeight={900}
-            color="#facc15"
-            anchorX="center"
-            anchorY="middle"
-            letterSpacing={0.1}
-          >
-            SOUTH METROPOLITAN GATEWAY
-          </Text>
+          {/* North Face Sign (Facing cars driving South towards the Gateway - rotation PI prevents mirror text) */}
+          <group position={[0, 0, -2.08]} rotation={[0, Math.PI, 0]}>
+            <mesh position={[0, 0, -0.02]}>
+              <planeGeometry args={[14.5, 1.2]} />
+              <meshStandardMaterial color="#0f172a" roughness={0.6} />
+            </mesh>
+            <Text
+              position={[0, 0.2, 0.02]}
+              fontSize={0.34}
+              fontWeight={900}
+              color="#facc15"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.08}
+            >
+              SOUTH METROPOLITAN GATEWAY
+            </Text>
+            <Text
+              position={[0, -0.22, 0.02]}
+              fontSize={0.18}
+              fontWeight={700}
+              color="#38bdf8"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.1}
+            >
+              ▲ INTERSTATE 95 SOUTHBOUND • SCENIC VALLEY ROUTE ▲
+            </Text>
+          </group>
+
+          {/* South Face Sign (Facing cars driving North into the city) */}
+          <group position={[0, 0, 2.08]} rotation={[0, 0, 0]}>
+            <mesh position={[0, 0, -0.02]}>
+              <planeGeometry args={[14.5, 1.2]} />
+              <meshStandardMaterial color="#0f172a" roughness={0.6} />
+            </mesh>
+            <Text
+              position={[0, 0.2, 0.02]}
+              fontSize={0.34}
+              fontWeight={900}
+              color="#facc15"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.08}
+            >
+              WELCOME TO ANIKETH METROPOLIS
+            </Text>
+            <Text
+              position={[0, -0.22, 0.02]}
+              fontSize={0.18}
+              fontWeight={700}
+              color="#38bdf8"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.1}
+            >
+              ▲ DOWNTOWN TECH CORRIDOR • INNOVATION HUB ▲
+            </Text>
+          </group>
         </RigidBody>
       </group>
 
