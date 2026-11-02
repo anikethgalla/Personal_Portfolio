@@ -88,13 +88,13 @@ export const GreenParkAndSuburb: React.FC = () => {
   return (
     <group>
       {/* ======================================================== */}
-      {/* 1. EXPANSIVE GREEN GRASS LAWNS                           */}
-      {/* Cleanly bounded & positioned at y = 0.010 with           */}
-      {/* polygonOffset to prevent any z-fighting with roads       */}
+      {/* 1. COMPREHENSIVE CITY-WIDE GREEN GRASS LAWNS             */}
+      {/* Elevated at y = 0.010 with polygonOffset: behind roads   */}
       {/* ======================================================== */}
-      {/* Central Park & Skills Plaza Lawn (North of West Boulevard) */}
-      <mesh position={[-23, 0.010, -14]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[19, 18]} />
+
+      {/* QUADRANT 1 (North-West): Central Park & Skills Plaza Lawn */}
+      <mesh position={[-23, 0.010, -17]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[19, 24]} />
         <meshStandardMaterial
           color="#65a30d"
           roughness={0.9}
@@ -104,9 +104,9 @@ export const GreenParkAndSuburb: React.FC = () => {
         />
       </mesh>
 
-      {/* Residential Suburb South Lawn (South of West Boulevard) */}
-      <mesh position={[-23, 0.010, 14]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[19, 18]} />
+      {/* QUADRANT 2 (South-West): Residential Suburb Lawn */}
+      <mesh position={[-23, 0.010, 17]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[19, 24]} />
         <meshStandardMaterial
           color="#65a30d"
           roughness={0.9}
@@ -116,11 +116,69 @@ export const GreenParkAndSuburb: React.FC = () => {
         />
       </mesh>
 
-      {/* Waterfront Promenade Lawn Strip (Far West near Coastal Pier) */}
+      {/* QUADRANT 3 (North-East): Bowling Arena Grandstand & Park Lawn */}
+      <mesh position={[10.5, 0.010, -17]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[12.5, 24]} />
+        <meshStandardMaterial
+          color="#65a30d"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
+      </mesh>
+
+      {/* QUADRANT 4 (South-East): Diner Plaza & Civic Garden Lawn */}
+      <mesh position={[10.5, 0.010, 17]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[12.5, 24]} />
+        <meshStandardMaterial
+          color="#65a30d"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
+      </mesh>
+
+      {/* Waterfront Promenade Lawn (Far West along Seaport Quay) */}
       <mesh position={[-33, 0.010, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[5, 48]} />
         <meshStandardMaterial
           color="#5ea508"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
+      </mesh>
+
+      {/* Far North Horizon Lawn (Behind Bowling Arena & Billboard) */}
+      <mesh position={[0, 0.010, -36]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[68, 12]} />
+        <meshStandardMaterial
+          color="#5ea508"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
+      </mesh>
+
+      {/* Far South Lawns (Flanking Contact Garage Left & Right) */}
+      <mesh position={[-11.5, 0.010, 31]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[9, 16]} />
+        <meshStandardMaterial
+          color="#65a30d"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
+      </mesh>
+      <mesh position={[11.5, 0.010, 31]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[9, 16]} />
+        <meshStandardMaterial
+          color="#65a30d"
           roughness={0.9}
           polygonOffset
           polygonOffsetFactor={1}
@@ -193,10 +251,6 @@ export const GreenParkAndSuburb: React.FC = () => {
             <boxGeometry args={[4.6, 0.22, 2.6]} />
             <meshStandardMaterial color="#1e293b" roughness={0.4} />
           </mesh>
-          <mesh position={[2.42, 1.0, 3.2]}>
-            <boxGeometry args={[0.04, 1.8, 1.8]} />
-            <meshStandardMaterial color="#f1f5f9" roughness={0.5} />
-          </mesh>
           <mesh position={[2.52, 2.6, 0]}>
             <boxGeometry args={[0.04, 1.4, 2.4]} />
             <meshStandardMaterial color="#0f172a" roughness={0.1} metalness={0.9} />
@@ -245,38 +299,67 @@ export const GreenParkAndSuburb: React.FC = () => {
       </group>
 
       {/* ======================================================== */}
-      {/* 3. FLUFFY LOW-POLY TREES                                 */}
+      {/* 3. FLUFFY LOW-POLY TREES ACROSS ALL DISTRICTS            */}
       {/* ======================================================== */}
-      {/* Avenue & Boulevard Lining Trees */}
+
+      {/* West Park & Skills Trees */}
       <LowPolyTree position={[-13, 0, -12]} scale={1.2} color="#65a30d" />
       <LowPolyTree position={[-13, 0, -3]} scale={1.1} color="#4d7c0f" />
       <LowPolyTree position={[-13, 0, 6]} scale={1.25} color="#65a30d" />
       <LowPolyTree position={[-13, 0, 15]} scale={1.15} color="#3f6212" />
-
-      {/* Suburb Garden Trees */}
       <LowPolyTree position={[-20, 0, -15]} scale={1.2} color="#4d7c0f" />
       <LowPolyTree position={[-28, 0, -23]} scale={1.35} color="#65a30d" />
       <LowPolyTree position={[-34, 0, -10]} scale={1.1} color="#3f6212" />
       <LowPolyTree position={[-20, 0, 6]} scale={1.05} color="#65a30d" />
       <LowPolyTree position={[-20, 0, 18]} scale={1.3} color="#4d7c0f" />
       <LowPolyTree position={[-29, 0, 20]} scale={1.3} color="#65a30d" />
-
-      {/* Waterfront Promenade Trees */}
       <LowPolyTree position={[-30, 0, 5]} scale={1.05} color="#65a30d" />
       <LowPolyTree position={[-30, 0, -6]} scale={1.05} color="#4d7c0f" />
       <LowPolyTree position={[-34, 0, 8]} scale={1.1} color="#3f6212" />
       <LowPolyTree position={[-34, 0, -14]} scale={1.15} color="#65a30d" />
 
+      {/* North-East Park & Bowling Grandstand Trees */}
+      <LowPolyTree position={[8, 0, -10]} scale={1.2} color="#65a30d" />
+      <LowPolyTree position={[14, 0, -10]} scale={1.15} color="#4d7c0f" />
+      <LowPolyTree position={[8, 0, -22]} scale={1.3} color="#3f6212" />
+      <LowPolyTree position={[15, 0, -23]} scale={1.25} color="#65a30d" />
+
+      {/* South-East Garden & Diner Parklet Trees */}
+      <LowPolyTree position={[8, 0, 10]} scale={1.25} color="#65a30d" />
+      <LowPolyTree position={[14, 0, 10]} scale={1.1} color="#4d7c0f" />
+      <LowPolyTree position={[8, 0, 22]} scale={1.2} color="#4d7c0f" />
+      <LowPolyTree position={[15, 0, 22]} scale={1.3} color="#3f6212" />
+
+      {/* Horizon Background Pine Trees (Far North) */}
+      <LowPolyTree position={[-24, 0, -36]} scale={1.4} color="#3f6212" />
+      <LowPolyTree position={[-14, 0, -36]} scale={1.45} color="#4d7c0f" />
+      <LowPolyTree position={[14, 0, -36]} scale={1.45} color="#4d7c0f" />
+      <LowPolyTree position={[24, 0, -36]} scale={1.4} color="#3f6212" />
+
+      {/* Garage Flanking Trees (Far South) */}
+      <LowPolyTree position={[-10, 0, 28]} scale={1.2} color="#4d7c0f" />
+      <LowPolyTree position={[10, 0, 28]} scale={1.2} color="#4d7c0f" />
+
       {/* ======================================================== */}
       {/* 4. PARK FURNITURE & STREET LIGHTING                      */}
       {/* ======================================================== */}
+      {/* West Park Benches */}
       <ParkBench position={[-15, 0, -4]} rotation={[0, -Math.PI / 2, 0]} />
       <ParkBench position={[-20, 0, -11]} rotation={[0, 0, 0]} />
       <ParkBench position={[-20, 0, 3]} rotation={[0, Math.PI, 0]} />
       <ParkBench position={[-30, 0, 1.5]} rotation={[0, -Math.PI / 2, 0]} />
 
+      {/* East Lawns Benches */}
+      <ParkBench position={[11, 0, -14]} rotation={[0, Math.PI / 2, 0]} />
+      <ParkBench position={[11, 0, 14]} rotation={[0, Math.PI / 2, 0]} />
+
+      {/* Street Lamps */}
       <StreetLamp position={[-14.5, 0, -9]} />
       <StreetLamp position={[-14.5, 0, 3]} />
+      <StreetLamp position={[7.5, 0, -7]} />
+      <StreetLamp position={[7.5, 0, 7]} />
+      <StreetLamp position={[16, 0, -7]} />
+      <StreetLamp position={[16, 0, 7]} />
       <StreetLamp position={[-23, 0, -3]} />
       <StreetLamp position={[-23, 0, 15]} />
       <StreetLamp position={[-28, 0, 6]} />

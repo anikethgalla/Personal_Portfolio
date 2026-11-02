@@ -31,17 +31,24 @@ export const HeroZone: React.FC = () => {
       </group>
 
       {/* Starting Grid Decal on Floor (Spacious starting zone) */}
-      <group position={[0, 0.02, 14]}>
+      <group position={[0, 0.032, 14]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[4, 6]} />
-          <meshBasicMaterial color="#cbd5e1" transparent opacity={0.4} />
+          <meshBasicMaterial
+            color="#cbd5e1"
+            transparent
+            opacity={0.5}
+            polygonOffset
+            polygonOffsetFactor={-2}
+            polygonOffsetUnits={-2}
+          />
         </mesh>
         <Text
           position={[0, 0, -4]}
           rotation={[-Math.PI / 2, 0, 0]}
           fontSize={0.55}
           fontWeight={800}
-          color="#94a3b8"
+          color="#facc15"
           anchorX="center"
           anchorY="middle"
         >

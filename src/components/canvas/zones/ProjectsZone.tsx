@@ -71,7 +71,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       {/* ======================================================== */}
       <group position={[28, 0, -16]}>
         {/* Drive-in Parking Bay at [20, 0, -16] (relative: [-8, 0, 0]) */}
-        <group position={[-8, 0.02, 0]}>
+        <group position={[-8, 0.035, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial
@@ -210,7 +210,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       {/* ======================================================== */}
       <group position={[30, 0, 0]}>
         {/* Customer Parking Bay at [23, 0, 0] (relative: [-7, 0, 0]) */}
-        <group position={[-7, 0.02, 0]}>
+        <group position={[-7, 0.035, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial
@@ -414,7 +414,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       {/* ======================================================== */}
       <group position={[28, 0, 16]}>
         {/* Drive-Up Parking Stall at [20, 0, 16] (relative: [-8, 0, 0]) */}
-        <group position={[-8, 0.02, 0]}>
+        <group position={[-8, 0.035, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial

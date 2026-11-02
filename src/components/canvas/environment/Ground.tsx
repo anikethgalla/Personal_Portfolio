@@ -4,43 +4,52 @@ import { RigidBody } from '@react-three/rapier';
 export const Ground: React.FC = () => {
   return (
     <group>
-      {/* 1. Large Physics Ground Plane (200m x 200m) at y = 0 */}
+      {/* 1. Large Physics Ground Base (200m x 200m) at y = 0 */}
       <RigidBody type="fixed" friction={1.2} restitution={0.1}>
         <mesh position={[0, -0.25, 0]} receiveShadow>
           <boxGeometry args={[200, 0.5, 200]} />
-          <meshStandardMaterial color="#dcd4c7" roughness={0.9} metalness={0.05} />
+          <meshStandardMaterial color="#c5b9a8" roughness={0.9} metalness={0.05} />
         </mesh>
       </RigidBody>
 
-      {/* 2. City Road Network Decals (Elevated to y = 0.025 to completely prevent z-fighting with terrain) */}
-      
+      {/* ======================================================== */}
+      {/* 2. COMPREHENSIVE ASPHALT ROADWAY NETWORK                 */}
+      {/* Elevated at y = 0.025 with polygonOffset for zero flicker*/}
+      {/* ======================================================== */}
+
       {/* Central Traffic Roundabout */}
       <group position={[0, 0, 0]}>
         {/* Outer Roundabout Ring Road (Radius 6.5m to 12.5m) */}
         <mesh position={[0, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <ringGeometry args={[6.5, 12.5, 64]} />
           <meshStandardMaterial
-            color="#475569"
-            roughness={0.8}
+            color="#334155"
+            roughness={0.75}
             polygonOffset
             polygonOffsetFactor={-1}
             polygonOffsetUnits={-1}
           />
         </mesh>
 
-        {/* Inner Island (Radius 6.4m) */}
+        {/* Inner Island Green Lawn (Radius 6.4m) */}
         <mesh position={[0, 0.028, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <circleGeometry args={[6.4, 48]} />
           <meshStandardMaterial
             color="#65a30d"
-            roughness={0.9}
+            roughness={0.85}
             polygonOffset
             polygonOffsetFactor={-1}
             polygonOffsetUnits={-1}
           />
         </mesh>
 
-        {/* Dashed Center Circle (16 genuine arc dashes elevated to y = 0.032 with polygonOffset) */}
+        {/* Roundabout Island Decorative Curb Trim */}
+        <mesh position={[0, 0.035, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[6.35, 6.5, 48]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.5} />
+        </mesh>
+
+        {/* Dashed Center Circle (16 genuine arc dashes) */}
         {Array.from({ length: 16 }).map((_, i) => (
           <mesh
             key={`rb-dash-${i}`}
@@ -67,21 +76,21 @@ export const Ground: React.FC = () => {
         ))}
       </group>
 
-      {/* North Avenue: Speed Runway to Hero Ramp (width 6m) */}
+      {/* North Speedway Boulevard: Towards Ramp & Bowling Arena (width 8m) */}
       <mesh position={[0, 0.025, -22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[6, 32]} />
+        <planeGeometry args={[8, 34]} />
         <meshStandardMaterial
-          color="#475569"
-          roughness={0.8}
+          color="#334155"
+          roughness={0.75}
           polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
         />
       </mesh>
       {/* North Road Dashed Divider Lines */}
-      {[-12, -18, -24, -30].map((z) => (
+      {[-12, -18, -24, -30, -36].map((z) => (
         <mesh key={`n-dash-${z}`} position={[0, 0.032, z]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.3, 3.2]} />
+          <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
             color="#facc15"
             polygonOffset
@@ -91,12 +100,12 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* South Avenue: Route to Contact Garage */}
+      {/* South Avenue: Towards Contact Garage (width 8m) */}
       <mesh position={[0, 0.025, 22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[6, 30]} />
+        <planeGeometry args={[8, 34]} />
         <meshStandardMaterial
-          color="#475569"
-          roughness={0.8}
+          color="#334155"
+          roughness={0.75}
           polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
@@ -105,7 +114,7 @@ export const Ground: React.FC = () => {
       {/* South Road Dashed Divider Lines */}
       {[14, 20, 26, 32].map((z) => (
         <mesh key={`s-dash-${z}`} position={[0, 0.032, z]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.3, 3.2]} />
+          <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
             color="#facc15"
             polygonOffset
@@ -115,21 +124,21 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* East Boulevard: Highway to Projects Strip */}
-      <mesh position={[24, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[34, 6]} />
+      {/* East Projects Highway: Roundabout to Projects Concourse (width 8m) */}
+      <mesh position={[20, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[26, 8]} />
         <meshStandardMaterial
-          color="#475569"
-          roughness={0.8}
+          color="#334155"
+          roughness={0.75}
           polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
         />
       </mesh>
       {/* East Highway Dashed Divider */}
-      {[14, 20, 26, 32, 38].map((x) => (
+      {[14, 19, 24, 29].map((x) => (
         <mesh key={`e-dash-${x}`} position={[x, 0.032, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
-          <planeGeometry args={[0.3, 3.2]} />
+          <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
             color="#facc15"
             polygonOffset
@@ -139,11 +148,14 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* Projects Strip Frontage Road (North-South along the Diner, Food Truck, Cinema) */}
-      <mesh position={[25, 0.026, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[6, 44]} />
+      {/* ======================================================== */}
+      {/* 3. PROJECTS CONCOURSE & DRIVE-IN ASPHALT APRON           */}
+      {/* Expansive paved plaza surrounding Cinema, Food Truck & Diner */}
+      {/* ======================================================== */}
+      <mesh position={[28, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[22, 54]} />
         <meshStandardMaterial
-          color="#506175"
+          color="#3b4859"
           roughness={0.8}
           polygonOffset
           polygonOffsetFactor={-1}
@@ -151,12 +163,61 @@ export const Ground: React.FC = () => {
         />
       </mesh>
 
-      {/* West Boulevard: Parkway to Suburb & Seaport */}
+      {/* Projects Strip Parking Stall Linings */}
+      {/* Cinema Bay Parking Stall Lines at z = -16 */}
+      <group position={[20, 0.032, -16]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[4.2, 0.18]} />
+          <meshBasicMaterial color="#facc15" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+        <mesh position={[-2.1, 0, 2.8]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.18, 5.6]} />
+          <meshBasicMaterial color="#facc15" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+        <mesh position={[2.1, 0, 2.8]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.18, 5.6]} />
+          <meshBasicMaterial color="#facc15" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+      </group>
+
+      {/* Food Truck Order Bay Stall Lines at z = 0 */}
+      <group position={[23, 0.032, 0]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[4.2, 0.18]} />
+          <meshBasicMaterial color="#38bdf8" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+        <mesh position={[-2.1, 0, 2.8]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.18, 5.6]} />
+          <meshBasicMaterial color="#38bdf8" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+        <mesh position={[2.1, 0, 2.8]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.18, 5.6]} />
+          <meshBasicMaterial color="#38bdf8" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+      </group>
+
+      {/* Diner Drive-Up Stall Lines at z = 16 */}
+      <group position={[20, 0.032, 16]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[4.2, 0.18]} />
+          <meshBasicMaterial color="#c084fc" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+        <mesh position={[-2.1, 0, 2.8]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.18, 5.6]} />
+          <meshBasicMaterial color="#c084fc" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+        <mesh position={[2.1, 0, 2.8]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.18, 5.6]} />
+          <meshBasicMaterial color="#c084fc" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        </mesh>
+      </group>
+
+      {/* West Boulevard: Parkway to Suburb & Seaport (width 8m) */}
       <mesh position={[-24, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[34, 6]} />
+        <planeGeometry args={[34, 8]} />
         <meshStandardMaterial
-          color="#475569"
-          roughness={0.8}
+          color="#334155"
+          roughness={0.75}
           polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
@@ -165,7 +226,7 @@ export const Ground: React.FC = () => {
       {/* West Highway Dashed Divider */}
       {[-14, -20, -26, -32].map((x) => (
         <mesh key={`w-dash-${x}`} position={[x, 0.032, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
-          <planeGeometry args={[0.3, 3.2]} />
+          <planeGeometry args={[0.35, 3.4]} />
           <meshBasicMaterial
             color="#facc15"
             polygonOffset
@@ -177,10 +238,34 @@ export const Ground: React.FC = () => {
 
       {/* Suburb Coastal Promenade Road (North-South through the suburb) */}
       <mesh position={[-24, 0.026, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[5, 42]} />
+        <planeGeometry args={[6, 46]} />
         <meshStandardMaterial
-          color="#506175"
+          color="#3b4859"
+          roughness={0.75}
+          polygonOffset
+          polygonOffsetFactor={-1}
+          polygonOffsetUnits={-1}
+        />
+      </mesh>
+
+      {/* Contact Garage Entrance Paved Apron */}
+      <mesh position={[0, 0.025, 33]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[14, 12]} />
+        <meshStandardMaterial
+          color="#3b4859"
           roughness={0.8}
+          polygonOffset
+          polygonOffsetFactor={-1}
+          polygonOffsetUnits={-1}
+        />
+      </mesh>
+
+      {/* Hero Bowling Arena Landing Pad (Under pins and behind ramp) */}
+      <mesh position={[0, 0.025, -20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[14, 20]} />
+        <meshStandardMaterial
+          color="#334155"
+          roughness={0.75}
           polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
