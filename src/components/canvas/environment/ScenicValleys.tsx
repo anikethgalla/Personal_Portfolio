@@ -126,36 +126,37 @@ export const ScenicValleys: React.FC = () => {
 
       {/* ======================================================== */}
       {/* 2. WEST RIDGE OF THE VALLEY PASS (Low-Poly Mountain Peaks) */}
+      {/* Strictly on land (x > -30) to preserve open coastal ocean*/}
       {/* ======================================================== */}
       <group position={[0, 0, 0]}>
         {/* Peak W1: Front Left Mountain Peak */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-20, 7.0, -68]}>
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-17, 7.0, -68]}>
           <mesh castShadow receiveShadow>
-            <coneGeometry args={[16, 14, 12]} />
+            <coneGeometry args={[12, 14, 12]} />
             <meshStandardMaterial color="#4d7c0f" roughness={0.85} flatShading />
           </mesh>
         </RigidBody>
 
         {/* Peak W2: Tall Mid Mountain Summit */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-30, 9.5, -84]}>
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-18, 8.5, -84]}>
           <mesh castShadow receiveShadow>
-            <coneGeometry args={[20, 19, 14]} />
+            <coneGeometry args={[12, 17, 12]} />
             <meshStandardMaterial color="#3f6212" roughness={0.85} flatShading />
           </mesh>
         </RigidBody>
 
         {/* Peak W3: Valley Wall Shoulder Peak */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-18, 5.5, -98]}>
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-17, 5.5, -98]}>
           <mesh castShadow receiveShadow>
-            <coneGeometry args={[14, 11, 10]} />
+            <coneGeometry args={[12, 11, 10]} />
             <meshStandardMaterial color="#5ea508" roughness={0.85} flatShading />
           </mesh>
         </RigidBody>
 
-        {/* Peak W4: Deep West Majestic Ridge */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-44, 12.0, -74]}>
+        {/* Peak W4: Deep North-West Summit (Safely inland at z = -140 north of ocean) */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-30, 12.0, -140]}>
           <mesh castShadow receiveShadow>
-            <coneGeometry args={[24, 24, 14]} />
+            <coneGeometry args={[22, 24, 14]} />
             <meshStandardMaterial color="#365314" roughness={0.85} flatShading />
           </mesh>
         </RigidBody>
@@ -297,9 +298,9 @@ export const ScenicValleys: React.FC = () => {
       {/* Alpine Pine Trees Dotting Northern Valley Slopes */}
       <AlpinePine position={[-13, 1.8, -65]} scale={1.2} />
       <AlpinePine position={[-16, 3.4, -77]} scale={1.4} />
-      <AlpinePine position={[-24, 5.5, -86]} scale={1.5} />
+      <AlpinePine position={[-20, 4.5, -86]} scale={1.4} />
       <AlpinePine position={[-14, 2.0, -94]} scale={1.1} />
-      <AlpinePine position={[-28, 7.0, -72]} scale={1.6} />
+      <AlpinePine position={[-18, 4.0, -72]} scale={1.4} />
       <AlpinePine position={[-13, 2.0, -120]} scale={1.3} />
       <AlpinePine position={[-16, 3.5, -145]} scale={1.4} />
       <AlpinePine position={[-14, 2.2, -170]} scale={1.2} />
@@ -490,10 +491,10 @@ export const ScenicValleys: React.FC = () => {
       {/* Direct line of sight through x in [-15, 15]               */}
       {/* ======================================================== */}
       <group position={[0, 0, 0]}>
-        {/* Peak S1: West Valley Pass Shoulder */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-15, 8.0, 80]}>
+        {/* Peak S1: West Valley Pass Shoulder (Kept on land x > -28) */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-14, 8.0, 80]}>
           <mesh castShadow receiveShadow>
-            <coneGeometry args={[16, 16, 12]} />
+            <coneGeometry args={[13, 16, 12]} />
             <meshStandardMaterial color="#4d7c0f" roughness={0.85} flatShading />
           </mesh>
         </RigidBody>
@@ -506,10 +507,10 @@ export const ScenicValleys: React.FC = () => {
           </mesh>
         </RigidBody>
 
-        {/* Peak S3: West Mid Valley Summit */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-18, 11.5, 115]}>
+        {/* Peak S3: West Mid Valley Summit (Kept on land x > -29) */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-15, 11.5, 115]}>
           <mesh castShadow receiveShadow>
-            <coneGeometry args={[20, 23, 14]} />
+            <coneGeometry args={[14, 23, 14]} />
             <meshStandardMaterial color="#3f6212" roughness={0.85} flatShading />
           </mesh>
         </RigidBody>
@@ -768,89 +769,6 @@ export const ScenicValleys: React.FC = () => {
       <AlpinePine position={[32, 6.2, 80]} scale={1.5} />
       <AlpinePine position={[38, 5.8, 88]} scale={1.4} />
       <AlpinePine position={[44, 7.5, 98]} scale={1.6} />
-
-      {/* ======================================================== */}
-      {/* 8. SOUTH-WEST HORIZON MOUNTAIN RANGE                     */}
-      {/* Behind Systems HQ, Modern Corporate & Coastal Bluff      */}
-      {/* Completes a continuous panoramic mountain skyline        */}
-      {/* ======================================================== */}
-      <group position={[0, 0, 0]}>
-        {/* Peak SW1: Behind Systems HQ & Corporate Tower */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-30, 9.5, 65]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[18, 19, 14]} />
-            <meshStandardMaterial color="#4d7c0f" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-
-        {/* Peak SW2: High Ridge Behind Corporate Center */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-42, 12.0, 60]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[22, 24, 14]} />
-            <meshStandardMaterial color="#3f6212" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-
-        {/* Peak SW3: South-West Coastal Summit */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-54, 13.5, 52]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[24, 27, 14]} />
-            <meshStandardMaterial color="#365314" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-
-        {/* Peak SW4: Mid South-West Ridge */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-36, 11.5, 85]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[20, 23, 14]} />
-            <meshStandardMaterial color="#3f6212" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-
-        {/* Peak SW5: Distant South-West Alpine Peak (Towers 30m) */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-50, 15.0, 90]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[26, 30, 16]} />
-            <meshStandardMaterial color="#2d4a1d" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-
-        {/* Peak SW6: Far South-West Ocean Bluff Summit */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-65, 16.0, 75]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[28, 32, 16]} />
-            <meshStandardMaterial color="#2d4a1d" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-
-        {/* South-West Foothills */}
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-26, 4.0, 58]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[10, 8.0, 8]} />
-            <meshStandardMaterial color="#65a30d" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-36, 4.5, 52]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[11, 9.0, 8]} />
-            <meshStandardMaterial color="#5ea508" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[-48, 5.0, 45]}>
-          <mesh castShadow receiveShadow>
-            <coneGeometry args={[12, 10.0, 8]} />
-            <meshStandardMaterial color="#65a30d" roughness={0.85} flatShading />
-          </mesh>
-        </RigidBody>
-      </group>
-
-      {/* Alpine Pines on South-West Mountain Slopes */}
-      <AlpinePine position={[-28, 3.5, 56]} scale={1.3} />
-      <AlpinePine position={[-34, 4.8, 58]} scale={1.4} />
-      <AlpinePine position={[-42, 5.5, 54]} scale={1.5} />
-      <AlpinePine position={[-48, 6.5, 60]} scale={1.6} />
-      <AlpinePine position={[-38, 5.2, 78]} scale={1.45} />
-      <AlpinePine position={[-46, 6.8, 86]} scale={1.55} />
     </group>
   );
 };
