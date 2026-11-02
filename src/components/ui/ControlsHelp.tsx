@@ -81,6 +81,22 @@ export const ControlsHelp: React.FC = () => {
           <span className="ml-1 text-[11px]">Reset</span>
         </div>
       </div>
+
+      {/* Mouse Camera Inspection Hints */}
+      <div className="pointer-events-auto bg-[#ded7cb]/90 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-[#c5b9a8] clay-shadow flex items-center gap-2.5 text-xs text-[#524941] font-semibold">
+        <span className="text-[12px]">🖱️</span>
+        <span className="text-[11px]">
+          <strong className="text-[#2b2622]">Left Drag:</strong> Orbit 360°
+        </span>
+        <span className="text-[#a89d8f]">•</span>
+        <span className="text-[11px]">
+          <strong className="text-[#2b2622]">Right Drag:</strong> Pan
+        </span>
+        <span className="text-[#a89d8f]">•</span>
+        <span className="text-[11px]">
+          <strong className="text-[#2b2622]">Scroll:</strong> Zoom
+        </span>
+      </div>
     </div>
   );
 };

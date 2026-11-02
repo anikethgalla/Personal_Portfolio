@@ -12,6 +12,8 @@ import { SkillsZone } from './zones/SkillsZone';
 import { ContactZone } from './zones/ContactZone';
 import { CoastalPort } from './city/CoastalPort';
 import { GreenParkAndSuburb } from './city/GreenParkAndSuburb';
+import { EastTownDistrict } from './city/EastTownDistrict';
+import { SkyDome } from './environment/SkyDome';
 
 export const Scene: React.FC = () => {
   const [vehiclePos, setVehiclePos] = useState<THREE.Vector3 | null>(new THREE.Vector3(0, 1.0, 14));
@@ -20,7 +22,7 @@ export const Scene: React.FC = () => {
     <div className="absolute inset-0 w-full h-full bg-[#ded6cb]">
       <Canvas
         shadows
-        camera={{ position: [0, 18, 24], fov: 48, near: 0.5, far: 250 }}
+        camera={{ position: [0, 18, 24], fov: 48, near: 0.5, far: 350 }}
         dpr={[1, 2]}
         gl={{
           antialias: true,
@@ -28,6 +30,9 @@ export const Scene: React.FC = () => {
           toneMappingExposure: 1.05
         }}
       >
+        {/* Bruno Simon Atmospheric Sky Dome & Drifting Puffy 3D Clay Clouds */}
+        <SkyDome />
+
         {/* Warm Studio Lighting Setup - Bruno Simon Palette */}
         <ambientLight intensity={0.75} color="#fff7ed" />
 
@@ -60,6 +65,7 @@ export const Scene: React.FC = () => {
           <Boundaries />
           <CoastalPort />
           <GreenParkAndSuburb />
+          <EastTownDistrict />
           <HeroZone />
           <ProjectsZone vehiclePosition={vehiclePos} />
           <SkillsZone vehiclePosition={vehiclePos} />
