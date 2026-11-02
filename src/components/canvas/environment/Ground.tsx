@@ -237,9 +237,45 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* Suburb Coastal Promenade Road (North-South through the suburb) */}
-      <mesh position={[-24, 0.026, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[6, 46]} />
+      {/* Suburb Coastal Promenade Road (North-South continuous coastal avenue from z = -44 to z = 50) */}
+      <mesh position={[-24, 0.026, 3]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[6, 94]} />
+        <meshStandardMaterial
+          color="#3b4859"
+          roughness={0.75}
+          polygonOffset
+          polygonOffsetFactor={-1}
+          polygonOffsetUnits={-1}
+        />
+      </mesh>
+      {/* Suburb Coastal Promenade Dashed Lines */}
+      {[-36, -30, -24, -18, -12, 12, 18, 24, 30, 36, 42].map((z) => (
+        <mesh key={`sub-dash-${z}`} position={[-24, 0.032, z]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.3, 3.0]} />
+          <meshBasicMaterial
+            color="#facc15"
+            polygonOffset
+            polygonOffsetFactor={-2}
+            polygonOffsetUnits={-2}
+          />
+        </mesh>
+      ))}
+
+      {/* South-West Coastal Connector: Links Suburb Promenade directly to South City Apartments and Coastal Embankment */}
+      <mesh position={[-30, 0.026, 40]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[16, 7]} />
+        <meshStandardMaterial
+          color="#3b4859"
+          roughness={0.75}
+          polygonOffset
+          polygonOffsetFactor={-1}
+          polygonOffsetUnits={-1}
+        />
+      </mesh>
+
+      {/* North-West Lighthouse Scenic Spur (Connecting Promenade to Lighthouse at x = -36, z = -25) */}
+      <mesh position={[-30, 0.026, -25]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[14, 6]} />
         <meshStandardMaterial
           color="#3b4859"
           roughness={0.75}
