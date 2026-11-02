@@ -32,9 +32,9 @@ export const Boundaries: React.FC = () => {
         </mesh>
       </RigidBody>
 
-      {/* West Wall */}
+      {/* West Wall - Adjusted outward to accommodate the coastal seaport basin */}
       <RigidBody type="fixed" friction={0.6}>
-        <mesh position={[-arenaHalfSize, wallHeight / 2, 0]} castShadow receiveShadow>
+        <mesh position={[-40, wallHeight / 2, 0]} castShadow receiveShadow>
           <boxGeometry args={[wallThickness, wallHeight, arenaHalfSize * 2]} />
           <meshStandardMaterial color="#cbbfae" roughness={0.7} />
         </mesh>

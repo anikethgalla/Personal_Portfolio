@@ -10,6 +10,8 @@ import { HeroZone } from './zones/HeroZone';
 import { ProjectsZone } from './zones/ProjectsZone';
 import { SkillsZone } from './zones/SkillsZone';
 import { ContactZone } from './zones/ContactZone';
+import { CoastalPort } from './city/CoastalPort';
+import { GreenParkAndSuburb } from './city/GreenParkAndSuburb';
 
 export const Scene: React.FC = () => {
   const [vehiclePos, setVehiclePos] = useState<THREE.Vector3 | null>(new THREE.Vector3(0, 1.0, 6));
@@ -56,6 +58,8 @@ export const Scene: React.FC = () => {
         <Physics gravity={[0, -20, 0]} timeStep="vary">
           <Ground />
           <Boundaries />
+          <CoastalPort />
+          <GreenParkAndSuburb />
           <HeroZone />
           <ProjectsZone vehiclePosition={vehiclePos} />
           <SkillsZone vehiclePosition={vehiclePos} />
