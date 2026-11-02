@@ -23,8 +23,8 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
 
   return (
     <group position={[0, 0, 32]}>
-      {/* Zone Sign */}
-      <group position={[0, 4.8, -4]}>
+      {/* Zone Sign Elevated Cleanly Above Garage Roof */}
+      <group position={[0, 5.8, -1]}>
         <Text
           fontSize={1.3}
           fontWeight={800}
@@ -35,7 +35,7 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
           CONTACT GARAGE
         </Text>
         <Text
-          position={[0, -0.7, 0]}
+          position={[0, -0.65, 0]}
           fontSize={0.4}
           fontWeight={600}
           color="#786c62"
@@ -44,6 +44,15 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
         >
           GET IN TOUCH OR GRAB RESUME
         </Text>
+        {/* Support Struts */}
+        <mesh position={[-3.2, -0.7, 0]}>
+          <cylinderGeometry args={[0.06, 0.06, 1.4, 8]} />
+          <meshStandardMaterial color="#475569" roughness={0.6} />
+        </mesh>
+        <mesh position={[3.2, -0.7, 0]}>
+          <cylinderGeometry args={[0.06, 0.06, 1.4, 8]} />
+          <meshStandardMaterial color="#475569" roughness={0.6} />
+        </mesh>
       </group>
 
       {/* Low-Poly Garage Structure */}

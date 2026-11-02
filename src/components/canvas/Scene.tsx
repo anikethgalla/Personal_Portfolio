@@ -20,7 +20,7 @@ export const Scene: React.FC = () => {
     <div className="absolute inset-0 w-full h-full bg-[#ded6cb]">
       <Canvas
         shadows
-        camera={{ position: [0, 18, 24], fov: 48, near: 0.1, far: 350 }}
+        camera={{ position: [0, 18, 24], fov: 48, near: 0.5, far: 250 }}
         dpr={[1, 2]}
         gl={{
           antialias: true,

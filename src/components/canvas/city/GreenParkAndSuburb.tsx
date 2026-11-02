@@ -89,29 +89,43 @@ export const GreenParkAndSuburb: React.FC = () => {
     <group>
       {/* ======================================================== */}
       {/* 1. EXPANSIVE GREEN GRASS LAWNS                           */}
+      {/* Cleanly bounded & positioned at y = 0.010 with           */}
+      {/* polygonOffset to prevent any z-fighting with roads       */}
       {/* ======================================================== */}
-      {/* Central Park Lawn surrounding the Skills Plaza */}
-      <mesh position={[-20, 0.015, -4]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[22, 20]} />
-        <meshStandardMaterial color="#65a30d" roughness={0.9} />
+      {/* Central Park & Skills Plaza Lawn (North of West Boulevard) */}
+      <mesh position={[-23, 0.010, -14]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[19, 18]} />
+        <meshStandardMaterial
+          color="#65a30d"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
       </mesh>
 
-      {/* Residential Suburb North Lawn */}
-      <mesh position={[-25, 0.015, -20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[20, 18]} />
-        <meshStandardMaterial color="#5ea508" roughness={0.9} />
+      {/* Residential Suburb South Lawn (South of West Boulevard) */}
+      <mesh position={[-23, 0.010, 14]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[19, 18]} />
+        <meshStandardMaterial
+          color="#65a30d"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
       </mesh>
 
-      {/* Residential Suburb South Lawn */}
-      <mesh position={[-25, 0.015, 14]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial color="#65a30d" roughness={0.9} />
-      </mesh>
-
-      {/* Waterfront Promenade Lawn Strip */}
-      <mesh position={[-31, 0.018, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[8, 50]} />
-        <meshStandardMaterial color="#72a818" roughness={0.9} />
+      {/* Waterfront Promenade Lawn Strip (Far West near Coastal Pier) */}
+      <mesh position={[-33, 0.010, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[5, 48]} />
+        <meshStandardMaterial
+          color="#5ea508"
+          roughness={0.9}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
       </mesh>
 
       {/* ======================================================== */}
