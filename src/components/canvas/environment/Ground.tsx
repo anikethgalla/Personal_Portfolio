@@ -101,7 +101,7 @@ export const Ground: React.FC = () => {
         </mesh>
       ))}
 
-      {/* South Avenue: Towards Contact Garage (width 8m) */}
+      {/* South Avenue: Towards Gas Station & Petrol Pump (width 8m) */}
       <mesh position={[0, 0.025, 22]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[8, 34]} />
         <meshStandardMaterial
@@ -249,7 +249,7 @@ export const Ground: React.FC = () => {
         />
       </mesh>
 
-      {/* Contact Garage Entrance Paved Apron */}
+      {/* Gas Station & Petrol Pump Entrance Paved Apron */}
       <mesh position={[0, 0.025, 33]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[14, 12]} />
         <meshStandardMaterial

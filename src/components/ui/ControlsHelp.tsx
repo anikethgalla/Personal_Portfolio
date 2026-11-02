@@ -10,7 +10,7 @@ export const ControlsHelp: React.FC = () => {
     { id: 'hero', name: 'Hero Ramp' },
     { id: 'projects', name: 'Projects' },
     { id: 'skills', name: 'Skills Wall' },
-    { id: 'contact', name: 'Garage' }
+    { id: 'contact', name: 'Gas Station' }
   ];
 
   const allDiscovered = zones.every(z => discoveredZones.has(z.id));
