@@ -4,9 +4,9 @@ import { CuboidCollider } from '@react-three/rapier';
 export const Boundaries: React.FC = () => {
   // Generous physics safety perimeter placed far beyond the visible landscape
   // Completely eliminates visible grey concrete walls so the world naturally flows into valleys and horizons!
-  const arenaHalfSizeX = 130;
-  const arenaHalfSizeZ = 135;
-  const wallHeight = 15;
+  const arenaHalfSizeX = 140;
+  const arenaHalfSizeZ = 220;
+  const wallHeight = 20;
 
   return (
     <group>
