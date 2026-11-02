@@ -8,7 +8,8 @@ import {
   Terminal,
   Cpu,
   Server,
-  Layers
+  Layers,
+  GraduationCap
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { profileData } from '../../data/profileData';
@@ -109,15 +110,16 @@ export const RecruiterDrawer: React.FC = () => {
               <span>LinkedIn</span>
             </a>
 
-            <button
-              onClick={() => {
-                alert(`Resume: Download or view request sent. Direct email: ${profileData.email}`);
-              }}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#ded5ca] hover:bg-[#cfc4b7] text-[#332b24] text-xs font-bold transition-colors border border-[#c4b8a9]"
+            <a
+              href={profileData.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#ded5ca] hover:bg-[#cfc4b7] text-[#332b24] text-xs font-bold transition-colors border border-[#c4b8a9] shadow-sm"
+              title="Open Resume PDF in new tab"
             >
               <FileText className="w-4 h-4 text-[#ea580c]" />
               <span>Resume PDF</span>
-            </button>
+            </a>
           </div>
 
           {/* Quick Metrics */}
@@ -265,6 +267,34 @@ export const RecruiterDrawer: React.FC = () => {
                   </ul>
                 </div>
               ))}
+            </div>
+          </section>
+
+          {/* Education */}
+          <section className="space-y-3">
+            <h3 className="text-xs font-black uppercase tracking-wider text-[#8c7b6d] flex items-center gap-2">
+              <GraduationCap className="w-4 h-4 text-[#ea580c]" />
+              <span>Education</span>
+            </h3>
+
+            <div className="bg-[#ece5dc] p-4 rounded-xl border border-[#d8cdbf]">
+              <div className="flex items-baseline justify-between gap-2">
+                <h4 className="text-sm font-bold text-[#221d1a]">{profileData.education.institution}</h4>
+                <span className="text-xs font-semibold text-[#ea580c]">{profileData.education.period}</span>
+              </div>
+              <div className="text-xs text-[#73665a] font-medium mt-0.5">
+                {profileData.education.degree} • <span className="font-bold text-emerald-700">CGPA: {profileData.education.cgpa}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-3 pt-2.5 border-t border-[#d8cdbf]">
+                {profileData.education.coursework.map((course, ci) => (
+                  <span
+                    key={ci}
+                    className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#ded5ca] text-[#4a4036]"
+                  >
+                    {course}
+                  </span>
+                ))}
+              </div>
             </div>
           </section>
         </div>

@@ -11,13 +11,22 @@ export interface ProfileData {
   bio: string;
   location: string;
   email: string;
+  phone: string;
   github: string;
   linkedin: string;
   resumeUrl: string;
+  education: {
+    institution: string;
+    degree: string;
+    period: string;
+    cgpa: string;
+    coursework: string[];
+  };
   stats: { label: string; value: string }[];
   experience: {
     role: string;
     organization: string;
+    location?: string;
     period: string;
     description: string;
     highlights: string[];
@@ -26,42 +35,59 @@ export interface ProfileData {
 
 export const profileData: ProfileData = {
   name: "Aniketh Galla",
-  headline: "Backend Systems Engineer & Autonomous AI Agent Architect",
-  tagline: "Building high-performance backend pipelines, resilient microservices, and autonomous multi-agent systems.",
-  bio: "Software engineer with a deep passion for production distributed systems, container orchestration, real-time computer vision, and autonomous agent evaluation. Experienced in architecting robust APIs, tuning database query performance, and deploying production services with Docker and Kubernetes.",
-  location: "India",
-  email: "anikethgalla@gmail.com",
+  headline: "Full Stack & AI Engineer | Go, React, Next.js, PyTorch & Distributed Systems",
+  tagline: "Architecting high-throughput Go/Next.js platforms for 25,000+ users, clinical RAG pipelines, and agentic surgical robotics.",
+  bio: "Computer Science undergraduate at Vellore Institute of Technology (CGPA 9.51) and Full Stack Developer at Google Developer Groups (GDG) VIT. Experienced in deploying clinical reasoning RAG pipelines and Neo4j biomedical knowledge graphs at HealthPlix, engineering fest architectures scaling to 25,000+ attendees (graVITas'26) and 4,000+ hackers (DevJams'26), and developing generative AI virtual try-on and surgical robotics pipelines.",
+  location: "Bangalore, India",
+  email: "anikethgalla@outlook.com",
+  phone: "+91 9902550343",
   github: "https://github.com/anikethgalla",
-  linkedin: "https://linkedin.com/in/anikethgalla",
-  resumeUrl: "#", // User can replace with actual resume PDF path
+  linkedin: "https://linkedin.com/in/aniketh-galla",
+  resumeUrl: "/AnikethGallaResumev4.pdf",
+  education: {
+    institution: "Vellore Institute of Technology",
+    degree: "B.Tech in Computer Science and Engineering",
+    period: "2025 – Present",
+    cgpa: "9.51 / 10.0",
+    coursework: [
+      "Object-Oriented Programming",
+      "Data Structures & Algorithms",
+      "Operating Systems",
+      "Computer Networks",
+      "Software Engineering"
+    ]
+  },
   stats: [
-    { label: "Flagship Projects", value: "5+" },
-    { label: "Core Stacks", value: "Python / TS / Docker" },
-    { label: "Architecture", value: "Distributed & Clean" },
-    { label: "Physics Toy Car", value: "60+ FPS" }
+    { label: "graVITas Users", value: "25,000+" },
+    { label: "DevJams Hackers", value: "4,000+" },
+    { label: "Clinical RAG Latency", value: "< 120ms" },
+    { label: "Academic CGPA", value: "9.51" }
   ],
   experience: [
     {
-      role: "Backend & Systems Developer",
-      organization: "Independent & Open Source",
-      period: "2024 — Present",
-      description: "Designing end-to-end scalable backend platforms, API gateways, and autonomous LLM evaluation frameworks.",
+      role: "AI Engineering Intern",
+      organization: "HealthPlix",
+      location: "Bangalore, Karnataka",
+      period: "May 2026 – August 2026",
+      description: "Engineered LLM-powered clinical reasoning and biomedical knowledge graph retrieval pipelines for healthcare intelligence.",
       highlights: [
-        "Architected TrueForge: An agent benchmarking engine executing isolated sandbox evaluations for coding agents.",
-        "Built Robosurge: Real-time dual-camera calibration and computer vision tracking for medical surgical robotics.",
-        "Engineered production FastAPI & Node/Prisma services with Dockerized deployments and automated CI/CD."
+        "Deployed LLM-powered RAG clinical reasoning pipelines, improving patient wellness insight relevance by 38%.",
+        "Architected a Neo4j knowledge graph integrating ChEMBL, Open Targets, and PubMed for drug repurposing.",
+        "Built a graph reasoning engine using direct target overlap and 2-hop PPI proximity with weighted scoring.",
+        "Optimized retrieval pipelines, cutting API latency 45% to sub-120ms with hallucination guardrails."
       ]
     },
     {
-      role: "AI & Full-Stack Engineer",
-      organization: "Innovative Projects & Hackathons",
-      period: "2023 — 2024",
-      description: "Developed multi-agent orchestration pipelines, real-time telemetry dashboards, and collaborative web platforms.",
+      role: "Full Stack Developer",
+      organization: "Google Developer Groups On Campus - VIT Vellore",
+      location: "Vellore, Tamil Nadu",
+      period: "January 2026 – Present",
+      description: "Core developer on the GDG-VIT full stack development team driving flagship portals and community initiatives.",
       highlights: [
-        "Integrated LangChain and LangGraph for recursive self-refining agent workflows with structured outputs.",
-        "Implemented high-performance PostgreSQL and SQLite WAL pipelines for zero-latency video log capture."
+        "Selected out of 300+ candidates who applied to join the Full Stack development team.",
+        "Developed the official portals for DevJams'26 and the upcoming GDG recruitments platform.",
+        "Hosted and coordinated flagship campus technology events, including WomenTechies'26 and DevJams'26."
       ]
     }
   ]
 };
-

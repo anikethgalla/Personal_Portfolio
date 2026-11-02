@@ -164,3 +164,4 @@ export const VEHICLES_DATA: Record<VehicleId, VehicleConfig> = {
 };
 
 export const VEHICLE_LIST = Object.values(VEHICLES_DATA);
+
