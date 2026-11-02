@@ -8,6 +8,33 @@ interface TreeProps {
   color?: string;
 }
 
+const LowPolyPineTree: React.FC<{ position: [number, number, number]; scale?: number }> = ({
+  position,
+  scale = 1
+}) => {
+  return (
+    <group position={position} scale={scale}>
+      <mesh position={[0, 0.7, 0]} castShadow>
+        <cylinderGeometry args={[0.2, 0.26, 1.4, 6]} />
+        <meshStandardMaterial color="#78350f" roughness={0.9} />
+      </mesh>
+      {/* 3 Tiered Pine Foliage Cones with Low-Poly Facets */}
+      <mesh position={[0, 1.8, 0]} castShadow>
+        <coneGeometry args={[1.7, 2.0, 7]} />
+        <meshStandardMaterial color="#2d4a12" roughness={0.7} flatShading />
+      </mesh>
+      <mesh position={[0, 3.0, 0]} castShadow>
+        <coneGeometry args={[1.3, 1.8, 7]} />
+        <meshStandardMaterial color="#365816" roughness={0.7} flatShading />
+      </mesh>
+      <mesh position={[0, 4.1, 0]} castShadow>
+        <coneGeometry args={[0.85, 1.5, 7]} />
+        <meshStandardMaterial color="#3f6212" roughness={0.7} flatShading />
+      </mesh>
+    </group>
+  );
+};
+
 const TownTree: React.FC<TreeProps> = ({ position, scale = 1, color = '#65a30d' }) => {
   return (
     <group position={position} scale={scale}>
@@ -395,6 +422,103 @@ export const EastTownDistrict: React.FC = () => {
       <TownLamp position={[34.5, 0, 22]} />
       <TownLamp position={[46.5, 0, -12]} />
       <TownLamp position={[46.5, 0, 12]} />
+
+      {/* ======================================================== */}
+      {/* 7. ROLLING GREEN HILLS BACKDROP (Behind Apartments)      */}
+      {/* Dramatic low-poly green ridges with pine trees & boulders*/}
+      {/* ======================================================== */}
+      {/* Primary Mountain Ridge (Tall background peaks rising 9m to 15m) */}
+      <group position={[0, 0, 0]}>
+        {/* Peak 1: North-East Ridge */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[57, 5.0, -32]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[14, 10, 12]} />
+            <meshStandardMaterial color="#4d7c0f" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+
+        {/* Peak 2: Mid-North Peak */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[60, 6.5, -14]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[16, 13, 14]} />
+            <meshStandardMaterial color="#5ea508" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+
+        {/* Peak 3: Central Grand Summit (Directly behind the apartments) */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[62, 7.5, 4]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[18, 15, 14]} />
+            <meshStandardMaterial color="#3f6212" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+
+        {/* Peak 4: Mid-South Peak */}
+        <RigidBody type="fixed" friction={0.9} colliders="hull" position={[59, 6.0, 22]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[16, 12, 12]} />
+            <meshStandardMaterial color="#4d7c0f" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+
+        {/* Peak 5: South-East Ridge */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[56, 5.0, 38]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[14, 10, 12]} />
+            <meshStandardMaterial color="#5ea508" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+
+        {/* Rolling Foothills (Gentle rolling mounds blending into the town floor) */}
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[51, 2.2, -22]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[8.5, 4.4, 10]} />
+            <meshStandardMaterial color="#65a30d" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[52, 2.6, -3]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[9.5, 5.2, 10]} />
+            <meshStandardMaterial color="#5ea508" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[51, 2.4, 14]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[9.0, 4.8, 10]} />
+            <meshStandardMaterial color="#65a30d" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+        <RigidBody type="fixed" colliders="hull" friction={0.9} position={[50, 2.0, 30]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[8.0, 4.0, 10]} />
+            <meshStandardMaterial color="#5ea508" roughness={0.85} flatShading />
+          </mesh>
+        </RigidBody>
+
+        {/* Mountain Ridge Low-Poly Pine Trees */}
+        <LowPolyPineTree position={[52, 2.5, -30]} scale={1.4} />
+        <LowPolyPineTree position={[55, 4.5, -20]} scale={1.5} />
+        <LowPolyPineTree position={[54, 3.8, -10]} scale={1.3} />
+        <LowPolyPineTree position={[56, 5.2, -2]} scale={1.6} />
+        <LowPolyPineTree position={[55, 4.8, 8]} scale={1.45} />
+        <LowPolyPineTree position={[53, 3.2, 18]} scale={1.35} />
+        <LowPolyPineTree position={[54, 4.0, 26]} scale={1.5} />
+        <LowPolyPineTree position={[51, 2.2, 34]} scale={1.25} />
+
+        {/* Mountain Slope Clay Boulders */}
+        <mesh position={[51, 0.6, -16]} rotation={[0.4, 0.6, 0.2]} castShadow>
+          <dodecahedronGeometry args={[0.9, 0]} />
+          <meshStandardMaterial color="#78716c" roughness={0.8} flatShading />
+        </mesh>
+        <mesh position={[53, 1.2, 2]} rotation={[0.2, 0.9, 0.5]} castShadow>
+          <dodecahedronGeometry args={[1.2, 0]} />
+          <meshStandardMaterial color="#a8a29e" roughness={0.8} flatShading />
+        </mesh>
+        <mesh position={[50, 0.5, 22]} rotation={[0.5, 0.3, 0.8]} castShadow>
+          <dodecahedronGeometry args={[0.8, 0]} />
+          <meshStandardMaterial color="#78716c" roughness={0.8} flatShading />
+        </mesh>
+      </group>
     </group>
   );
 };

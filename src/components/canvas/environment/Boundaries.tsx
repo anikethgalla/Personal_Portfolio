@@ -2,10 +2,10 @@ import React from 'react';
 import { RigidBody } from '@react-three/rapier';
 
 export const Boundaries: React.FC = () => {
-  // Expanded arena half size for a much larger, more navigable city
-  const arenaHalfSizeX = 65;
-  const arenaHalfSizeZ = 55;
-  const wallHeight = 3.0;
+  // Expanded arena half size for a much larger, more navigable city with rolling hills
+  const arenaHalfSizeX = 75;
+  const arenaHalfSizeZ = 60;
+  const wallHeight = 3.2;
   const wallThickness = 2.0;
 
   return (
@@ -14,7 +14,7 @@ export const Boundaries: React.FC = () => {
       <RigidBody type="fixed" friction={0.6}>
         <mesh position={[0, wallHeight / 2, -arenaHalfSizeZ]} castShadow receiveShadow>
           <boxGeometry args={[arenaHalfSizeX * 2 + wallThickness, wallHeight, wallThickness]} />
-          <meshStandardMaterial color="#cbbfae" roughness={0.7} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.7} />
         </mesh>
       </RigidBody>
 
@@ -22,15 +22,15 @@ export const Boundaries: React.FC = () => {
       <RigidBody type="fixed" friction={0.6}>
         <mesh position={[0, wallHeight / 2, arenaHalfSizeZ]} castShadow receiveShadow>
           <boxGeometry args={[arenaHalfSizeX * 2 + wallThickness, wallHeight, wallThickness]} />
-          <meshStandardMaterial color="#cbbfae" roughness={0.7} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.7} />
         </mesh>
       </RigidBody>
 
-      {/* East Wall */}
+      {/* East Wall (Behind the Rolling Hills) */}
       <RigidBody type="fixed" friction={0.6}>
         <mesh position={[arenaHalfSizeX, wallHeight / 2, 0]} castShadow receiveShadow>
           <boxGeometry args={[wallThickness, wallHeight, arenaHalfSizeZ * 2]} />
-          <meshStandardMaterial color="#cbbfae" roughness={0.7} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.7} />
         </mesh>
       </RigidBody>
 
@@ -38,7 +38,7 @@ export const Boundaries: React.FC = () => {
       <RigidBody type="fixed" friction={0.6}>
         <mesh position={[-arenaHalfSizeX, wallHeight / 2, 0]} castShadow receiveShadow>
           <boxGeometry args={[wallThickness, wallHeight, arenaHalfSizeZ * 2]} />
-          <meshStandardMaterial color="#cbbfae" roughness={0.7} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.7} />
         </mesh>
       </RigidBody>
     </group>
