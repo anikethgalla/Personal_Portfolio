@@ -4,6 +4,8 @@ import { RigidBody, RapierRigidBody, CuboidCollider } from '@react-three/rapier'
 import * as THREE from 'three';
 import { useGame } from '../../context/GameContext';
 import { soundManager } from '../../audio/soundManager';
+import { VEHICLES_DATA } from '../../data/vehiclesData';
+import { VehicleModelSwitch } from './vehicle/VehicleModels';
 
 interface VehicleProps {
   onPositionUpdate?: (pos: THREE.Vector3) => void;
@@ -25,8 +27,12 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     teleportTarget,
     clearTeleport,
     fpvProject,
-    exitFpv
+    exitFpv,
+    selectedVehicleId,
+    selectedVehicleColor
   } = useGame();
+
+  const vehicleConfig = VEHICLES_DATA[selectedVehicleId] || VEHICLES_DATA.pickup;
 
   // Keyboard input state
   const keys = useRef({
@@ -170,11 +176,11 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
     // Current physics linear velocity
     const linvel = rigidBodyRef.current.linvel();
 
-    // Smooth arcade acceleration / braking model (Tuned for expansive city roads)
-    const maxForwardSpeed = 28;
-    const maxReverseSpeed = -12;
-    const acceleration = 45;
-    const deceleration = 32;
+    // Smooth arcade acceleration / braking model (Tuned per vehicle class)
+    const maxForwardSpeed = vehicleConfig.physics.maxSpeed;
+    const maxReverseSpeed = -vehicleConfig.physics.maxSpeed * 0.45;
+    const acceleration = vehicleConfig.physics.acceleration;
+    const deceleration = vehicleConfig.physics.acceleration * 0.72;
 
     if (inputForward > 0.05 && !isBraking) {
       currentForwardSpeed.current = Math.min(
@@ -209,7 +215,7 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
       const speedMagnitude = Math.abs(currentForwardSpeed.current);
       const speedFactor = Math.min(Math.max(speedMagnitude / 3, 0.4), 1.2);
       const direction = currentForwardSpeed.current < -0.2 ? -inputTurn : inputTurn;
-      targetAngvel = direction * 4.4 * speedFactor;
+      targetAngvel = direction * 1.5 * vehicleConfig.physics.turnSpeed * speedFactor;
     }
 
     // Apply linear velocity: X and Z are driven, Y preserves gravity and jump physics!
@@ -293,120 +299,17 @@ export const Vehicle: React.FC<VehicleProps> = ({ onPositionUpdate }) => {
       {/* Explicit Stable Cuboid Collider - wide base, sits perfectly on wheels, zero floor clipping */}
       <CuboidCollider args={[0.72, 0.35, 1.15]} position={[0, 0.20, 0]} friction={0.2} restitution={0.1} />
 
-      {/* Visual Car Model - Bruno Simon Style Warm Pastel Toy Car */}
+      {/* Dynamic 3D Vehicle Model Switcher */}
       <group ref={chassisRef}>
-        {/* Main Body */}
-        <mesh position={[0, 0.35, 0]} castShadow receiveShadow>
-          <boxGeometry args={[1.3, 0.45, 2.4]} />
-          <meshStandardMaterial color="#f97316" roughness={0.3} metalness={0.1} />
-        </mesh>
-
-        {/* Cabin / Roof */}
-        <mesh position={[0, 0.72, -0.1]} castShadow receiveShadow>
-          <boxGeometry args={[1.05, 0.4, 1.3]} />
-          <meshStandardMaterial color="#ea580c" roughness={0.3} metalness={0.1} />
-        </mesh>
-
-        {/* Windshield (Dark Glass) */}
-        <mesh position={[0, 0.72, -0.76]} rotation={[0.2, 0, 0]}>
-          <boxGeometry args={[0.95, 0.32, 0.05]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.1} metalness={0.8} />
-        </mesh>
-
-        {/* Side Windows */}
-        <mesh position={[0.53, 0.72, -0.1]}>
-          <boxGeometry args={[0.02, 0.28, 1.1]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.1} metalness={0.8} />
-        </mesh>
-        <mesh position={[-0.53, 0.72, -0.1]}>
-          <boxGeometry args={[0.02, 0.28, 1.1]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.1} metalness={0.8} />
-        </mesh>
-
-        {/* Front Grill / Bumper */}
-        <mesh position={[0, 0.26, -1.22]}>
-          <boxGeometry args={[1.1, 0.2, 0.08]} />
-          <meshStandardMaterial color="#334155" roughness={0.5} />
-        </mesh>
-
-        {/* Headlights */}
-        <mesh position={[-0.42, 0.38, -1.21]}>
-          <boxGeometry args={[0.22, 0.14, 0.06]} />
-          <meshStandardMaterial color="#fef08a" emissive="#fef08a" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0.42, 0.38, -1.21]}>
-          <boxGeometry args={[0.22, 0.14, 0.06]} />
-          <meshStandardMaterial color="#fef08a" emissive="#fef08a" emissiveIntensity={0.8} />
-        </mesh>
-
-        {/* Headlight Cones (Visual Only) */}
-        <mesh position={[-0.42, 0.25, -2.6]} rotation={[Math.PI / 2, 0, 0]}>
-          <coneGeometry args={[0.6, 2.8, 16]} />
-          <meshBasicMaterial color="#fef08a" transparent opacity={0.12} depthWrite={false} />
-        </mesh>
-        <mesh position={[0.42, 0.25, -2.6]} rotation={[Math.PI / 2, 0, 0]}>
-          <coneGeometry args={[0.6, 2.8, 16]} />
-          <meshBasicMaterial color="#fef08a" transparent opacity={0.12} depthWrite={false} />
-        </mesh>
-
-        {/* Taillights */}
-        <mesh position={[-0.45, 0.42, 1.21]}>
-          <boxGeometry args={[0.22, 0.12, 0.05]} />
-          <meshStandardMaterial color="#dc2626" emissive="#dc2626" emissiveIntensity={0.6} />
-        </mesh>
-        <mesh position={[0.45, 0.42, 1.21]}>
-          <boxGeometry args={[0.22, 0.12, 0.05]} />
-          <meshStandardMaterial color="#dc2626" emissive="#dc2626" emissiveIntensity={0.6} />
-        </mesh>
-
-        {/* 4 Wheels */}
-        {/* Front Left */}
-        <group position={[-0.72, 0.15, -0.75]} ref={frontLeftWheelRef}>
-          <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.32, 0.32, 0.22, 18]} />
-            <meshStandardMaterial color="#1f2937" roughness={0.9} />
-          </mesh>
-          <mesh rotation={[0, 0, Math.PI / 2]} position={[-0.02, 0, 0]}>
-            <cylinderGeometry args={[0.18, 0.18, 0.23, 12]} />
-            <meshStandardMaterial color="#d1d5db" roughness={0.4} />
-          </mesh>
-        </group>
-
-        {/* Front Right */}
-        <group position={[0.72, 0.15, -0.75]} ref={frontRightWheelRef}>
-          <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.32, 0.32, 0.22, 18]} />
-            <meshStandardMaterial color="#1f2937" roughness={0.9} />
-          </mesh>
-          <mesh rotation={[0, 0, Math.PI / 2]} position={[0.02, 0, 0]}>
-            <cylinderGeometry args={[0.18, 0.18, 0.23, 12]} />
-            <meshStandardMaterial color="#d1d5db" roughness={0.4} />
-          </mesh>
-        </group>
-
-        {/* Rear Left */}
-        <group position={[-0.72, 0.15, 0.75]} ref={rearLeftWheelRef}>
-          <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.32, 0.32, 0.22, 18]} />
-            <meshStandardMaterial color="#1f2937" roughness={0.9} />
-          </mesh>
-          <mesh rotation={[0, 0, Math.PI / 2]} position={[-0.02, 0, 0]}>
-            <cylinderGeometry args={[0.18, 0.18, 0.23, 12]} />
-            <meshStandardMaterial color="#d1d5db" roughness={0.4} />
-          </mesh>
-        </group>
-
-        {/* Rear Right */}
-        <group position={[0.72, 0.15, 0.75]} ref={rearRightWheelRef}>
-          <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.32, 0.32, 0.22, 18]} />
-            <meshStandardMaterial color="#1f2937" roughness={0.9} />
-          </mesh>
-          <mesh rotation={[0, 0, Math.PI / 2]} position={[0.02, 0, 0]}>
-            <cylinderGeometry args={[0.18, 0.18, 0.23, 12]} />
-            <meshStandardMaterial color="#d1d5db" roughness={0.4} />
-          </mesh>
-        </group>
+        <VehicleModelSwitch
+          vehicleId={selectedVehicleId}
+          color={selectedVehicleColor}
+          frontLeftRef={frontLeftWheelRef}
+          frontRightRef={frontRightWheelRef}
+          rearLeftRef={rearLeftWheelRef}
+          rearRightRef={rearRightWheelRef}
+          showHeadlightBeams={true}
+        />
       </group>
     </RigidBody>
   );

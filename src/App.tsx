@@ -6,6 +6,7 @@ import { ControlsHelp } from './components/ui/ControlsHelp';
 import { MobileControls } from './components/ui/MobileControls';
 import { ProjectModal } from './components/ui/ProjectModal';
 import { RecruiterDrawer } from './components/ui/RecruiterDrawer';
+import { CarShowroom } from './components/ui/CarShowroom';
 
 export const App: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ export const App: React.FC = () => {
         <MobileControls />
         <ProjectModal />
         <RecruiterDrawer />
+        <CarShowroom />
       </main>
     </GameProvider>
   );

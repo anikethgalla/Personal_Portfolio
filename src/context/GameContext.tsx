@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Project } from '../data/projectsData';
 import { soundManager } from '../audio/soundManager';
+import { VehicleId, VEHICLES_DATA } from '../data/vehiclesData';
 
 export type ZoneType = 'hero' | 'projects' | 'skills' | 'contact' | null;
 
@@ -27,6 +28,14 @@ interface GameContextType {
   triggerResetSkills: () => void;
   discoveredZones: Set<string>;
   markZoneDiscovered: (zone: string) => void;
+  // Vehicle Selection State
+  selectedVehicleId: VehicleId;
+  selectedVehicleColor: string;
+  isCarSelectOpen: boolean;
+  openCarSelect: () => void;
+  closeCarSelect: () => void;
+  selectVehicle: (id: VehicleId, color?: string) => void;
+  setVehicleColor: (color: string) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -42,6 +51,29 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [resetVehicleTrigger, setResetVehicleTrigger] = useState(0);
   const [resetSkillsTrigger, setResetSkillsTrigger] = useState(0);
   const [discoveredZones, setDiscoveredZones] = useState<Set<string>>(new Set(['hero']));
+  const [selectedVehicleId, setSelectedVehicleId] = useState<VehicleId>('pickup');
+  const [selectedVehicleColor, setSelectedVehicleColor] = useState<string>(VEHICLES_DATA.pickup.defaultColor);
+  const [isCarSelectOpen, setIsCarSelectOpen] = useState<boolean>(true);
+
+  const openCarSelect = () => {
+    setIsCarSelectOpen(true);
+    soundManager.playChime();
+  };
+
+  const closeCarSelect = () => {
+    setIsCarSelectOpen(false);
+    soundManager.playChime();
+  };
+
+  const selectVehicle = (id: VehicleId, color?: string) => {
+    setSelectedVehicleId(id);
+    setSelectedVehicleColor(color || VEHICLES_DATA[id].defaultColor);
+    soundManager.playChime();
+  };
+
+  const setVehicleColor = (color: string) => {
+    setSelectedVehicleColor(color);
+  };
 
   const enterFpv = (project: Project) => {
     setFpvProject(project);
@@ -115,7 +147,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         resetSkillsTrigger,
         triggerResetSkills,
         discoveredZones,
-        markZoneDiscovered
+        markZoneDiscovered,
+        selectedVehicleId,
+        selectedVehicleColor,
+        isCarSelectOpen,
+        openCarSelect,
+        closeCarSelect,
+        selectVehicle,
+        setVehicleColor
       }}
     >
       {children}

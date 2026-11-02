@@ -6,7 +6,8 @@ import {
   Sparkles,
   Briefcase,
   Compass,
-  Hammer
+  Hammer,
+  Car
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { profileData } from '../../data/profileData';
@@ -19,7 +20,8 @@ export const HeaderHUD: React.FC = () => {
     triggerResetVehicle,
     triggerResetSkills,
     setIsRecruiterDrawerOpen,
-    discoveredZones
+    discoveredZones,
+    openCarSelect
   } = useGame();
 
   const totalZones = 4;
@@ -77,6 +79,16 @@ export const HeaderHUD: React.FC = () => {
 
       {/* Right: Controls & Recruiter Mode */}
       <div className="pointer-events-auto flex items-center gap-2">
+        {/* Choose Vehicle / Garage */}
+        <button
+          onClick={openCarSelect}
+          title="Vehicle Garage (Choose car & customize paint)"
+          className="flex items-center gap-1.5 bg-[#ded7cb]/90 hover:bg-[#c9bfae] backdrop-blur-md text-[#ea580c] text-xs font-bold px-3 py-2 rounded-xl border border-orange-500/30 clay-shadow transition-colors"
+        >
+          <Car className="w-3.5 h-3.5 text-[#ea580c]" />
+          <span>Garage</span>
+        </button>
+
         {/* Rebuild Skills Wall */}
         <button
           onClick={triggerResetSkills}
