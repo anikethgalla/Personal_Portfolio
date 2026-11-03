@@ -1,8 +1,22 @@
 import React from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text } from '@react-three/drei';
+import { Text, Html } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
+import {
+  ExternalLink,
+  GitBranch,
+  CheckCircle2,
+  Terminal,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Building2,
+  Calendar,
+  MapPin,
+  Film,
+  Briefcase
+} from 'lucide-react';
 import { projectsData } from '../../../data/projectsData';
 import { experienceData } from '../../../data/experienceData';
 import { useGame } from '../../../context/GameContext';
@@ -17,6 +31,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
     activeProject,
     markZoneDiscovered,
     currentProjectIndex,
+    setCurrentProjectIndex,
     nextProject,
     prevProject,
     enterFpv,
@@ -25,6 +40,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
     activeExperience,
     setActiveExperience,
     currentExperienceIndex,
+    setCurrentExperienceIndex,
     nextExperience,
     prevExperience,
     enterExperienceFpv,
@@ -191,95 +207,179 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             <meshStandardMaterial color="#0b1120" roughness={0.9} />
           </mesh>
 
-          {/* 3D Native Cinema Screen Dynamic Project Typography */}
-          <group position={[-0.44, 3.2, 0]} rotation={[0, -Math.PI / 2, 0]}>
-            {/* Slide Index & Category Badge */}
-            <Text
-              position={[0, 1.85, 0]}
-              fontSize={0.17}
-              fontWeight={800}
-              color="#f59e0b"
-              anchorX="center"
-              anchorY="middle"
-              letterSpacing={0.12}
+          {/* 3D Native Cinema Screen Dynamic Interactive UI via Html transform */}
+          <Html
+            transform
+            occlude={false}
+            position={[-0.43, 3.2, 0]}
+            rotation={[0, -Math.PI / 2, 0]}
+            distanceFactor={3.2}
+            pointerEvents="auto"
+          >
+            <div
+              style={{
+                width: '1120px',
+                height: '590px',
+              }}
+              className="bg-[#080d1a] text-gray-100 rounded-2xl border-4 border-slate-700/80 shadow-[inset_0_0_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-6 select-none font-['Plus_Jakarta_Sans',sans-serif]"
             >
-              {`[ PROJECT ${currentProjectIndex + 1} OF ${projectsData.length} ] • ${currentProject.category.toUpperCase()}`}
-            </Text>
+              {/* Header Bar */}
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1.5">
+                    <span className="w-3.5 h-3.5 rounded-full bg-rose-500" />
+                    <span className="w-3.5 h-3.5 rounded-full bg-amber-500" />
+                    <span className="w-3.5 h-3.5 rounded-full bg-emerald-500" />
+                  </div>
+                  <span className="font-mono text-xs text-sky-400 font-bold tracking-wider flex items-center gap-1.5">
+                    <Terminal className="w-4 h-4 text-sky-400" />
+                    CINEMA_BROADCAST_FEED // DRIVE-IN THEATER
+                  </span>
+                </div>
 
-            {/* Project Title */}
-            <Text
-              position={[0, 1.35, 0]}
-              fontSize={0.52}
-              fontWeight={900}
-              color="#38bdf8"
-              anchorX="center"
-              anchorY="middle"
-              letterSpacing={0.03}
-              maxWidth={7.8}
-            >
-              {currentProject.title.toUpperCase()}
-            </Text>
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 rounded-md text-xs font-mono font-extrabold uppercase bg-orange-500/20 text-orange-400 border border-orange-500/40">
+                    {currentProject.category}
+                  </span>
+                  <span className="text-xs text-amber-300 font-semibold hidden md:inline">
+                    ★ {currentProject.shortDesc}
+                  </span>
+                  <span className="px-3 py-1 rounded-md bg-slate-800 text-xs font-mono text-emerald-400 border border-slate-700 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    PROJECT {currentProjectIndex + 1}/{projectsData.length}
+                  </span>
+                </div>
+              </div>
 
-            {/* Project Short Description / Tagline */}
-            <Text
-              position={[0, 0.72, 0]}
-              fontSize={0.24}
-              fontWeight={700}
-              color="#f8fafc"
-              anchorX="center"
-              anchorY="middle"
-              maxWidth={7.6}
-            >
-              {currentProject.shortDesc}
-            </Text>
+              {/* Title & Live Links Row */}
+              <div className="flex items-center justify-between gap-4 mt-3">
+                <h1 className="text-2xl font-black text-white tracking-tight">
+                  {currentProject.title}
+                </h1>
 
-            {/* Tech Stack List */}
-            <Text
-              position={[0, 0.12, 0]}
-              fontSize={0.19}
-              fontWeight={600}
-              color="#94a3b8"
-              anchorX="center"
-              anchorY="middle"
-              maxWidth={7.8}
-            >
-              {currentProject.tags.join(' • ')}
-            </Text>
+                <div className="flex items-center gap-2.5 shrink-0">
+                  {currentProject.liveUrl && (
+                    <a
+                      href={currentProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition shadow-md active:scale-95 cursor-pointer"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Live Site</span>
+                    </a>
+                  )}
+                  {currentProject.githubUrl && (
+                    <a
+                      href={currentProject.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition border border-white/20 active:scale-95 cursor-pointer"
+                    >
+                      <GitBranch className="w-3.5 h-3.5" />
+                      <span>GitHub</span>
+                    </a>
+                  )}
+                </div>
+              </div>
 
-            {/* Key Metrics / Highlights */}
-            <Text
-              position={[0, -0.42, 0]}
-              fontSize={0.17}
-              fontWeight={500}
-              color="#cbd5e1"
-              anchorX="center"
-              anchorY="middle"
-              maxWidth={7.6}
-            >
-              {`✓ ${currentProject.metrics[0]}   |   ✓ ${currentProject.metrics[1]}`}
-            </Text>
+              {/* Full Description Paragraph */}
+              <div className="mt-2.5 bg-slate-900/70 p-3 rounded-xl border border-white/5 text-xs text-slate-300 leading-relaxed">
+                {currentProject.fullDesc}
+              </div>
 
-            {/* Bottom Status / Navigation Guidance Pill */}
-            <mesh position={[0, -1.3, 0]}>
-              <boxGeometry args={[6.8, 0.44, 0.04]} />
-              <meshStandardMaterial
-                color={isParkedAtCinema ? '#d97706' : '#1e293b'}
-                roughness={0.3}
-              />
-            </mesh>
-            <Text
-              position={[0, -1.3, 0.03]}
-              fontSize={0.18}
-              fontWeight={800}
-              color="#ffffff"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {isParkedAtCinema
-                ? 'USE ◀ ARROWS ▶ TO FLIP PROJECTS • PRESS ESC TO EXIT'
-                : 'PULL INTO BAY FOR FPV SCREEN'}
-            </Text>
-          </group>
+              {/* Key Architecture & Production Metrics (2x2 Grid) */}
+              <div className="mt-2.5">
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5 block">
+                  Key Architecture & Production Metrics
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  {currentProject.metrics.map((metric, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0d1527] border border-white/5 text-xs text-gray-200"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span className="truncate">{metric}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Technologies & Infrastructure Tags */}
+              <div className="mt-2.5 flex items-center gap-2">
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 shrink-0">
+                  Tech:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {currentProject.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-0.5 rounded-md bg-white/10 text-[11px] font-medium text-slate-300 border border-white/10"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom Carousel Navigation Bar */}
+              <div className="mt-auto pt-2.5 border-t border-white/10 flex items-center justify-between">
+                <button
+                  onClick={prevProject}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs font-bold text-white transition border border-white/20 cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4 text-amber-400" />
+                  <span>PREV [A]</span>
+                </button>
+
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {projectsData.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentProjectIndex(idx)}
+                        className={`h-2 rounded-full transition-all cursor-pointer ${
+                          idx === currentProjectIndex
+                            ? 'w-6 bg-amber-400'
+                            : 'w-2 bg-slate-600 hover:bg-slate-500'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[11px] text-slate-400 font-mono ml-2">
+                    {fpvProject ? 'Arrow Keys to cycle • Esc to Exit' : 'Park in bay for FPV View'}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {fpvProject ? (
+                    <button
+                      onClick={exitFpv}
+                      className="px-3.5 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 active:scale-95 text-xs font-bold text-white transition cursor-pointer"
+                    >
+                      Return to Car (Esc)
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => enterFpv(currentProject)}
+                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-xs font-bold text-white transition cursor-pointer"
+                    >
+                      Enter FPV [E]
+                    </button>
+                  )}
+
+                  <button
+                    onClick={nextProject}
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs font-bold text-white transition border border-white/20 cursor-pointer"
+                  >
+                    <span>NEXT [D]</span>
+                    <ChevronRight className="w-4 h-4 text-amber-400" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Html>
 
           {/* Interactive Left Arrow Button Next to Screen (3D Clickable) */}
           <group
@@ -619,82 +719,175 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
           {/* In-Counter Terminal Display Mesh (Dynamic Experience Showcase) */}
           <group position={[-2.45, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh castShadow>
-              <boxGeometry args={[3.2, 1.5, 0.08]} />
+              <boxGeometry args={[4.4, 2.3, 0.08]} />
               <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
             </mesh>
             <mesh position={[0, 0, 0.045]}>
-              <planeGeometry args={[3.1, 1.4]} />
+              <planeGeometry args={[4.3, 2.2]} />
               <meshStandardMaterial color="#06121e" roughness={0.2} emissive="#10b981" emissiveIntensity={0.06} />
             </mesh>
 
-            {/* Slide Index & Category Badge */}
-            <Text
-              position={[0, 0.52, 0.05]}
-              fontSize={0.09}
-              fontWeight={800}
-              color="#10b981"
-              anchorX="center"
-              anchorY="middle"
-              letterSpacing={0.08}
+            {/* 3D Native Diner Terminal Screen Dynamic Interactive UI via Html transform */}
+            <Html
+              transform
+              occlude={false}
+              position={[0, 0, 0.05]}
+              distanceFactor={2.7}
+              pointerEvents="auto"
             >
-              {`[ ${currentExperienceIndex + 1} / ${experienceData.length} ] • ${currentExp.category.toUpperCase()}`}
-            </Text>
+              <div
+                style={{
+                  width: '940px',
+                  height: '480px',
+                }}
+                className="bg-[#07131e] text-gray-100 rounded-2xl border-4 border-emerald-900/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-5 select-none font-['Plus_Jakarta_Sans',sans-serif]"
+              >
+                {/* Header Bar */}
+                <div className="flex items-center justify-between pb-2.5 border-b border-emerald-500/20">
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-mono text-xs text-emerald-400 font-bold tracking-wider flex items-center gap-1.5">
+                      <Terminal className="w-4 h-4 text-emerald-400" />
+                      WORK_HISTORY_LOG // {currentExp.category.toUpperCase()}
+                    </span>
+                  </div>
 
-            {/* Role & Organization Title */}
-            <Text
-              position={[0, 0.26, 0.05]}
-              fontSize={0.14}
-              fontWeight={900}
-              color="#f8fafc"
-              anchorX="center"
-              anchorY="middle"
-              maxWidth={3.0}
-            >
-              {`${currentExp.role.toUpperCase()} @ ${currentExp.organization.toUpperCase()}`}
-            </Text>
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className="px-2.5 py-0.5 rounded text-xs font-mono font-bold uppercase border"
+                      style={{
+                        backgroundColor: `${currentExp.badgeColor}20`,
+                        color: currentExp.badgeColor,
+                        borderColor: `${currentExp.badgeColor}40`
+                      }}
+                    >
+                      {currentExp.category}
+                    </span>
+                    <span className="text-xs text-emerald-400 font-mono font-semibold flex items-center gap-1">
+                      <Building2 className="w-3.5 h-3.5" />
+                      {currentExp.organization}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded bg-slate-800 text-xs font-mono text-emerald-300 border border-slate-700">
+                      {currentExperienceIndex + 1}/{experienceData.length}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Period & Location */}
-            <Text
-              position={[0, 0.02, 0.05]}
-              fontSize={0.09}
-              fontWeight={700}
-              color="#38bdf8"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {`${currentExp.period} • ${currentExp.location}`}
-            </Text>
+                {/* Role, Period & Location */}
+                <div className="flex items-start justify-between gap-3 mt-2.5">
+                  <div>
+                    <h2 className="text-xl font-black text-white tracking-tight">
+                      {currentExp.role}
+                    </h2>
+                  </div>
+                  <div className="text-right text-xs text-gray-400 font-medium space-y-0.5">
+                    <div className="flex items-center gap-1 text-amber-300 font-semibold justify-end">
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>{currentExp.period}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-gray-400 justify-end">
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span>{currentExp.location}</span>
+                    </div>
+                  </div>
+                </div>
 
-            {/* Highlights Summary */}
-            <Text
-              position={[0, -0.22, 0.05]}
-              fontSize={0.08}
-              fontWeight={500}
-              color="#cbd5e1"
-              anchorX="center"
-              anchorY="middle"
-              maxWidth={2.9}
-            >
-              {currentExp.highlights[0]}
-            </Text>
+                {/* Description */}
+                <p className="mt-2 text-xs text-gray-300 leading-relaxed bg-[#0b1b2a]/80 p-3 rounded-xl border border-white/5">
+                  {currentExp.description}
+                </p>
 
-            {/* Bottom Status / Navigation Guidance Pill */}
-            <mesh position={[0, -0.52, 0.05]}>
-              <boxGeometry args={[2.8, 0.22, 0.01]} />
-              <meshStandardMaterial color={isParkedAtDiner ? '#059669' : '#1e293b'} />
-            </mesh>
-            <Text
-              position={[0, -0.52, 0.06]}
-              fontSize={0.075}
-              fontWeight={800}
-              color="#ffffff"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {isParkedAtDiner
-                ? 'USE ◀ ARROWS ▶ TO FLIP EXPERIENCE • PRESS ESC TO EXIT'
-                : 'PULL INTO BAY FOR FPV EXPERIENCE'}
-            </Text>
+                {/* Key Accomplishments (2-column grid) */}
+                <div className="mt-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-400 mb-1 block">
+                    Key Accomplishments & Impact Highlights
+                  </span>
+                  <div className="grid grid-cols-2 gap-2">
+                    {currentExp.highlights.map((highlight, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2 p-2 rounded-lg bg-[#0b1b2a] border border-white/5 text-xs text-gray-200"
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                        <span className="leading-snug text-[11px]">{highlight}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Applied Skills Pills */}
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-400 shrink-0">
+                    Skills:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {currentExp.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-2 py-0.5 rounded bg-white/10 text-[10px] font-semibold text-gray-200 border border-white/10"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="mt-auto pt-2 border-t border-emerald-500/20 flex items-center justify-between">
+                  <button
+                    onClick={prevExperience}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-xs font-bold text-white transition border border-emerald-700/50 cursor-pointer"
+                  >
+                    <ChevronLeft className="w-4 h-4 text-emerald-400" />
+                    <span>PREV [A]</span>
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
+                      {experienceData.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentExperienceIndex(idx)}
+                          className={`h-2 rounded-full transition-all cursor-pointer ${
+                            idx === currentExperienceIndex
+                              ? 'w-5 bg-emerald-400'
+                              : 'w-2 bg-slate-600 hover:bg-slate-500'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono ml-2">
+                      {fpvExperience ? 'Arrow Keys to cycle • Esc to Exit' : 'Park in bay for FPV View'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {fpvExperience ? (
+                      <button
+                        onClick={exitExperienceFpv}
+                        className="px-3 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-xs font-bold text-white transition cursor-pointer"
+                      >
+                        Return to Car (Esc)
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => enterExperienceFpv(currentExp)}
+                        className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition cursor-pointer"
+                      >
+                        Enter FPV [E]
+                      </button>
+                    )}
+
+                    <button
+                      onClick={nextExperience}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-xs font-bold text-white transition border border-emerald-700/50 cursor-pointer"
+                    >
+                      <span>NEXT [D]</span>
+                      <ChevronRight className="w-4 h-4 text-emerald-400" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Html>
           </group>
 
           {/* 3D Interactive Left Arrow Button Next to Counter Window */}

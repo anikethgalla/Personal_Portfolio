@@ -48,7 +48,7 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
       }
 
       // Drive-In Cinema FPV: Driver seat looking directly up at the billboard screen
-      const desiredFpvPos = new THREE.Vector3(19.0, 1.8, -16.0);
+      const desiredFpvPos = new THREE.Vector3(19.2, 2.0, -16.0);
       const desiredFpvLookAt = new THREE.Vector3(27.58, 3.2, -16.0);
 
       camera.position.lerp(desiredFpvPos, delta * 4.8);
@@ -66,8 +66,8 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
       }
 
       // Diner FPV: Driver seat looking directly at the Diner counter showcase
-      const desiredFpvPos = new THREE.Vector3(20.0, 1.8, 16.0);
-      const desiredFpvLookAt = new THREE.Vector3(26.5, 2.0, 16.0);
+      const desiredFpvPos = new THREE.Vector3(20.2, 1.65, 16.0);
+      const desiredFpvLookAt = new THREE.Vector3(25.55, 1.62, 16.0);
 
       camera.position.lerp(desiredFpvPos, delta * 4.8);
       currentLookAt.current.lerp(desiredFpvLookAt, delta * 6.0);
