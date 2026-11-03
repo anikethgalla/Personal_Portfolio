@@ -200,8 +200,8 @@ export const GreenParkAndSuburb: React.FC = () => {
         </RigidBody>
       </group>
 
-      {/* HOUSE 4: Cozy Garden Bungalow at [-18, 0, -22] */}
-      <group position={[-18, 0, -22]}>
+      {/* HOUSE 4: Cozy Garden Bungalow at [-18, 0, -28] (Moved back to open spacious Tech Playground) */}
+      <group position={[-18, 0, -28]}>
         <RigidBody type="fixed" friction={0.7}>
           <mesh position={[0, 1.4, 0]} castShadow receiveShadow>
             <boxGeometry args={[4.2, 2.8, 3.6]} />
@@ -227,12 +227,10 @@ export const GreenParkAndSuburb: React.FC = () => {
       {/* 2. RICH STYLIZED TREES & PARK NATURE (MONUMENT VALLEY)   */}
       {/* ======================================================== */}
 
-      {/* West Park & Nature Belt */}
-      <StylizedOakTree position={[-13, 0, -12]} scale={1.2} color="#559c19" />
-      <StylizedPineTree position={[-13, 0, -3]} scale={1.15} />
+      {/* West Park & Nature Belt (Cleared runway corridor for Tech Stack Playground) */}
+      <StylizedOakTree position={[-18, 0, -32]} scale={1.25} color="#4d7c0f" />
       <StylizedOakTree position={[-13, 0, 6]} scale={1.25} autumn />
       <StylizedPineTree position={[-13, 0, 15]} scale={1.2} />
-      <StylizedOakTree position={[-20, 0, -15]} scale={1.2} color="#4d7c0f" />
       <StylizedOakTree position={[-28, 0, -23]} scale={1.35} autumn />
       <StylizedPineTree position={[-34, 0, -10]} scale={1.1} />
       <StylizedOakTree position={[-20, 0, 6]} scale={1.1} color="#559c19" />
@@ -244,18 +242,13 @@ export const GreenParkAndSuburb: React.FC = () => {
       <StylizedOakTree position={[-34, 0, -14]} scale={1.15} color="#559c19" />
 
       {/* Park Walkway Benches & Streetlamps */}
-      <StylizedParkBench position={[-14.5, 0, -8]} rotation={[0, Math.PI / 2, 0]} />
       <StylizedParkBench position={[-14.5, 0, 10]} rotation={[0, Math.PI / 2, 0]} />
-      <WarmStreetLamp position={[-14.5, 0, 0]} rotationY={Math.PI / 2} />
-      <WarmStreetLamp position={[-14.5, 0, -18]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[-14.5, 0, 1.5]} rotationY={Math.PI / 2} />
       <WarmStreetLamp position={[-14.5, 0, 18]} rotationY={Math.PI / 2} />
 
-      {/* Scattered River Rocks & Blossoming Shrubs */}
-      <RiverRockCluster position={[-16, 0, -6]} scale={1.1} />
+      {/* Scattered River Rocks & Blossoming Shrubs (Clean perimeter framing) */}
       <RiverRockCluster position={[-16, 0, 4]} scale={0.9} />
-      <BloomingShrub position={[-16, 0, -10]} scale={1.1} flowerColor="#f43f5e" />
       <BloomingShrub position={[-16, 0, 8]} scale={1.0} flowerColor="#fbbf24" />
-      <BloomingShrub position={[-22, 0, -8]} scale={1.05} flowerColor="#a855f7" />
 
       {/* North-East Park & Bowling Grandstand Trees */}
       <StylizedOakTree position={[8, 0, -10]} scale={1.2} color="#559c19" />
@@ -277,8 +270,6 @@ export const GreenParkAndSuburb: React.FC = () => {
       <StylizedOakTree position={[-10, 0, 28]} scale={1.2} color="#4d7c0f" />
 
       {/* Additional Park Benches & Street Lamps */}
-      <StylizedParkBench position={[-15, 0, -4]} rotation={[0, -Math.PI / 2, 0]} />
-      <StylizedParkBench position={[-20, 0, -11]} rotation={[0, 0, 0]} />
       <StylizedParkBench position={[-20, 0, 3]} rotation={[0, Math.PI, 0]} />
       <StylizedParkBench position={[-30, 0, 1.5]} rotation={[0, -Math.PI / 2, 0]} />
       <StylizedParkBench position={[11, 0, -14]} rotation={[0, Math.PI / 2, 0]} />
@@ -288,7 +279,7 @@ export const GreenParkAndSuburb: React.FC = () => {
       <WarmStreetLamp position={[7.5, 0, 7]} rotationY={Math.PI / 2} />
       <WarmStreetLamp position={[16, 0, -7]} rotationY={-Math.PI / 2} />
       <WarmStreetLamp position={[16, 0, 7]} rotationY={-Math.PI / 2} />
-      <WarmStreetLamp position={[-23, 0, -3]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[-28, 0, -8]} rotationY={Math.PI / 2} />
       <WarmStreetLamp position={[-23, 0, 15]} rotationY={Math.PI / 2} />
     </group>
   );

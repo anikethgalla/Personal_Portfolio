@@ -180,3 +180,4 @@ export const HollywoodSign: React.FC<HollywoodSignProps> = ({
     </group>
   );
 };
+

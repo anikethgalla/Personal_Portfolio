@@ -62,7 +62,7 @@ export const HeaderHUD: React.FC = () => {
           Projects
         </button>
         <button
-          onClick={() => teleportTo([-20, 1.2, -4])}
+          onClick={() => teleportTo([-20, 1.2, -6])}
           className="px-3 py-1.5 text-xs font-semibold rounded-xl text-[#3d3630] hover:bg-[#c9bfae] transition-colors flex items-center gap-1.5"
         >
           <Hammer className="w-3.5 h-3.5 text-[#ea580c]" />
