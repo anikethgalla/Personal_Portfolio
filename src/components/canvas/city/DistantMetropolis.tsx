@@ -218,11 +218,214 @@ const SuspensionBayBridge: React.FC = () => {
 };
 
 // -------------------------------------------------------------
-// 3. LOW-POLY BAY WATER VESSELS (CARGO SHIPS & SAILBOATS)
+// 3. LUXURY MODERN YACHTS & BAY VESSELS
+// -------------------------------------------------------------
+interface YachtProps {
+  position: [number, number, number];
+  rotation?: [number, number, number];
+  length?: number;
+  hullColor?: string;
+  accentColor?: string;
+  isSuperyacht?: boolean;
+}
+
+const LuxuryYacht: React.FC<YachtProps> = ({
+  position,
+  rotation = [0, 0, 0],
+  length = 14,
+  hullColor = '#ffffff',
+  accentColor = '#0f172a',
+  isSuperyacht = false
+}) => {
+  const width = length * 0.32;
+  const hullHeight = length * 0.12;
+
+  return (
+    <group position={position} rotation={rotation}>
+      {/* Lower Waterline Hull Trim */}
+      <mesh position={[0, 0.22, 0]}>
+        <boxGeometry args={[length, hullHeight * 0.5, width]} />
+        <meshStandardMaterial color={accentColor} roughness={0.4} metalness={0.6} />
+      </mesh>
+
+      {/* Main Sleek Hull (Pointed Bow at +X) */}
+      <mesh position={[-length * 0.08, hullHeight * 0.75, 0]}>
+        <boxGeometry args={[length * 0.84, hullHeight * 0.8, width]} />
+        <meshStandardMaterial color={hullColor} roughness={0.3} />
+      </mesh>
+      {/* Aerodynamic Pointed Bow Wedge */}
+      <mesh position={[length * 0.42, hullHeight * 0.75, 0]} rotation={[0, 0, -0.32]}>
+        <boxGeometry args={[length * 0.28, hullHeight * 0.9, width * 0.92]} />
+        <meshStandardMaterial color={hullColor} roughness={0.3} />
+      </mesh>
+
+      {/* Teak Wood Aft Swim Platform (Stern at -X) */}
+      <mesh position={[-length * 0.52, 0.28, 0]}>
+        <boxGeometry args={[length * 0.1, 0.08, width * 0.85]} />
+        <meshStandardMaterial color="#c28b58" roughness={0.8} />
+      </mesh>
+      {/* Teak Main Deck Surface */}
+      <mesh position={[-length * 0.05, hullHeight * 1.15, 0]}>
+        <boxGeometry args={[length * 0.78, 0.05, width * 0.92]} />
+        <meshStandardMaterial color="#c28b58" roughness={0.8} />
+      </mesh>
+
+      {/* Main Cabin / Salon with Panoramic Tinted Glass */}
+      <group position={[-length * 0.08, hullHeight * 1.55, 0]}>
+        {/* White Cabin Shell */}
+        <mesh>
+          <boxGeometry args={[length * 0.52, hullHeight * 0.75, width * 0.75]} />
+          <meshStandardMaterial color={hullColor} roughness={0.3} />
+        </mesh>
+        {/* Slanted Front Windshield */}
+        <mesh position={[length * 0.24, 0.05, 0]} rotation={[0, 0, -0.45]}>
+          <boxGeometry args={[length * 0.14, hullHeight * 0.65, width * 0.72]} />
+          <meshStandardMaterial color="#0284c7" roughness={0.1} metalness={0.9} />
+        </mesh>
+        {/* Wraparound Side Panoramic Windows */}
+        {[-width * 0.38, width * 0.38].map((wz, wi) => (
+          <mesh key={`win-${wi}`} position={[0, 0.05, wz]}>
+            <boxGeometry args={[length * 0.44, hullHeight * 0.42, 0.04]} />
+            <meshStandardMaterial color="#0284c7" roughness={0.1} metalness={0.9} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Flybridge Upper Sun Deck */}
+      <group position={[-length * 0.14, hullHeight * 2.1, 0]}>
+        {/* Flybridge Deck Floor */}
+        <mesh>
+          <boxGeometry args={[length * 0.36, 0.12, width * 0.62]} />
+          <meshStandardMaterial color={hullColor} roughness={0.3} />
+        </mesh>
+        {/* Flybridge Deflector Windshield */}
+        <mesh position={[length * 0.16, 0.22, 0]} rotation={[0, 0, -0.3]}>
+          <boxGeometry args={[0.08, 0.32, width * 0.58]} />
+          <meshStandardMaterial color="#38bdf8" roughness={0.2} metalness={0.8} />
+        </mesh>
+        {/* Swept-back Radar Arch / Mast */}
+        <mesh position={[-length * 0.12, 0.65, 0]} rotation={[0, 0, -0.2]}>
+          <boxGeometry args={[length * 0.08, 0.95, width * 0.56]} />
+          <meshStandardMaterial color={hullColor} roughness={0.4} />
+        </mesh>
+        {/* White Satellite Comms / Radar Dome */}
+        <mesh position={[-length * 0.12, 1.25, 0]}>
+          <sphereGeometry args={[length * 0.035, 12, 8]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.2} />
+        </mesh>
+        {/* Chrome Navigation Mast Spire */}
+        <mesh position={[-length * 0.12, 1.55, 0]}>
+          <cylinderGeometry args={[0.02, 0.03, 0.6, 6]} />
+          <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.2} />
+        </mesh>
+      </group>
+
+      {/* Forward Bow Sunpad Lounge Cushions (Luxury Orange Accents) */}
+      <mesh position={[length * 0.22, hullHeight * 1.22, 0]} rotation={[0, 0, -0.06]}>
+        <boxGeometry args={[length * 0.18, 0.08, width * 0.48]} />
+        <meshStandardMaterial color="#ea580c" roughness={0.6} />
+      </mesh>
+
+      {/* Superyacht Extra Tier: Aft Jacuzzi / Lounge Deck */}
+      {isSuperyacht && (
+        <group position={[-length * 0.36, hullHeight * 1.35, 0]}>
+          {/* Teak Jacuzzi Ring */}
+          <mesh position={[0, 0.1, 0]}>
+            <cylinderGeometry args={[width * 0.2, width * 0.22, 0.25, 12]} />
+            <meshStandardMaterial color="#cbd5e1" roughness={0.3} />
+          </mesh>
+          {/* Glowing Turquoise Spa Water */}
+          <mesh position={[0, 0.22, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <circleGeometry args={[width * 0.18, 12]} />
+            <meshStandardMaterial color="#06b6d4" roughness={0.1} emissive="#06b6d4" emissiveIntensity={0.25} />
+          </mesh>
+          {/* Twin Satellite Domes on Flybridge */}
+          <mesh position={[length * 0.08, hullHeight * 1.3, -width * 0.22]}>
+            <sphereGeometry args={[length * 0.03, 10, 8]} />
+            <meshStandardMaterial color="#f8fafc" roughness={0.2} />
+          </mesh>
+          <mesh position={[length * 0.08, hullHeight * 1.3, width * 0.22]}>
+            <sphereGeometry args={[length * 0.03, 10, 8]} />
+            <meshStandardMaterial color="#f8fafc" roughness={0.2} />
+          </mesh>
+        </group>
+      )}
+    </group>
+  );
+};
+
+// -------------------------------------------------------------
+// 4. LOW-POLY BAY WATER VESSELS (YACHTS, FREIGHTERS & SAILBOATS)
 // -------------------------------------------------------------
 const BayVessels: React.FC = () => {
   return (
     <group>
+      {/* ======================================================= */}
+      {/* LUXURY YACHTS FLEET                                     */}
+      {/* ======================================================= */}
+      {/* 1. Flagship 18m Triple-Deck Superyacht (Directly in Central Bay view) */}
+      <LuxuryYacht
+        position={[49, 0, -6]}
+        rotation={[0, 0.35, 0]}
+        length={18}
+        hullColor="#ffffff"
+        accentColor="#0f172a"
+        isSuperyacht={true}
+      />
+
+      {/* 2. 14m Luxury Flybridge Yacht (Northern Cape off Lighthouse) */}
+      <LuxuryYacht
+        position={[61, 0, -32]}
+        rotation={[0, -0.55, 0]}
+        length={14}
+        hullColor="#ffffff"
+        accentColor="#0369a1"
+        isSuperyacht={false}
+      />
+
+      {/* 3. 12m Sport Cruiser Yacht (Mid-Bay Center) */}
+      <LuxuryYacht
+        position={[43, 0, 16]}
+        rotation={[0, 0.6, 0]}
+        length={12}
+        hullColor="#f8fafc"
+        accentColor="#b45309"
+        isSuperyacht={false}
+      />
+
+      {/* 4. 16m Luxury Mega Yacht (Southern Bay off Contact Zone) */}
+      <LuxuryYacht
+        position={[53, 0, 48]}
+        rotation={[0, 0.25, 0]}
+        length={16}
+        hullColor="#ffffff"
+        accentColor="#1e3a8a"
+        isSuperyacht={true}
+      />
+
+      {/* 5. 11m Express Cruiser Yacht (Far South Bay) */}
+      <LuxuryYacht
+        position={[57, 0, 84]}
+        rotation={[0, 0.45, 0]}
+        length={11}
+        hullColor="#ffffff"
+        accentColor="#0f766e"
+        isSuperyacht={false}
+      />
+
+      {/* 6. 10m Modern Cruiser Yacht (North Bay near Bridge) */}
+      <LuxuryYacht
+        position={[47, 0, -62]}
+        rotation={[0, -0.4, 0]}
+        length={10}
+        hullColor="#f1f5f9"
+        accentColor="#dc2626"
+        isSuperyacht={false}
+      />
+
+      {/* ======================================================= */}
+      {/* COMMERCIAL FREIGHTERS & SAILBOATS                       */}
+      {/* ======================================================= */}
       {/* Vessel 1: Central Container Cargo Ship */}
       <group position={[46, 0, -25]} rotation={[0, -0.25, 0]}>
         <mesh position={[0, 0.35, 0]}>
