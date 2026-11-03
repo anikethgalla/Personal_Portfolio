@@ -1,5 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
+import { Text } from '@react-three/drei';
 
 // -------------------------------------------------------------
 // 1. INDIVIDUAL PROCEDURAL SKYSCRAPER BUILDINGS
@@ -128,91 +129,240 @@ const Skyscraper: React.FC<BuildingProps> = ({
 };
 
 // -------------------------------------------------------------
-// 2. GRAND SUSPENSION BAY BRIDGE (NORTHERN STRAIT)
+// 2. GRAND SUSPENSION BAY BRIDGE (NORTHERN STRAIT & MOUNTAIN TUNNEL)
 // -------------------------------------------------------------
 const SuspensionBayBridge: React.FC = () => {
   return (
-    <group position={[32, 0, -68]} rotation={[0, 0.4, 0]}>
-      {/* Elevated Highway Deck (Spanning 75 units across the bay) */}
+    <group position={[49.5, 0, -68]}>
+      {/* 1. CONTINUOUS HIGHWAY ROADWAY DECK (Spanning 102m into Mountain Peak W1) */}
       <mesh position={[0, 7.2, 0]}>
-        <boxGeometry args={[75, 0.8, 4.2]} />
+        <boxGeometry args={[102, 0.85, 4.6]} />
         <meshStandardMaterial color="#334155" roughness={0.7} />
       </mesh>
-      {/* Deck Roadway Surface */}
-      <mesh position={[0, 7.62, 0]}>
-        <boxGeometry args={[75, 0.05, 3.6]} />
+      {/* Dark Asphalt Roadway Surface */}
+      <mesh position={[0, 7.64, 0]}>
+        <boxGeometry args={[102, 0.05, 4.0]} />
         <meshStandardMaterial color="#1e293b" roughness={0.8} />
       </mesh>
       {/* Center Yellow Dividing Strip */}
-      <mesh position={[0, 7.66, 0]}>
-        <boxGeometry args={[74, 0.02, 0.15]} />
+      <mesh position={[0, 7.68, 0]}>
+        <boxGeometry args={[101, 0.02, 0.16]} />
         <meshBasicMaterial color="#f59e0b" />
       </mesh>
+      {/* Outer Lane Edge Stripes (White) */}
+      {[-1.8, 1.8].map((wz, wi) => (
+        <mesh key={`deck-edge-${wi}`} position={[0, 7.67, wz]}>
+          <boxGeometry args={[101, 0.015, 0.1]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+      ))}
+      {/* Concrete Outer Safety Barriers */}
+      {[-2.2, 2.2].map((bz, bi) => (
+        <mesh key={`barrier-${bi}`} position={[0, 7.95, bz]} castShadow>
+          <boxGeometry args={[102, 0.55, 0.22]} />
+          <meshStandardMaterial color="#64748b" roughness={0.7} />
+        </mesh>
+      ))}
 
-      {/* Concrete Approach Piers Beneath Deck */}
-      {[-32, -20, 20, 32].map((px, i) => (
+      {/* 2. CONCRETE PIERS BENEATH DECK INTO BAY WATER */}
+      {[-45, -34, -12, 0, 24, 36, 44].map((px, i) => (
         <mesh key={`pier-${i}`} position={[px, 3.6, 0]}>
-          <boxGeometry args={[2.0, 7.2, 3.8]} />
+          <boxGeometry args={[2.2, 7.2, 4.2]} />
           <meshStandardMaterial color="#64748b" roughness={0.8} />
         </mesh>
       ))}
 
-      {/* Dual Main Suspension Towers (Tower 1 at x=-10, Tower 2 at x=10) */}
-      {[-10, 10].map((tx, idx) => (
+      {/* 3. DUAL ICONIC SUSPENSION TOWERS (25m Tall, International Orange) */}
+      {[-22, 12].map((tx, idx) => (
         <group key={`tower-${idx}`} position={[tx, 0, 0]}>
           {/* Submerged Concrete Foundation Caisson */}
-          <mesh position={[0, 1.8, 0]}>
-            <boxGeometry args={[4.2, 3.6, 6.2]} />
+          <mesh position={[0, 1.9, 0]}>
+            <boxGeometry args={[4.6, 3.8, 6.6]} />
             <meshStandardMaterial color="#475569" roughness={0.9} />
           </mesh>
 
           {/* Dual Vertical Steel Pillars */}
-          {[-2.0, 2.0].map((pz, pzi) => (
-            <mesh key={`p-${pzi}`} position={[0, 13.5, pz]}>
-              <boxGeometry args={[1.4, 21, 1.4]} />
+          {[-2.1, 2.1].map((pz, pzi) => (
+            <mesh key={`p-${pzi}`} position={[0, 14.5, pz]}>
+              <boxGeometry args={[1.5, 23, 1.5]} />
               <meshStandardMaterial color="#c2410c" roughness={0.5} />
             </mesh>
           ))}
 
           {/* Upper Cross Strut */}
-          <mesh position={[0, 21.5, 0]}>
-            <boxGeometry args={[1.5, 1.2, 5.0]} />
+          <mesh position={[0, 23.0, 0]}>
+            <boxGeometry args={[1.6, 1.4, 5.4]} />
             <meshStandardMaterial color="#c2410c" roughness={0.5} />
           </mesh>
           {/* Middle Cross Strut above deck */}
-          <mesh position={[0, 14.5, 0]}>
-            <boxGeometry args={[1.5, 1.0, 5.0]} />
+          <mesh position={[0, 15.5, 0]}>
+            <boxGeometry args={[1.6, 1.2, 5.4]} />
             <meshStandardMaterial color="#c2410c" roughness={0.5} />
           </mesh>
 
-          {/* Red Safety Beacon on Tower Top */}
-          <mesh position={[0, 24.3, 0]}>
-            <sphereGeometry args={[0.3, 8, 8]} />
+          {/* Flashing Aircraft Warning Beacon on Tower Top */}
+          <mesh position={[0, 26.2, 0]}>
+            <sphereGeometry args={[0.35, 8, 8]} />
             <meshBasicMaterial color="#ef4444" />
           </mesh>
         </group>
       ))}
 
-      {/* Main Sweeping Suspension Cables */}
-      {[-2.0, 2.0].map((cz, ci) => (
+      {/* 4. SWEEPING SUSPENSION CABLES ANCHORED INTO MOUNTAIN */}
+      {[-2.1, 2.1].map((cz, ci) => (
         <group key={`cable-${ci}`} position={[0, 0, cz]}>
-          {/* Center Sagging Cable Span */}
-          <mesh position={[0, 17.5, 0]} rotation={[0, 0, 0]}>
-            <boxGeometry args={[20, 0.22, 0.22]} />
+          {/* Center Sagging Main Cable Arc between Towers (-22 to +12) */}
+          <mesh position={[-5, 17.5, 0]}>
+            <boxGeometry args={[34.5, 0.24, 0.24]} />
             <meshStandardMaterial color="#ea580c" roughness={0.4} />
           </mesh>
-          {/* Left Anchor Cable Span */}
-          <mesh position={[-23, 15.5, 0]} rotation={[0, 0, 0.42]}>
-            <boxGeometry args={[28, 0.22, 0.22]} />
+
+          {/* West Anchor Cable (Down to Metropolis Shore) */}
+          <mesh position={[-35, 16.5, 0]} rotation={[0, 0, 0.49]}>
+            <boxGeometry args={[28.5, 0.24, 0.24]} />
             <meshStandardMaterial color="#ea580c" roughness={0.4} />
           </mesh>
-          {/* Right Anchor Cable Span */}
-          <mesh position={[23, 15.5, 0]} rotation={[0, 0, -0.42]}>
-            <boxGeometry args={[28, 0.22, 0.22]} />
+
+          {/* East Anchor Cable (Plunging Deep into Mountain Abutment) */}
+          <mesh position={[29, 16.5, 0]} rotation={[0, 0, -0.38]}>
+            <boxGeometry args={[36.5, 0.24, 0.24]} />
             <meshStandardMaterial color="#ea580c" roughness={0.4} />
           </mesh>
+
+          {/* Vertical Suspender Ropes */}
+          {[-18, -14, -10, -6, -2, 2, 6].map((sx) => (
+            <mesh key={`susp-${sx}`} position={[sx, 12.8, 0]}>
+              <cylinderGeometry args={[0.02, 0.02, 10.4, 4]} />
+              <meshStandardMaterial color="#ea580c" roughness={0.4} />
+            </mesh>
+          ))}
         </group>
       ))}
+
+      {/* 5. MOUNTAIN HIGHWAY TUNNEL PORTAL & ANCHORAGE INTO PEAK W1 */}
+      {/* Concrete Cable Anchorage Block Embedded in Rock Face */}
+      <mesh position={[46.5, 5.2, 0]}>
+        <boxGeometry args={[4.8, 8.5, 7.8]} />
+        <meshStandardMaterial color="#475569" roughness={0.8} />
+      </mesh>
+      {/* Steel Cable Tie-down Plates */}
+      {[-2.1, 2.1].map((az, ai) => (
+        <mesh key={`anchor-plate-${ai}`} position={[45.2, 8.2, az]}>
+          <boxGeometry args={[1.2, 0.8, 0.8]} />
+          <meshStandardMaterial color="#1e293b" roughness={0.4} metalness={0.8} />
+        </mesh>
+      ))}
+
+      {/* Arched Stone Tunnel Portal Structure */}
+      <group position={[48.8, 7.64, 0]}>
+        {/* Massive Stone Portal Facade */}
+        <mesh position={[0, 3.2, 0]}>
+          <boxGeometry args={[3.8, 7.2, 7.8]} />
+          <meshStandardMaterial color="#334155" roughness={0.85} />
+        </mesh>
+        {/* Dark Recessed Tunnel Interior */}
+        <mesh position={[0.2, 2.2, 0]}>
+          <boxGeometry args={[4.2, 4.6, 4.4]} />
+          <meshStandardMaterial color="#050914" roughness={0.9} />
+        </mesh>
+        {/* Arch Keystone Trim */}
+        <mesh position={[-1.95, 4.6, 0]}>
+          <boxGeometry args={[0.3, 0.6, 4.8]} />
+          <meshStandardMaterial color="#64748b" roughness={0.7} />
+        </mesh>
+
+        {/* Illuminated Overhead Tunnel Name Sign */}
+        <group position={[-2.0, 5.6, 0]} rotation={[0, -Math.PI / 2, 0]}>
+          <mesh>
+            <boxGeometry args={[4.6, 0.85, 0.15]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.5} />
+          </mesh>
+          <Text
+            position={[0, 0.08, 0.1]}
+            fontSize={0.24}
+            fontWeight={900}
+            color="#38bdf8"
+            anchorX="center"
+            anchorY="middle"
+            letterSpacing={0.08}
+          >
+            NORTH VALLEY PASS TUNNEL
+          </Text>
+          <Text
+            position={[0, -0.22, 0.1]}
+            fontSize={0.13}
+            fontWeight={700}
+            color="#94a3b8"
+            anchorX="center"
+            anchorY="middle"
+            letterSpacing={0.12}
+          >
+            METROPOLIS BAY CONNECTOR
+          </Text>
+        </group>
+
+        {/* Lane Clearance LED Indicators (Green Arrow Eastbound) */}
+        {[-1.0, 1.0].map((lz, li) => (
+          <group key={`sig-${li}`} position={[-1.95, 4.1, lz]}>
+            <mesh>
+              <boxGeometry args={[0.1, 0.35, 0.35]} />
+              <meshStandardMaterial color="#1e293b" />
+            </mesh>
+            <mesh position={[-0.06, 0, 0]}>
+              <sphereGeometry args={[0.1, 8, 8]} />
+              <meshBasicMaterial color="#10b981" />
+            </mesh>
+          </group>
+        ))}
+      </group>
+
+      {/* 6. LOW-POLY TRAFFIC ON THE BRIDGE ROADWAY */}
+      {/* Vehicle 1: Eastbound Blue & White Semi-Truck driving into Tunnel */}
+      <group position={[28, 8.4, -1.1]}>
+        {/* Cab */}
+        <mesh position={[1.4, 0.3, 0]} castShadow>
+          <boxGeometry args={[2.0, 1.5, 1.3]} />
+          <meshStandardMaterial color="#2563eb" roughness={0.4} />
+        </mesh>
+        {/* Windshield */}
+        <mesh position={[2.42, 0.5, 0]}>
+          <planeGeometry args={[0.02, 0.6]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.1} metalness={0.9} />
+        </mesh>
+        {/* Cargo Box Trailer */}
+        <mesh position={[-1.4, 0.5, 0]} castShadow>
+          <boxGeometry args={[4.2, 1.9, 1.4]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.5} />
+        </mesh>
+      </group>
+
+      {/* Vehicle 2: Westbound Red Delivery Van driving towards Metropolis */}
+      <group position={[14, 8.1, 1.1]} rotation={[0, Math.PI, 0]}>
+        <mesh position={[0, 0.2, 0]} castShadow>
+          <boxGeometry args={[2.8, 1.2, 1.2]} />
+          <meshStandardMaterial color="#dc2626" roughness={0.4} />
+        </mesh>
+        <mesh position={[1.42, 0.3, 0]}>
+          <planeGeometry args={[0.02, 0.5]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.1} metalness={0.9} />
+        </mesh>
+      </group>
+
+      {/* Vehicle 3: Eastbound Orange Pickup */}
+      <group position={[-32, 7.9, -1.1]}>
+        <mesh castShadow>
+          <boxGeometry args={[2.2, 0.8, 1.1]} />
+          <meshStandardMaterial color="#ea580c" roughness={0.4} />
+        </mesh>
+      </group>
+
+      {/* Vehicle 4: Westbound Silver Sedan */}
+      <group position={[-6, 7.8, 1.1]} rotation={[0, Math.PI, 0]}>
+        <mesh castShadow>
+          <boxGeometry args={[2.0, 0.7, 1.0]} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.3} metalness={0.6} />
+        </mesh>
+      </group>
     </group>
   );
 };
