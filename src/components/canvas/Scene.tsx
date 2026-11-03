@@ -11,6 +11,7 @@ import { ProjectsZone } from './zones/ProjectsZone';
 import { SkillsZone } from './zones/SkillsZone';
 import { ContactZone } from './zones/ContactZone';
 import { CoastalPort } from './city/CoastalPort';
+import { DistantMetropolis } from './city/DistantMetropolis';
 import { GreenParkAndSuburb } from './city/GreenParkAndSuburb';
 import { EastTownDistrict } from './city/EastTownDistrict';
 import { SkyDome } from './environment/SkyDome';
@@ -70,6 +71,7 @@ export const Scene: React.FC = () => {
           <Boundaries />
           <ScenicValleys />
           <CoastalPort />
+          <DistantMetropolis />
           <GreenParkAndSuburb />
           <EastTownDistrict />
           <HeroZone />
