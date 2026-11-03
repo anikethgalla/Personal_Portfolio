@@ -45,7 +45,6 @@ const ShowroomStage: React.FC<{
   );
 };
 
-
 // -------------------------------------------------------------
 // STAT BAR COMPONENT
 // -------------------------------------------------------------
@@ -57,10 +56,10 @@ const StatBar: React.FC<{ label: string; value: number; color?: string }> = ({
   return (
     <div>
       <div className="flex justify-between items-center text-xs font-bold tracking-wider mb-1">
-        <span className="text-slate-300 uppercase">{label}</span>
-        <span className="text-white font-mono">{value} / 100</span>
+        <span className="text-[#5c5046] uppercase font-semibold">{label}</span>
+        <span className="text-[#1f1915] font-mono font-bold">{value} / 100</span>
       </div>
-      <div className="h-2 w-full bg-slate-800/80 rounded-full overflow-hidden p-0.5 border border-slate-700/60">
+      <div className="h-2 w-full bg-[#ded5c6] rounded-full overflow-hidden p-0.5 border border-[#cfc4b2]">
         <div
           className="h-full rounded-full transition-all duration-500 ease-out shadow-sm"
           style={{
@@ -74,7 +73,7 @@ const StatBar: React.FC<{ label: string; value: number; color?: string }> = ({
 };
 
 // -------------------------------------------------------------
-// MAIN CAR SHOWROOM MODAL COMPONENT
+// MAIN CAR SHOWROOM MODAL COMPONENT (UNIFIED WARM BEIGE PALETTE)
 // -------------------------------------------------------------
 export const CarShowroom: React.FC = () => {
   const {
@@ -109,18 +108,21 @@ export const CarShowroom: React.FC = () => {
   const activeConfig = VEHICLES_DATA[hoveredVehicle || selectedVehicleId];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-slate-950/95 backdrop-blur-xl select-none font-['Plus_Jakarta_Sans',sans-serif] animate-fadeIn text-white overflow-hidden">
-      {/* TOP HEADER BAR */}
-      <header className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex flex-col bg-[#e8dfd1] select-none font-['Plus_Jakarta_Sans',sans-serif] animate-fadeIn text-[#241e1a] overflow-hidden">
+      {/* TOP HEADER BAR (WARM BEIGE ARCHITECTURAL HEADER) */}
+      <header className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-[#d8cec0] bg-[#f4ece1]/90 backdrop-blur-md">
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center font-black text-slate-950 text-base shadow-lg shadow-orange-500/20">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center font-black text-stone-950 text-base shadow-md shadow-orange-500/20">
             AG
           </div>
           <div>
-            <h1 className="text-base font-black tracking-tight text-white flex items-center gap-2">
-              ANIKETH METROPOLIS <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-400 font-bold border border-orange-500/30">VEHICLE SELECT</span>
+            <h1 className="text-base font-black tracking-tight text-[#1f1915] flex items-center gap-2">
+              ANIKETH METROPOLIS{' '}
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-orange-500/15 text-orange-700 font-bold border border-orange-500/30">
+                VEHICLE SELECT
+              </span>
             </h1>
-            <p className="text-xs text-slate-400 font-medium">
+            <p className="text-xs text-[#75685d] font-medium">
               Choose your ride to explore the interactive 3D engineering portfolio
             </p>
           </div>
@@ -129,11 +131,13 @@ export const CarShowroom: React.FC = () => {
         {/* Quick Start / Skip Button */}
         <button
           onClick={handleStartDriving}
-          className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700 flex items-center gap-1.5 cursor-pointer"
+          className="px-4 py-2 text-xs font-bold text-[#42372e] hover:text-[#1f1915] bg-[#dfd6c7] hover:bg-[#d5caa8] rounded-xl transition border border-[#cfc4b2] flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
           title="Press Esc to Skip to World"
         >
           <span>Skip to World ➔</span>
-          <kbd className="px-1.5 py-0.5 rounded bg-slate-700 text-[10px] text-slate-300 font-mono">Esc</kbd>
+          <kbd className="px-1.5 py-0.5 rounded bg-[#cfc4b2] text-[10px] text-[#42372e] font-mono font-bold">
+            Esc
+          </kbd>
         </button>
       </header>
 
@@ -154,38 +158,38 @@ export const CarShowroom: React.FC = () => {
             />
           </Canvas>
 
-          {/* Garage Status Badge */}
-          <div className="absolute top-4 left-6 px-3.5 py-1.5 rounded-full bg-stone-900/80 border border-stone-700/60 text-xs font-bold text-amber-300 pointer-events-none flex items-center gap-2 shadow-lg backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          {/* Garage Status Badge (Matching Warm Beige Architectural Aesthetic) */}
+          <div className="absolute top-4 left-6 px-3.5 py-1.5 rounded-full bg-[#f4ece1]/90 border border-[#d8cec0] text-xs font-bold text-[#9a3412] pointer-events-none flex items-center gap-2 shadow-md backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>HOME GARAGE // READY TO ROLL</span>
           </div>
         </div>
 
         {/* SIDEBAR: VEHICLE SPECS & CUSTOMIZATION PANEL (Right) */}
-        <div className="w-full lg:w-[420px] bg-slate-900/80 border-t lg:border-t-0 lg:border-l border-slate-800/80 flex flex-col p-6 backdrop-blur-xl overflow-y-auto">
+        <div className="w-full lg:w-[420px] bg-[#f5efe6]/95 border-t lg:border-t-0 lg:border-l border-[#d8cec0] flex flex-col p-6 backdrop-blur-xl overflow-y-auto">
           {/* Vehicle Category Badge & Name */}
           <div className="mb-4">
-            <span className="text-[11px] font-extrabold tracking-widest text-orange-400 uppercase bg-orange-500/10 px-2.5 py-1 rounded-md border border-orange-500/20">
+            <span className="text-[11px] font-extrabold tracking-widest text-orange-700 uppercase bg-orange-500/15 px-2.5 py-1 rounded-md border border-orange-500/30">
               {activeConfig.category}
             </span>
-            <h2 className="text-2xl font-black text-white tracking-tight mt-2">
+            <h2 className="text-2xl font-black text-[#1f1915] tracking-tight mt-2">
               {activeConfig.name}
             </h2>
-            <p className="text-xs font-semibold text-sky-400 mt-0.5">
+            <p className="text-xs font-bold text-sky-700 mt-0.5">
               {activeConfig.tagline}
             </p>
-            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+            <p className="text-xs text-[#5c5046] mt-2 leading-relaxed">
               {activeConfig.description}
             </p>
           </div>
 
           {/* COLOR PICKER PALETTE */}
-          <div className="mb-6 bg-slate-800/50 p-3.5 rounded-2xl border border-slate-700/60">
+          <div className="mb-6 bg-[#ede5d8] p-3.5 rounded-2xl border border-[#d8cec0]">
             <div className="flex justify-between items-center mb-2.5">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-slate-300">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-[#5c5046]">
                 Body Finish / Paint
               </span>
-              <span className="text-[11px] font-mono text-slate-400 uppercase">
+              <span className="text-[11px] font-mono text-[#75685d] uppercase font-bold">
                 {selectedVehicleColor}
               </span>
             </div>
@@ -202,7 +206,7 @@ export const CarShowroom: React.FC = () => {
                     style={{ backgroundColor: swatchColor }}
                     className={`w-8 h-8 rounded-full transition-all transform hover:scale-110 relative shadow-md ${
                       isSelected
-                        ? 'ring-4 ring-orange-500 ring-offset-2 ring-offset-slate-900 scale-110'
+                        ? 'ring-4 ring-orange-500 ring-offset-2 ring-offset-[#ede5d8] scale-110'
                         : 'hover:opacity-90'
                     }`}
                     title={swatchColor}
@@ -219,26 +223,26 @@ export const CarShowroom: React.FC = () => {
           </div>
 
           {/* PERFORMANCE STATS BARS */}
-          <div className="space-y-3 mb-6 bg-slate-800/40 p-4 rounded-2xl border border-slate-700/50">
-            <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">
+          <div className="space-y-3 mb-6 bg-[#ede5d8] p-4 rounded-2xl border border-[#d8cec0]">
+            <h3 className="text-xs font-black uppercase tracking-wider text-[#75685d] mb-2">
               Handling & Tuning Dynamics
             </h3>
-            <StatBar label="Top Speed" value={activeConfig.stats.speed} color="#38bdf8" />
-            <StatBar label="Acceleration" value={activeConfig.stats.acceleration} color="#facc15" />
-            <StatBar label="Handling" value={activeConfig.stats.handling} color="#4ade80" />
-            <StatBar label="Drift Control" value={activeConfig.stats.drift} color="#f97316" />
+            <StatBar label="Top Speed" value={activeConfig.stats.speed} color="#0284c7" />
+            <StatBar label="Acceleration" value={activeConfig.stats.acceleration} color="#d97706" />
+            <StatBar label="Handling" value={activeConfig.stats.handling} color="#16a34a" />
+            <StatBar label="Drift Control" value={activeConfig.stats.drift} color="#ea580c" />
           </div>
 
           {/* PRIMARY CONFIRM & DRIVE BUTTON */}
           <div className="mt-auto pt-2">
             <button
               onClick={handleStartDriving}
-              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 font-black text-sm tracking-wide text-slate-950 shadow-xl shadow-orange-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 font-black text-sm tracking-wide text-stone-950 shadow-xl shadow-orange-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>IGNITE ENGINE & DRIVE</span>
               <span className="text-base">➔</span>
             </button>
-            <p className="text-[11px] text-center text-slate-500 font-medium mt-2">
+            <p className="text-[11px] text-center text-[#8c7e73] font-medium mt-2">
               Use WASD or Arrow Keys to navigate the 3D portfolio world
             </p>
           </div>
@@ -246,7 +250,7 @@ export const CarShowroom: React.FC = () => {
       </div>
 
       {/* BOTTOM CAROUSEL TABS (All 6 Vehicles) */}
-      <footer className="relative z-10 px-6 py-4 border-t border-slate-800/80 bg-slate-900/90 backdrop-blur-md">
+      <footer className="relative z-10 px-6 py-4 border-t border-[#d8cec0] bg-[#f4ece1]/95 backdrop-blur-md">
         <div className="max-w-6xl mx-auto flex items-center justify-center gap-3 overflow-x-auto pb-1">
           {VEHICLE_LIST.map((v) => {
             const isSelected = selectedVehicleId === v.id;
@@ -261,8 +265,8 @@ export const CarShowroom: React.FC = () => {
                 }}
                 className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-left transition-all duration-200 border cursor-pointer ${
                   isSelected
-                    ? 'bg-orange-500/15 border-orange-500 shadow-lg shadow-orange-500/10 scale-102'
-                    : 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-600'
+                    ? 'bg-orange-500/15 border-orange-500 shadow-md shadow-orange-500/10 scale-102'
+                    : 'bg-[#ede5d8] border-[#d8cec0] hover:bg-[#e4dcce] hover:border-[#cbbfad]'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -270,11 +274,11 @@ export const CarShowroom: React.FC = () => {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: isSelected ? selectedVehicleColor : v.defaultColor }}
                   />
-                  <span className={`text-xs font-black ${isSelected ? 'text-orange-400' : 'text-slate-200'}`}>
+                  <span className={`text-xs font-black ${isSelected ? 'text-orange-700' : 'text-[#2e2620]'}`}>
                     {v.name}
                   </span>
                 </div>
-                <div className="text-[10px] text-slate-400 font-semibold mt-0.5">
+                <div className="text-[10px] text-[#75685d] font-semibold mt-0.5">
                   {v.category}
                 </div>
               </button>
@@ -285,4 +289,3 @@ export const CarShowroom: React.FC = () => {
     </div>
   );
 };
-
