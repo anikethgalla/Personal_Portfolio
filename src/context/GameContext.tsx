@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Project, projectsData } from '../data/projectsData';
+import { ExperienceItem, experienceData } from '../data/experienceData';
 import { soundManager } from '../audio/soundManager';
 import { VehicleId, VEHICLES_DATA } from '../data/vehiclesData';
 
@@ -17,6 +18,16 @@ interface GameContextType {
   fpvProject: Project | null;
   enterFpv: (project: Project) => void;
   exitFpv: () => void;
+  // Experience & Societies State
+  activeExperience: ExperienceItem | null;
+  setActiveExperience: (exp: ExperienceItem | null) => void;
+  currentExperienceIndex: number;
+  setCurrentExperienceIndex: (index: number) => void;
+  nextExperience: () => void;
+  prevExperience: () => void;
+  fpvExperience: ExperienceItem | null;
+  enterExperienceFpv: (exp: ExperienceItem) => void;
+  exitExperienceFpv: () => void;
   isRecruiterDrawerOpen: boolean;
   setIsRecruiterDrawerOpen: (open: boolean) => void;
   isMuted: boolean;
@@ -71,6 +82,44 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     soundManager.playChime();
   };
+
+  // Experience & Societies State
+  const [activeExperience, setActiveExperience] = useState<ExperienceItem | null>(null);
+  const [currentExperienceIndex, setCurrentExperienceIndex] = useState<number>(0);
+  const [fpvExperience, setFpvExperience] = useState<ExperienceItem | null>(null);
+
+  const nextExperience = () => {
+    const nextIdx = (currentExperienceIndex + 1) % experienceData.length;
+    setCurrentExperienceIndex(nextIdx);
+    const exp = experienceData[nextIdx];
+    setActiveExperience(exp);
+    if (fpvExperience) {
+      setFpvExperience(exp);
+    }
+    soundManager.playChime();
+  };
+
+  const prevExperience = () => {
+    const prevIdx = (currentExperienceIndex - 1 + experienceData.length) % experienceData.length;
+    setCurrentExperienceIndex(prevIdx);
+    const exp = experienceData[prevIdx];
+    setActiveExperience(exp);
+    if (fpvExperience) {
+      setFpvExperience(exp);
+    }
+    soundManager.playChime();
+  };
+
+  const enterExperienceFpv = (exp: ExperienceItem) => {
+    setFpvProject(null);
+    setFpvExperience(exp);
+    soundManager.playChime();
+  };
+
+  const exitExperienceFpv = () => {
+    setFpvExperience(null);
+    soundManager.playChime();
+  };
   const [isRecruiterDrawerOpen, setIsRecruiterDrawerOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(() => soundManager.getMuted());
   const [teleportTarget, setTeleportTarget] = useState<[number, number, number] | null>(null);
@@ -103,6 +152,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const enterFpv = (project: Project) => {
+    setFpvExperience(null);
     setFpvProject(project);
     soundManager.playChime();
   };
@@ -121,6 +171,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (fpvProject) {
       setFpvProject(null);
     }
+    if (fpvExperience) {
+      setFpvExperience(null);
+    }
     setTeleportTarget(coords);
   };
 
@@ -131,6 +184,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const triggerResetVehicle = () => {
     if (fpvProject) {
       setFpvProject(null);
+    }
+    if (fpvExperience) {
+      setFpvExperience(null);
     }
     setResetVehicleTrigger((c) => c + 1);
   };
@@ -164,6 +220,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fpvProject,
         enterFpv,
         exitFpv,
+        activeExperience,
+        setActiveExperience,
+        currentExperienceIndex,
+        setCurrentExperienceIndex,
+        nextExperience,
+        prevExperience,
+        fpvExperience,
+        enterExperienceFpv,
+        exitExperienceFpv,
         isRecruiterDrawerOpen,
         setIsRecruiterDrawerOpen,
         isMuted,

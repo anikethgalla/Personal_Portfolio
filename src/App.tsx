@@ -5,6 +5,7 @@ import { HeaderHUD } from './components/ui/HeaderHUD';
 import { ControlsHelp } from './components/ui/ControlsHelp';
 import { MobileControls } from './components/ui/MobileControls';
 import { ProjectModal } from './components/ui/ProjectModal';
+import { ExperienceModal } from './components/ui/ExperienceModal';
 import { RecruiterDrawer } from './components/ui/RecruiterDrawer';
 import { CarShowroom } from './components/ui/CarShowroom';
 
@@ -36,6 +37,7 @@ export const App: React.FC = () => {
         <ControlsHelp />
         <MobileControls />
         <ProjectModal />
+        <ExperienceModal />
         <RecruiterDrawer />
         <CarShowroom />
       </main>

@@ -11,7 +11,7 @@ interface CameraFollowProps {
 
 export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) => {
   const { camera } = useThree();
-  const { fpvProject } = useGame();
+  const { fpvProject, fpvExperience } = useGame();
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
   const isDriving = useRef(false);
@@ -50,6 +50,24 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
       // Drive-In Cinema FPV: Driver seat looking directly up at the billboard screen
       const desiredFpvPos = new THREE.Vector3(19.0, 1.8, -16.0);
       const desiredFpvLookAt = new THREE.Vector3(27.58, 3.2, -16.0);
+
+      camera.position.lerp(desiredFpvPos, delta * 4.8);
+      currentLookAt.current.lerp(desiredFpvLookAt, delta * 6.0);
+      camera.lookAt(currentLookAt.current);
+      return;
+    }
+
+    // ========================================================
+    // 2. FPV Camera Mode (Experience & Societies Diner)
+    // ========================================================
+    if (fpvExperience) {
+      if (controlsRef.current) {
+        controlsRef.current.enabled = false;
+      }
+
+      // Diner FPV: Driver seat looking directly at the Diner counter showcase
+      const desiredFpvPos = new THREE.Vector3(20.0, 1.8, 16.0);
+      const desiredFpvLookAt = new THREE.Vector3(26.5, 2.0, 16.0);
 
       camera.position.lerp(desiredFpvPos, delta * 4.8);
       currentLookAt.current.lerp(desiredFpvLookAt, delta * 6.0);
