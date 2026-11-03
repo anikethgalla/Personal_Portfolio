@@ -108,7 +108,7 @@ export const CarShowroom: React.FC = () => {
   const activeConfig = VEHICLES_DATA[hoveredVehicle || selectedVehicleId];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#e8dfd1] select-none font-['Plus_Jakarta_Sans',sans-serif] animate-fadeIn text-[#241e1a] overflow-hidden">
+    <div className="fixed inset-0 z-[100] flex flex-col bg-[#e8dfd1] select-none font-['Plus_Jakarta_Sans',sans-serif] animate-fadeIn text-[#241e1a] overflow-hidden">
       {/* TOP HEADER BAR (WARM BEIGE ARCHITECTURAL HEADER) */}
       <header className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-[#d8cec0] bg-[#f4ece1]/90 backdrop-blur-md">
         <div className="flex items-center space-x-3">

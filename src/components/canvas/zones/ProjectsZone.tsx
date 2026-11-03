@@ -51,12 +51,17 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
     fpvExperience,
     fpvEducation,
     enterEducationFpv,
-    exitEducationFpv
+    exitEducationFpv,
+    isCarSelectOpen
   } = useGame();
 
   const driveInBayPos = new THREE.Vector3(20, 0, -16);
   const dinerBayPos = new THREE.Vector3(20, 0, 16);
   const educationBayPos = new THREE.Vector3(20, 0, 0);
+
+  const cinemaScreenPos = new THREE.Vector3(27.58, 3.2, -16.0);
+  const dinerScreenPos = new THREE.Vector3(25.38, 1.7, 16.0);
+  const educationScreenPos = new THREE.Vector3(28.93, 1.62, 0.0);
 
   const isParkedAtCinema = vehiclePosition ? driveInBayPos.distanceTo(vehiclePosition) < 5.2 : false;
   const isParkedAtDiner = vehiclePosition ? dinerBayPos.distanceTo(vehiclePosition) < 5.2 : false;
@@ -69,30 +74,51 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
   const hasAutoEnteredDiner = React.useRef(false);
   const hasAutoEnteredEducation = React.useRef(false);
 
-  // Occlude/cull 3D in-world HTML screens when camera is behind the buildings
-  const [cinemaVisible, setCinemaVisible] = React.useState(true);
-  const cinemaVisibleRef = React.useRef(true);
-  const [dinerVisible, setDinerVisible] = React.useState(true);
-  const dinerVisibleRef = React.useRef(true);
-  const [educationVisible, setEducationVisible] = React.useState(true);
-  const educationVisibleRef = React.useRef(true);
+  // Occlude/cull 3D in-world HTML screens: only active when near the bay, facing front, and NOT in garage
+  const [cinemaVisible, setCinemaVisible] = React.useState(false);
+  const cinemaVisibleRef = React.useRef(false);
+  const [dinerVisible, setDinerVisible] = React.useState(false);
+  const dinerVisibleRef = React.useRef(false);
+  const [educationVisible, setEducationVisible] = React.useState(false);
+  const educationVisibleRef = React.useRef(false);
 
   useFrame(({ camera }) => {
-    // 0. Screen Culling Check (Cinema Billboard at x = 27.57, Diner at x = 25.38; both face -X)
-    const canSeeCinema = camera.position.x < 27.4;
+    // 0. Screen Culling & Proximity Checks
+    if (isCarSelectOpen) {
+      if (cinemaVisibleRef.current) {
+        cinemaVisibleRef.current = false;
+        setCinemaVisible(false);
+      }
+      if (dinerVisibleRef.current) {
+        dinerVisibleRef.current = false;
+        setDinerVisible(false);
+      }
+      if (educationVisibleRef.current) {
+        educationVisibleRef.current = false;
+        setEducationVisible(false);
+      }
+      return;
+    }
+
+    // Cinema Screen: only mount HTML within 26m and from the front
+    const distCamCinema = camera.position.distanceTo(cinemaScreenPos);
+    const canSeeCinema = camera.position.x < 27.4 && distCamCinema < 26.0;
     if (canSeeCinema !== cinemaVisibleRef.current) {
       cinemaVisibleRef.current = canSeeCinema;
       setCinemaVisible(canSeeCinema);
     }
 
-    const canSeeDiner = camera.position.x < 25.3;
+    // Diner Screen: only mount HTML within 26m and from the front
+    const distCamDiner = camera.position.distanceTo(dinerScreenPos);
+    const canSeeDiner = camera.position.x < 25.3 && distCamDiner < 26.0;
     if (canSeeDiner !== dinerVisibleRef.current) {
       dinerVisibleRef.current = canSeeDiner;
       setDinerVisible(canSeeDiner);
     }
 
-    // Food Truck at x = 30. Front board faces -X at x = 28.93
-    const canSeeEducation = camera.position.x < 28.9;
+    // Food Truck Screen: only mount HTML within 26m and from the front
+    const distCamEducation = camera.position.distanceTo(educationScreenPos);
+    const canSeeEducation = camera.position.x < 28.9 && distCamEducation < 26.0;
     if (canSeeEducation !== educationVisibleRef.current) {
       educationVisibleRef.current = canSeeEducation;
       setEducationVisible(canSeeEducation);
