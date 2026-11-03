@@ -1,85 +1,13 @@
 import React from 'react';
 import { RigidBody } from '@react-three/rapier';
 import { Text } from '@react-three/drei';
-
-interface TreeProps {
-  position: [number, number, number];
-  scale?: number;
-  color?: string;
-}
-
-const LowPolyPineTree: React.FC<{ position: [number, number, number]; scale?: number }> = ({
-  position,
-  scale = 1
-}) => {
-  return (
-    <group position={position} scale={scale}>
-      <mesh position={[0, 0.7, 0]} castShadow>
-        <cylinderGeometry args={[0.2, 0.26, 1.4, 6]} />
-        <meshStandardMaterial color="#78350f" roughness={0.9} />
-      </mesh>
-      {/* 3 Tiered Pine Foliage Cones with Low-Poly Facets */}
-      <mesh position={[0, 1.8, 0]} castShadow>
-        <coneGeometry args={[1.7, 2.0, 7]} />
-        <meshStandardMaterial color="#2d4a12" roughness={0.7} flatShading />
-      </mesh>
-      <mesh position={[0, 3.0, 0]} castShadow>
-        <coneGeometry args={[1.3, 1.8, 7]} />
-        <meshStandardMaterial color="#365816" roughness={0.7} flatShading />
-      </mesh>
-      <mesh position={[0, 4.1, 0]} castShadow>
-        <coneGeometry args={[0.85, 1.5, 7]} />
-        <meshStandardMaterial color="#3f6212" roughness={0.7} flatShading />
-      </mesh>
-    </group>
-  );
-};
-
-const TownTree: React.FC<TreeProps> = ({ position, scale = 1, color = '#65a30d' }) => {
-  return (
-    <group position={position} scale={scale}>
-      <RigidBody type="fixed" colliders="hull" friction={0.6}>
-        <mesh position={[0, 0.9, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.24, 0.3, 1.8, 8]} />
-          <meshStandardMaterial color="#78350f" roughness={0.9} />
-        </mesh>
-      </RigidBody>
-      <group position={[0, 2.5, 0]}>
-        <mesh position={[0, 0, 0]} castShadow>
-          <sphereGeometry args={[1.3, 9, 8]} />
-          <meshStandardMaterial color={color} roughness={0.6} />
-        </mesh>
-        <mesh position={[0, 0.7, 0]} castShadow>
-          <sphereGeometry args={[0.9, 9, 8]} />
-          <meshStandardMaterial color={color} roughness={0.6} />
-        </mesh>
-        <mesh position={[0.45, -0.2, 0.35]} castShadow>
-          <sphereGeometry args={[0.75, 8, 7]} />
-          <meshStandardMaterial color="#4d7c0f" roughness={0.6} />
-        </mesh>
-      </group>
-    </group>
-  );
-};
-
-const TownLamp: React.FC<{ position: [number, number, number] }> = ({ position }) => {
-  return (
-    <group position={position}>
-      <mesh position={[0, 1.6, 0]} castShadow>
-        <cylinderGeometry args={[0.07, 0.09, 3.2, 8]} />
-        <meshStandardMaterial color="#1e293b" roughness={0.5} />
-      </mesh>
-      <mesh position={[0.25, 3.1, 0]} rotation={[0, 0, -Math.PI / 6]}>
-        <cylinderGeometry args={[0.05, 0.05, 0.6, 8]} />
-        <meshStandardMaterial color="#1e293b" roughness={0.5} />
-      </mesh>
-      <mesh position={[0.42, 3.15, 0]}>
-        <sphereGeometry args={[0.18, 12, 8]} />
-        <meshStandardMaterial color="#fef08a" emissive="#fef08a" emissiveIntensity={0.8} />
-      </mesh>
-    </group>
-  );
-};
+import {
+  StylizedOakTree,
+  StylizedPineTree,
+  FireHydrant,
+  WarmStreetLamp,
+  SidewalkPlanterBox
+} from '../environment/StylizedNature';
 
 export const EastTownDistrict: React.FC = () => {
   return (
@@ -155,13 +83,29 @@ export const EastTownDistrict: React.FC = () => {
             <meshStandardMaterial color="#ea580c" roughness={0.5} />
           </mesh>
 
-          {/* Recessed Windows on Front Facade (-X side) */}
+          {/* Recessed Windows on Front Facade (-X side) with Warm Golden Glow */}
           {[-2.2, 0, 2.2].map((z, zi) =>
             [1.4, 3.6, 5.8].map((y, yi) => (
-              <mesh key={`win-apt1-${zi}-${yi}`} position={[-3.12, y, z]}>
-                <boxGeometry args={[0.06, 1.2, 1.1]} />
-                <meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.7} />
-              </mesh>
+              <group key={`win-apt1-${zi}-${yi}`} position={[-3.12, y, z]}>
+                <mesh>
+                  <boxGeometry args={[0.06, 1.2, 1.1]} />
+                  <meshStandardMaterial
+                    color="#fef08a"
+                    emissive="#f59e0b"
+                    emissiveIntensity={0.85}
+                    roughness={0.2}
+                  />
+                </mesh>
+                {/* Dark wood cross mullions */}
+                <mesh position={[0.01, 0, 0]}>
+                  <boxGeometry args={[0.08, 1.25, 0.06]} />
+                  <meshStandardMaterial color="#451a03" />
+                </mesh>
+                <mesh position={[0.01, 0, 0]}>
+                  <boxGeometry args={[0.08, 0.06, 1.15]} />
+                  <meshStandardMaterial color="#451a03" />
+                </mesh>
+              </group>
             ))
           )}
 
@@ -248,13 +192,28 @@ export const EastTownDistrict: React.FC = () => {
             </group>
           ))}
 
-          {/* Large Multi-Pane Loft Windows */}
+          {/* Large Multi-Pane Loft Windows with Warm Amber Interior */}
           {[-1.6, 1.6].map((z, zi) =>
             [1.5, 3.8, 5.5].map((y, yi) => (
-              <mesh key={`loft-win-${zi}-${yi}`} position={[-3.02, y, z]}>
-                <boxGeometry args={[0.06, 1.4, 1.5]} />
-                <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.7} />
-              </mesh>
+              <group key={`loft-win-${zi}-${yi}`} position={[-3.02, y, z]}>
+                <mesh>
+                  <boxGeometry args={[0.06, 1.4, 1.5]} />
+                  <meshStandardMaterial
+                    color="#fef08a"
+                    emissive="#f59e0b"
+                    emissiveIntensity={0.8}
+                    roughness={0.2}
+                  />
+                </mesh>
+                <mesh position={[0.01, 0, 0]}>
+                  <boxGeometry args={[0.08, 1.45, 0.05]} />
+                  <meshStandardMaterial color="#0f172a" />
+                </mesh>
+                <mesh position={[0.01, 0, 0]}>
+                  <boxGeometry args={[0.08, 0.05, 1.55]} />
+                  <meshStandardMaterial color="#0f172a" />
+                </mesh>
+              </group>
             ))
           )}
 
@@ -304,12 +263,17 @@ export const EastTownDistrict: React.FC = () => {
             </group>
           ))}
 
-          {/* Upper Windows */}
+          {/* Upper Windows with Warm Glow */}
           {[-2.2, -0.7, 0.7, 2.2].map((z, zi) =>
             [2.8, 4.3].map((y, yi) => (
               <mesh key={`brown-win-${zi}-${yi}`} position={[-2.92, y, z]}>
                 <boxGeometry args={[0.06, 1.1, 0.9]} />
-                <meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.7} />
+                <meshStandardMaterial
+                  color="#fef08a"
+                  emissive="#f59e0b"
+                  emissiveIntensity={0.8}
+                  roughness={0.2}
+                />
               </mesh>
             ))
           )}
@@ -348,11 +312,25 @@ export const EastTownDistrict: React.FC = () => {
             ))}
           </group>
 
-          {/* Large Glass Display Windows underneath awning */}
-          <mesh position={[-2.82, 1.2, 0]}>
-            <boxGeometry args={[0.06, 1.6, 4.6]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.1} metalness={0.8} />
-          </mesh>
+          {/* Large Glass Display Windows underneath awning with Warm Interior Glow */}
+          <group position={[-2.82, 1.2, 0]}>
+            <mesh>
+              <boxGeometry args={[0.06, 1.6, 4.6]} />
+              <meshStandardMaterial
+                color="#fef08a"
+                emissive="#f59e0b"
+                emissiveIntensity={0.85}
+                roughness={0.2}
+              />
+            </mesh>
+            {/* Wooden Window Panes */}
+            {[-1.5, 0, 1.5].map((wz) => (
+              <mesh key={`bakery-win-bar-${wz}`} position={[0.01, 0, wz]}>
+                <boxGeometry args={[0.08, 1.65, 0.08]} />
+                <meshStandardMaterial color="#78350f" />
+              </mesh>
+            ))}
+          </group>
 
           {/* Shop Signboard: "TOWN CAFE & BAKERY" */}
           <group position={[-2.9, 3.2, 0]} rotation={[0, -Math.PI / 2, 0]}>
@@ -402,26 +380,31 @@ export const EastTownDistrict: React.FC = () => {
       {/* ======================================================== */}
       {/* 6. TOWN STREET FURNITURE, TREES & VINTAGE LAMPS          */}
       {/* ======================================================== */}
-      {/* Street Trees lining the sidewalk */}
-      <TownTree position={[35, 0, -28]} scale={1.25} color="#4d7c0f" />
-      <TownTree position={[35, 0, -18]} scale={1.15} color="#65a30d" />
-      <TownTree position={[35, 0, -10]} scale={1.2} color="#3f6212" />
-      <TownTree position={[35, 0, 10]} scale={1.2} color="#65a30d" />
-      <TownTree position={[35, 0, 18]} scale={1.15} color="#4d7c0f" />
-      <TownTree position={[35, 0, 28]} scale={1.3} color="#65a30d" />
+      {/* Faceted Stylized Trees lining the sidewalk */}
+      <StylizedOakTree position={[35, 0, -28]} scale={1.25} color="#4d7c0f" />
+      <StylizedOakTree position={[35, 0, -18]} scale={1.15} autumn />
+      <StylizedPineTree position={[35, 0, -10]} scale={1.2} />
+      <StylizedOakTree position={[35, 0, 10]} scale={1.2} color="#559c19" />
+      <StylizedOakTree position={[35, 0, 18]} scale={1.15} autumn />
+      <StylizedPineTree position={[35, 0, 28]} scale={1.3} />
 
       {/* Back-Alley Avenue Trees */}
-      <TownTree position={[47, 0, -20]} scale={1.3} color="#3f6212" />
-      <TownTree position={[47, 0, 0]} scale={1.2} color="#4d7c0f" />
-      <TownTree position={[47, 0, 20]} scale={1.35} color="#65a30d" />
+      <StylizedOakTree position={[47, 0, -20]} scale={1.3} color="#3f6212" />
+      <StylizedOakTree position={[47, 0, 0]} scale={1.2} color="#4d7c0f" />
+      <StylizedOakTree position={[47, 0, 20]} scale={1.35} autumn />
 
       {/* Glowing Vintage Street Lamps */}
-      <TownLamp position={[34.5, 0, -22]} />
-      <TownLamp position={[34.5, 0, -6]} />
-      <TownLamp position={[34.5, 0, 8]} />
-      <TownLamp position={[34.5, 0, 22]} />
-      <TownLamp position={[46.5, 0, -12]} />
-      <TownLamp position={[46.5, 0, 12]} />
+      <WarmStreetLamp position={[34.5, 0, -22]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[34.5, 0, -6]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[34.5, 0, 8]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[34.5, 0, 22]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[46.5, 0, -12]} rotationY={-Math.PI / 2} />
+      <WarmStreetLamp position={[46.5, 0, 12]} rotationY={-Math.PI / 2} />
+
+      {/* Sidewalk Planter Boxes in front of Shops */}
+      <SidewalkPlanterBox position={[35.2, 0, -25]} rotationY={Math.PI / 2} />
+      <SidewalkPlanterBox position={[35.2, 0, 15]} rotationY={Math.PI / 2} />
+      <FireHydrant position={[35.2, 0, -2]} rotationY={Math.PI / 2} />
 
       {/* ======================================================== */}
       {/* 7. ROLLING GREEN HILLS BACKDROP (Behind Apartments)      */}
@@ -495,15 +478,15 @@ export const EastTownDistrict: React.FC = () => {
           </mesh>
         </RigidBody>
 
-        {/* Mountain Ridge Low-Poly Pine Trees */}
-        <LowPolyPineTree position={[52, 2.5, -30]} scale={1.4} />
-        <LowPolyPineTree position={[55, 4.5, -20]} scale={1.5} />
-        <LowPolyPineTree position={[54, 3.8, -10]} scale={1.3} />
-        <LowPolyPineTree position={[56, 5.2, -2]} scale={1.6} />
-        <LowPolyPineTree position={[55, 4.8, 8]} scale={1.45} />
-        <LowPolyPineTree position={[53, 3.2, 18]} scale={1.35} />
-        <LowPolyPineTree position={[54, 4.0, 26]} scale={1.5} />
-        <LowPolyPineTree position={[51, 2.2, 34]} scale={1.25} />
+        {/* Mountain Ridge Stylized Pine Trees */}
+        <StylizedPineTree position={[52, 2.5, -30]} scale={1.4} />
+        <StylizedPineTree position={[55, 4.5, -20]} scale={1.5} />
+        <StylizedPineTree position={[54, 3.8, -10]} scale={1.3} />
+        <StylizedPineTree position={[56, 5.2, -2]} scale={1.6} />
+        <StylizedPineTree position={[55, 4.8, 8]} scale={1.45} />
+        <StylizedPineTree position={[53, 3.2, 18]} scale={1.35} />
+        <StylizedPineTree position={[54, 4.0, 26]} scale={1.5} />
+        <StylizedPineTree position={[51, 2.2, 34]} scale={1.25} />
 
         {/* Mountain Slope Clay Boulders */}
         <mesh position={[51, 0.6, -16]} rotation={[0.4, 0.6, 0.2]} castShadow>

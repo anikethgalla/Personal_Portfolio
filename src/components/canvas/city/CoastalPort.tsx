@@ -1,6 +1,85 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
+import * as THREE from 'three';
+import { RiverRockCluster, StylizedPineTree } from '../environment/StylizedNature';
+
+// -------------------------------------------------------------
+// LOW-POLY ANIMATED VERTEX WAVE WATER MESH
+// -------------------------------------------------------------
+const AnimatedWaterMesh: React.FC = () => {
+  const geomRef = useRef<THREE.PlaneGeometry>(null);
+
+  useFrame(({ clock }) => {
+    if (!geomRef.current) return;
+    const time = clock.getElapsedTime() * 1.4;
+    const pos = geomRef.current.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const u = pos.getX(i);
+      const v = pos.getY(i);
+      // Dual rolling sine-cosine waves for natural low-poly surf
+      const z =
+        Math.sin(u * 0.08 + time) * 0.18 +
+        Math.cos(v * 0.12 + time * 0.8) * 0.14 +
+        Math.sin((u + v) * 0.06 + time * 1.2) * 0.08;
+      pos.setZ(i, z);
+    }
+    pos.needsUpdate = true;
+    geomRef.current.computeVertexNormals();
+  });
+
+  return (
+    <mesh position={[-58, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <planeGeometry ref={geomRef} args={[210, 280, 42, 42]} />
+      <meshStandardMaterial
+        color="#0284c7"
+        roughness={0.15}
+        metalness={0.65}
+        transparent
+        opacity={0.88}
+        flatShading
+      />
+    </mesh>
+  );
+};
+
+// Rotating Warm Lighthouse Spotlight Beam
+const RotatingLighthouseBeam: React.FC = () => {
+  const beamRef = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (beamRef.current) {
+      beamRef.current.rotation.y += delta * 0.6;
+    }
+  });
+
+  return (
+    <group ref={beamRef} position={[0, 11.2, 0]}>
+      {/* Golden Warm Spotlight casting over the bay */}
+      <spotLight
+        color="#fed7aa"
+        intensity={8.0}
+        distance={90}
+        angle={Math.PI / 6}
+        penumbra={0.4}
+        position={[0, 0, 0]}
+        target-position={[40, -4, 0]}
+      />
+      {/* Visual Light Cone Mesh */}
+      <mesh position={[14, -1.0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+        <coneGeometry args={[4.5, 28, 12, 1, true]} />
+        <meshBasicMaterial
+          color="#fef08a"
+          transparent
+          opacity={0.12}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+        />
+      </mesh>
+    </group>
+  );
+};
 
 export const CoastalPort: React.FC = () => {
   return (
@@ -13,16 +92,18 @@ export const CoastalPort: React.FC = () => {
           <meshStandardMaterial color="#075985" roughness={0.9} />
         </mesh>
 
-        {/* Ocean Water Surface Plane (Boundless Open Sea to Western Horizon) */}
-        <mesh position={[-58, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[210, 280]} />
-          <meshStandardMaterial
-            color="#0ea5e9"
-            roughness={0.08}
-            metalness={0.75}
-            transparent
-            opacity={0.88}
-          />
+        {/* Ocean Water Animated Surface Plane (Boundless Open Sea to Western Horizon) */}
+        <AnimatedWaterMesh />
+
+        {/* Shoreline Surf Foam Fringe (Gentle white ribbon along quay wall) */}
+        <mesh position={[45.2, 0.1, -4]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[1.4, 118]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.42} />
+        </mesh>
+        {/* Pier Surf Foam Fringe */}
+        <mesh position={[38.5, 0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[14, 10]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
         </mesh>
 
         {/* Shoreline Stone Quay Embankment Wall (Shoreline at x = -32.2) */}
@@ -246,11 +327,14 @@ export const CoastalPort: React.FC = () => {
             <cylinderGeometry args={[1.3, 1.3, 1.4, 12]} />
             <meshStandardMaterial
               color="#fef08a"
-              emissive="#fef08a"
-              emissiveIntensity={0.8}
+              emissive="#f59e0b"
+              emissiveIntensity={1.2}
               roughness={0.1}
             />
           </mesh>
+
+          {/* Rotating Animated Lighthouse Spotlight Beam */}
+          <RotatingLighthouseBeam />
 
           {/* Conical Copper Cap */}
           <mesh position={[0, 12.5, 0]} castShadow>
@@ -258,6 +342,12 @@ export const CoastalPort: React.FC = () => {
             <meshStandardMaterial color="#047857" roughness={0.4} />
           </mesh>
         </RigidBody>
+
+        {/* Coastal Bluff Rocks & Shoreline Pines */}
+        <RiverRockCluster position={[-4.5, 0, -2]} scale={1.8} />
+        <RiverRockCluster position={[3.8, 0, 3.5]} scale={1.4} />
+        <StylizedPineTree position={[4.5, 0, -3]} scale={1.3} />
+        <StylizedPineTree position={[-3.5, 0, 4]} scale={1.1} />
       </group>
     </group>
   );

@@ -21,7 +21,7 @@ export const Scene: React.FC = () => {
   const [vehiclePos, setVehiclePos] = useState<THREE.Vector3 | null>(new THREE.Vector3(0, 1.0, 14));
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-[#7dd3fc]">
+    <div className="absolute inset-0 w-full h-full bg-[#fef3c7]">
       <Canvas
         shadows
         camera={{ position: [0, 18, 24], fov: 48, near: 0.5, far: 450 }}
@@ -29,24 +29,24 @@ export const Scene: React.FC = () => {
         gl={{
           antialias: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.05
+          toneMappingExposure: 1.08
         }}
       >
-        {/* Vibrant Blue Sky Background & Atmospheric Horizon Fog */}
-        <color attach="background" args={['#7dd3fc']} />
-        <fog attach="fog" args={['#bae6fd', 150, 420]} />
+        {/* Golden Hour Warmth Sky & Horizon Fog */}
+        <color attach="background" args={['#fed7aa']} />
+        <fog attach="fog" args={['#fed7aa', 140, 420]} />
 
-        {/* Vibrant Sky Dome & Drifting Puffy 3D Clay Clouds */}
+        {/* Golden Hour Sky Dome & Drifting Puffy 3D Clay Clouds */}
         <SkyDome />
 
-        {/* Warm Studio Lighting Setup - Sun and Sky Radiance */}
-        <ambientLight intensity={0.7} color="#fffbeb" />
+        {/* Soft Lavender / Periwinkle Ambient Fill Light */}
+        <ambientLight intensity={0.65} color="#c7d2fe" />
 
-        {/* Primary Sun Light */}
+        {/* Primary Golden Hour Sunlight (Warm Honey Ivory at 38° angle) */}
         <directionalLight
-          position={[35, 55, 30]}
-          intensity={1.8}
-          color="#fffdf7"
+          position={[38, 45, 28]}
+          intensity={1.85}
+          color="#ffeed6"
           castShadow
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
@@ -59,8 +59,8 @@ export const Scene: React.FC = () => {
           shadow-bias={-0.0002}
         />
 
-        {/* Soft Cool Sky Blue Secondary Fill Light */}
-        <directionalLight position={[-20, 20, -20]} intensity={0.45} color="#bfdbfe" />
+        {/* Soft Warm Sky Bounce Secondary Light */}
+        <directionalLight position={[-20, 15, -20]} intensity={0.4} color="#e0e7ff" />
 
         {/* Camera Tracker */}
         <CameraFollow targetPosition={vehiclePos} />

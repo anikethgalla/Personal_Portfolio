@@ -1,15 +1,16 @@
 import React from 'react';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
+import { StylizedOakTree, FireHydrant, WarmStreetLamp, SidewalkPlanterBox } from './StylizedNature';
 
 export const Ground: React.FC = () => {
   return (
     <group>
-      {/* 1. Impenetrable Physics Ground Bedrock (Expansive 480m green meadow landscape) */}
+      {/* 1. Impenetrable Physics Ground Bedrock (Expansive 480m golden-hour meadow landscape) */}
       <RigidBody type="fixed" colliders={false} friction={1.2} restitution={0.1}>
         <CuboidCollider args={[250, 5, 250]} position={[0, -5, 0]} friction={1.2} restitution={0.1} />
         <mesh position={[0, -0.25, 0]} receiveShadow>
           <boxGeometry args={[480, 0.5, 480]} />
-          <meshStandardMaterial color="#5ea508" roughness={0.9} metalness={0.05} />
+          <meshStandardMaterial color="#559c19" roughness={0.88} metalness={0.02} />
         </mesh>
       </RigidBody>
 
@@ -24,7 +25,7 @@ export const Ground: React.FC = () => {
         <mesh position={[0, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <ringGeometry args={[6.5, 12.5, 64]} />
           <meshStandardMaterial
-            color="#334155"
+            color="#283344"
             roughness={0.75}
             polygonOffset
             polygonOffsetFactor={-1}
@@ -32,23 +33,39 @@ export const Ground: React.FC = () => {
           />
         </mesh>
 
-        {/* Inner Island Green Lawn (Radius 6.4m) */}
-        <mesh position={[0, 0.028, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <circleGeometry args={[6.4, 48]} />
-          <meshStandardMaterial
-            color="#65a30d"
-            roughness={0.85}
-            polygonOffset
-            polygonOffsetFactor={-1}
-            polygonOffsetUnits={-1}
-          />
+        {/* Roundabout Island Decorative Stone Retaining Curb */}
+        <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[6.6, 6.75, 0.2, 48]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
         </mesh>
 
-        {/* Roundabout Island Decorative Curb Trim */}
-        <mesh position={[0, 0.035, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[6.35, 6.5, 48]} />
-          <meshStandardMaterial color="#cbd5e1" roughness={0.5} />
+        {/* Inner Island Raised Green Lawn (Gentle Mound) */}
+        <mesh position={[0, 0.22, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[6.4, 6.55, 0.16, 48]} />
+          <meshStandardMaterial color="#65a30d" roughness={0.85} />
         </mesh>
+
+        {/* Roundabout Centerpiece Oak Tree & Bench */}
+        <StylizedOakTree position={[0, 0.3, 0]} scale={1.35} color="#559c19" />
+
+        {/* Flower Ring inside Roundabout Island */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+          const rad = (angle * Math.PI) / 180;
+          const fx = Math.cos(rad) * 4.4;
+          const fz = Math.sin(rad) * 4.4;
+          return (
+            <mesh key={`rb-flower-${i}`} position={[fx, 0.32, fz]}>
+              <dodecahedronGeometry args={[0.22, 0]} />
+              <meshStandardMaterial
+                color={i % 2 === 0 ? '#f59e0b' : '#ef4444'}
+                emissive={i % 2 === 0 ? '#f59e0b' : '#ef4444'}
+                emissiveIntensity={0.2}
+                roughness={0.6}
+                flatShading
+              />
+            </mesh>
+          );
+        })}
 
         {/* Dashed Center Circle (16 genuine arc dashes) */}
         {Array.from({ length: 16 }).map((_, i) => (
@@ -76,6 +93,129 @@ export const Ground: React.FC = () => {
           </mesh>
         ))}
       </group>
+
+      {/* ======================================================== */}
+      {/* 3. RAISED PEDESTRIAN SIDEWALKS & STONE CURBS             */}
+      {/* Elevates the town diorama with realistic architectural depth */}
+      {/* ======================================================== */}
+
+      {/* North Boulevard Sidewalks (West & East Sides) */}
+      {/* West Sidewalk (x = -4.9, z = -34, length 46m) */}
+      <group position={[-4.9, 0.07, -34]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[1.6, 0.14, 46]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
+        </mesh>
+        {/* Stone Curb Edge facing road */}
+        <mesh position={[0.75, 0.01, 0]} castShadow>
+          <boxGeometry args={[0.12, 0.15, 46]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
+        </mesh>
+      </group>
+
+      {/* East Sidewalk (x = 4.9, z = -34, length 46m) */}
+      <group position={[4.9, 0.07, -34]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[1.6, 0.14, 46]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
+        </mesh>
+        <mesh position={[-0.75, 0.01, 0]} castShadow>
+          <boxGeometry args={[0.12, 0.15, 46]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
+        </mesh>
+      </group>
+
+      {/* South Avenue Sidewalks (West & East Sides) */}
+      {/* West Sidewalk (x = -4.9, z = 32, length 42m) */}
+      <group position={[-4.9, 0.07, 32]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[1.6, 0.14, 42]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
+        </mesh>
+        <mesh position={[0.75, 0.01, 0]} castShadow>
+          <boxGeometry args={[0.12, 0.15, 42]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
+        </mesh>
+      </group>
+
+      {/* East Sidewalk (x = 4.9, z = 32, length 42m) */}
+      <group position={[4.9, 0.07, 32]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[1.6, 0.14, 42]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
+        </mesh>
+        <mesh position={[-0.75, 0.01, 0]} castShadow>
+          <boxGeometry args={[0.12, 0.15, 42]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
+        </mesh>
+      </group>
+
+      {/* Pedestrian Zebra Crossings at Major Intersections */}
+      {/* North Crosswalk at z = -12.8 */}
+      <group position={[0, 0.032, -12.8]}>
+        {[-3.0, -1.8, -0.6, 0.6, 1.8, 3.0].map((cx) => (
+          <mesh key={`n-cross-${cx}`} position={[cx, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.65, 2.6]} />
+            <meshBasicMaterial color="#ffffff" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* South Crosswalk at z = 12.8 */}
+      <group position={[0, 0.032, 12.8]}>
+        {[-3.0, -1.8, -0.6, 0.6, 1.8, 3.0].map((cx) => (
+          <mesh key={`s-cross-${cx}`} position={[cx, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.65, 2.6]} />
+            <meshBasicMaterial color="#ffffff" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* East Crosswalk at x = 12.8 */}
+      <group position={[12.8, 0.032, 0]}>
+        {[-3.0, -1.8, -0.6, 0.6, 1.8, 3.0].map((cz) => (
+          <mesh key={`e-cross-${cz}`} position={[0, 0, cz]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
+            <planeGeometry args={[0.65, 2.6]} />
+            <meshBasicMaterial color="#ffffff" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* West Crosswalk at x = -12.8 */}
+      <group position={[-12.8, 0.032, 0]}>
+        {[-3.0, -1.8, -0.6, 0.6, 1.8, 3.0].map((cz) => (
+          <mesh key={`w-cross-${cz}`} position={[0, 0, cz]} rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
+            <planeGeometry args={[0.65, 2.6]} />
+            <meshBasicMaterial color="#ffffff" polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Sidewalk Props: Hydrants & Streetlamps */}
+      <FireHydrant position={[-5.1, 0.14, -18]} rotationY={Math.PI / 2} />
+      <FireHydrant position={[5.1, 0.14, 20]} rotationY={-Math.PI / 2} />
+      <SidewalkPlanterBox position={[-5.1, 0.14, -26]} rotationY={Math.PI / 2} />
+      <SidewalkPlanterBox position={[5.1, 0.14, 28]} rotationY={-Math.PI / 2} />
+
+      {/* Warm Golden Hour Streetlamps along Boulevards */}
+      <WarmStreetLamp position={[-5.2, 0.14, -22]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[5.2, 0.14, -36]} rotationY={-Math.PI / 2} />
+      <WarmStreetLamp position={[-5.2, 0.14, 24]} rotationY={Math.PI / 2} />
+      <WarmStreetLamp position={[5.2, 0.14, 38]} rotationY={-Math.PI / 2} />
+
+      {/* Storm Water Drainage Grates along Curbs */}
+      {[-16, -28, -40, 16, 28, 40].map((dz) => (
+        <React.Fragment key={`drain-${dz}`}>
+          <mesh position={[-4.05, 0.035, dz]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.45, 0.85]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.9} />
+          </mesh>
+          <mesh position={[4.05, 0.035, dz]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.45, 0.85]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.9} />
+          </mesh>
+        </React.Fragment>
+      ))}
 
       {/* North Speedway Boulevard: Touches North Perimeter Wall at z = -60 (width 8m) */}
       <mesh position={[0, 0.025, -32.5]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>

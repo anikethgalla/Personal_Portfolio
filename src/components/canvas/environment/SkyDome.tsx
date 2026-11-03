@@ -78,7 +78,7 @@ export const SkyDome: React.FC = () => {
     { position: [0, 36, 125], scale: 1.9, speed: 1.3 },
   ], []);
 
-  // Create smooth vertical gradient canvas texture for the vibrant blue sky dome
+  // Create smooth vertical gradient canvas texture for the breathtaking Golden Hour sky dome
   const skyTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 2;
@@ -86,18 +86,18 @@ export const SkyDome: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       const gradient = ctx.createLinearGradient(0, 0, 0, 512);
-      // Top/Zenith: Deep vibrant azure sky blue
-      gradient.addColorStop(0.0, '#0284c7');
-      // Upper-sky: Radiant bright blue
-      gradient.addColorStop(0.28, '#0ea5e9');
-      // Mid-sky: Sunny clear cyan-blue
-      gradient.addColorStop(0.58, '#38bdf8');
-      // Lower-sky: Soft atmospheric sky blue
-      gradient.addColorStop(0.80, '#7dd3fc');
-      // Near horizon: Light cheerful sky haze
-      gradient.addColorStop(0.93, '#bae6fd');
-      // Horizon base: Luminous soft horizon blue
-      gradient.addColorStop(1.0, '#e0f2fe');
+      // Top/Zenith: Deep cornflower blue
+      gradient.addColorStop(0.0, '#1e40af');
+      // Upper-sky: Clear twilight blue
+      gradient.addColorStop(0.25, '#3b82f6');
+      // Mid-sky: Soft pastel peach-pink transition
+      gradient.addColorStop(0.55, '#f472b6');
+      // Lower-sky: Warm honey amber
+      gradient.addColorStop(0.78, '#fb923c');
+      // Near horizon: Golden peach glow
+      gradient.addColorStop(0.92, '#fde047');
+      // Horizon base: Luminous soft sunset gold
+      gradient.addColorStop(1.0, '#fef3c7');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 2, 512);
     }
