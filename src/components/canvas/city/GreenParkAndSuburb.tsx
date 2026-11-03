@@ -121,8 +121,8 @@ export const GreenParkAndSuburb: React.FC = () => {
         <BloomingShrub position={[2.6, 0, -1.9]} scale={0.9} flowerColor="#fbbf24" />
       </group>
 
-      {/* HOUSE 2: Split-Level Modern Villa at [-28, 0, -16] */}
-      <group position={[-28, 0, -16]}>
+      {/* HOUSE 2: Split-Level Modern Villa at [-32, 0, -16] */}
+      <group position={[-32, 0, -16]}>
         <RigidBody type="fixed" friction={0.7}>
           {/* Main Slate-Gray Block */}
           <mesh position={[0, 2.2, 0]} castShadow receiveShadow>
