@@ -60,7 +60,26 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
   const hasAutoEnteredCinema = React.useRef(false);
   const hasAutoEnteredDiner = React.useRef(false);
 
-  useFrame(() => {
+  // Occlude/cull 3D in-world HTML screens when camera is behind the buildings
+  const [cinemaVisible, setCinemaVisible] = React.useState(true);
+  const cinemaVisibleRef = React.useRef(true);
+  const [dinerVisible, setDinerVisible] = React.useState(true);
+  const dinerVisibleRef = React.useRef(true);
+
+  useFrame(({ camera }) => {
+    // 0. Screen Culling Check (Cinema Billboard at x = 27.57, Diner at x = 25.38; both face -X)
+    const canSeeCinema = camera.position.x < 27.4;
+    if (canSeeCinema !== cinemaVisibleRef.current) {
+      cinemaVisibleRef.current = canSeeCinema;
+      setCinemaVisible(canSeeCinema);
+    }
+
+    const canSeeDiner = camera.position.x < 25.3;
+    if (canSeeDiner !== dinerVisibleRef.current) {
+      dinerVisibleRef.current = canSeeDiner;
+      setDinerVisible(canSeeDiner);
+    }
+
     if (!vehiclePosition) return;
 
     // 1. Cinema Bay Detection
@@ -195,9 +214,9 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
 
         {/* Billboard Screen Rigid Body (Fixed) */}
         <RigidBody type="fixed" friction={0.8} position={[0, 0, 0]}>
-          {/* Main Outer Billboard Frame */}
+          {/* Main Outer Billboard Frame (Solid timber backing) */}
           <mesh position={[0, 3.2, 0]} castShadow receiveShadow>
-            <boxGeometry args={[0.8, 5.2, 9.6]} />
+            <boxGeometry args={[0.8, 5.2, 11.2]} />
             <meshStandardMaterial color="#bdaea0" roughness={0.8} />
           </mesh>
 
@@ -208,21 +227,28 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
           </mesh>
 
           {/* 3D Native Cinema Screen Dynamic Interactive UI via Html transform */}
-          <Html
-            transform
-            occlude={false}
-            position={[-0.43, 3.2, 0]}
-            rotation={[0, -Math.PI / 2, 0]}
-            distanceFactor={3.2}
-            pointerEvents="auto"
-          >
-            <div
+          {cinemaVisible && (
+            <Html
+              transform
+              occlude={false}
+              position={[-0.43, 3.2, 0]}
+              rotation={[0, -Math.PI / 2, 0]}
+              distanceFactor={3.2}
+              pointerEvents="auto"
               style={{
-                width: '1120px',
-                height: '590px',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
               }}
-              className="bg-[#080d1a] text-gray-100 rounded-2xl border-4 border-slate-700/80 shadow-[inset_0_0_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-6 select-none font-['Plus_Jakarta_Sans',sans-serif]"
             >
+              <div
+                style={{
+                  width: '1120px',
+                  height: '590px',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                }}
+                className="bg-[#080d1a] text-gray-100 rounded-2xl border-4 border-slate-700/80 shadow-[inset_0_0_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-6 select-none font-['Plus_Jakarta_Sans',sans-serif]"
+              >
               {/* Header Bar */}
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-3">
@@ -380,56 +406,60 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               </div>
             </div>
           </Html>
+        )}
 
-          {/* Interactive Left Arrow Button Next to Screen (3D Clickable) */}
-          <group
-            position={[-0.45, 3.2, -5.1]}
-            rotation={[0, -Math.PI / 2, 0]}
-            onClick={(e) => {
-              e.stopPropagation();
-              prevProject();
-            }}
-          >
-            <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.42, 0.42, 0.12, 24]} />
-              <meshStandardMaterial color="#f59e0b" roughness={0.3} emissive="#f59e0b" emissiveIntensity={0.2} />
-            </mesh>
-            <Text
-              position={[0, 0, 0.08]}
-              fontSize={0.42}
-              fontWeight={900}
-              color="#0f172a"
-              anchorX="center"
-              anchorY="middle"
+        {/* Interactive Left & Right Arrow Buttons Next to Screen (Front only) */}
+        {cinemaVisible && (
+          <>
+            <group
+              position={[-0.45, 3.2, -5.0]}
+              rotation={[0, -Math.PI / 2, 0]}
+              onClick={(e) => {
+                e.stopPropagation();
+                prevProject();
+              }}
             >
-              ◀
-            </Text>
-          </group>
+              <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
+                <cylinderGeometry args={[0.42, 0.42, 0.12, 24]} />
+                <meshStandardMaterial color="#f59e0b" roughness={0.3} emissive="#f59e0b" emissiveIntensity={0.2} />
+              </mesh>
+              <Text
+                position={[0, 0, 0.08]}
+                fontSize={0.42}
+                fontWeight={900}
+                color="#0f172a"
+                anchorX="center"
+                anchorY="middle"
+              >
+                ◀
+              </Text>
+            </group>
 
-          {/* Interactive Right Arrow Button Next to Screen (3D Clickable) */}
-          <group
-            position={[-0.45, 3.2, 5.1]}
-            rotation={[0, -Math.PI / 2, 0]}
-            onClick={(e) => {
-              e.stopPropagation();
-              nextProject();
-            }}
-          >
-            <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.42, 0.42, 0.12, 24]} />
-              <meshStandardMaterial color="#f59e0b" roughness={0.3} emissive="#f59e0b" emissiveIntensity={0.2} />
-            </mesh>
-            <Text
-              position={[0, 0, 0.08]}
-              fontSize={0.42}
-              fontWeight={900}
-              color="#0f172a"
-              anchorX="center"
-              anchorY="middle"
+            <group
+              position={[-0.45, 3.2, 5.0]}
+              rotation={[0, -Math.PI / 2, 0]}
+              onClick={(e) => {
+                e.stopPropagation();
+                nextProject();
+              }}
             >
-              ▶
-            </Text>
-          </group>
+              <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
+                <cylinderGeometry args={[0.42, 0.42, 0.12, 24]} />
+                <meshStandardMaterial color="#f59e0b" roughness={0.3} emissive="#f59e0b" emissiveIntensity={0.2} />
+              </mesh>
+              <Text
+                position={[0, 0, 0.08]}
+                fontSize={0.42}
+                fontWeight={900}
+                color="#0f172a"
+                anchorX="center"
+                anchorY="middle"
+              >
+                ▶
+              </Text>
+            </group>
+          </>
+        )}
 
           {/* Rear Structural A-Frame Trusses */}
           <mesh position={[1.4, 2.2, -2.8]} rotation={[0, 0, -0.3]} castShadow>
@@ -730,20 +760,27 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </mesh>
 
             {/* 3D Native Diner Terminal Screen Dynamic Interactive UI via Html transform */}
-            <Html
-              transform
-              occlude={false}
-              position={[0, 0, 0.065]}
-              distanceFactor={2.8}
-              pointerEvents="auto"
-            >
-              <div
+            {dinerVisible && (
+              <Html
+                transform
+                occlude={false}
+                position={[0, 0, 0.065]}
+                distanceFactor={2.8}
+                pointerEvents="auto"
                 style={{
-                  width: '828px',
-                  height: '407px',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
                 }}
-                className="bg-[#050f18] text-gray-100 rounded-2xl border-4 border-emerald-900/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-4 select-none font-['Plus_Jakarta_Sans',sans-serif]"
               >
+                <div
+                  style={{
+                    width: '828px',
+                    height: '407px',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                  className="bg-[#050f18] text-gray-100 rounded-2xl border-4 border-emerald-900/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-4 select-none font-['Plus_Jakarta_Sans',sans-serif]"
+                >
                 {/* Header Bar */}
                 <div className="flex items-center justify-between pb-2 border-b border-emerald-500/20">
                   <div className="flex items-center gap-2">
@@ -890,57 +927,61 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
                 </div>
               </div>
             </Html>
-          </group>
+          )}
+        </group>
 
-          {/* 3D Interactive Left Arrow Button Next to Display */}
-          <group
-            position={[-2.65, 1.7, -3.25]}
-            rotation={[0, -Math.PI / 2, 0]}
-            onClick={(e) => {
-              e.stopPropagation();
-              prevExperience();
-            }}
-          >
-            <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.26, 0.26, 0.08, 20]} />
-              <meshStandardMaterial color="#10b981" roughness={0.3} emissive="#10b981" emissiveIntensity={0.25} />
-            </mesh>
-            <Text
-              position={[0, 0, 0.05]}
-              fontSize={0.26}
-              fontWeight={900}
-              color="#06121e"
-              anchorX="center"
-              anchorY="middle"
+        {/* 3D Interactive Left & Right Arrow Buttons Next to Display (Front only) */}
+        {dinerVisible && (
+          <>
+            <group
+              position={[-2.65, 1.7, -3.25]}
+              rotation={[0, -Math.PI / 2, 0]}
+              onClick={(e) => {
+                e.stopPropagation();
+                prevExperience();
+              }}
             >
-              ◀
-            </Text>
-          </group>
+              <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
+                <cylinderGeometry args={[0.26, 0.26, 0.08, 20]} />
+                <meshStandardMaterial color="#10b981" roughness={0.3} emissive="#10b981" emissiveIntensity={0.25} />
+              </mesh>
+              <Text
+                position={[0, 0, 0.05]}
+                fontSize={0.26}
+                fontWeight={900}
+                color="#06121e"
+                anchorX="center"
+                anchorY="middle"
+              >
+                ◀
+              </Text>
+            </group>
 
-          {/* 3D Interactive Right Arrow Button Next to Display */}
-          <group
-            position={[-2.65, 1.7, 3.25]}
-            rotation={[0, -Math.PI / 2, 0]}
-            onClick={(e) => {
-              e.stopPropagation();
-              nextExperience();
-            }}
-          >
-            <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.26, 0.26, 0.08, 20]} />
-              <meshStandardMaterial color="#10b981" roughness={0.3} emissive="#10b981" emissiveIntensity={0.25} />
-            </mesh>
-            <Text
-              position={[0, 0, 0.05]}
-              fontSize={0.26}
-              fontWeight={900}
-              color="#06121e"
-              anchorX="center"
-              anchorY="middle"
+            <group
+              position={[-2.65, 1.7, 3.25]}
+              rotation={[0, -Math.PI / 2, 0]}
+              onClick={(e) => {
+                e.stopPropagation();
+                nextExperience();
+              }}
             >
-              ▶
-            </Text>
-          </group>
+              <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
+                <cylinderGeometry args={[0.26, 0.26, 0.08, 20]} />
+                <meshStandardMaterial color="#10b981" roughness={0.3} emissive="#10b981" emissiveIntensity={0.25} />
+              </mesh>
+              <Text
+                position={[0, 0, 0.05]}
+                fontSize={0.26}
+                fontWeight={900}
+                color="#06121e"
+                anchorX="center"
+                anchorY="middle"
+              >
+                ▶
+              </Text>
+            </group>
+          </>
+        )}
         </RigidBody>
       </group>
     </group>
