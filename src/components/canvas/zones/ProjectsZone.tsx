@@ -26,6 +26,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
   const driveInBayPos = new THREE.Vector3(20, 0, -16);
   const isParkedAtCinema = vehiclePosition ? driveInBayPos.distanceTo(vehiclePosition) < 5.2 : false;
   const currentProject = projectsData[currentProjectIndex] || projectsData[0];
+  const hasAutoEntered = React.useRef(false);
 
   useFrame(() => {
     if (!vehiclePosition) return;
@@ -37,11 +38,15 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
         setActiveProject(currentProject);
         markZoneDiscovered('projects');
       }
-      // Auto-enter FPV when car enters the Drive-In parking bay
-      if (!fpvProject) {
-        enterFpv(currentProject);
+      // Auto-enter FPV once upon arriving at the Drive-In parking bay
+      if (!hasAutoEntered.current) {
+        hasAutoEntered.current = true;
+        if (!fpvProject) {
+          enterFpv(currentProject);
+        }
       }
-    } else if (dist > 7.5) {
+    } else if (dist > 7.0) {
+      hasAutoEntered.current = false;
       if (activeProject) {
         setActiveProject(null);
       }

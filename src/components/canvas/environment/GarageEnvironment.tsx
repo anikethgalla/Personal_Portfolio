@@ -302,7 +302,7 @@ const GarageWorkbench: React.FC = () => {
 // -------------------------------------------------------------
 const GarageShelvingAndStorage: React.FC = () => {
   return (
-    <group position={[-4.0, 0, -2.2]}>
+    <group position={[-4.1, 0, -2.2]}>
       {/* 4-Tier Heavy Galvanized Steel Storage Rack */}
       <group position={[0, 0, 0]}>
         {/* 4 Vertical corner posts */}
@@ -412,7 +412,7 @@ const GarageRightWallProps: React.FC = () => {
       </group>
 
       {/* Low-Profile Hydraulic Floor Jack */}
-      <group position={[-0.8, 0.1, -3.2]}>
+      <group position={[-0.35, 0.1, -3.2]}>
         <mesh castShadow>
           <boxGeometry args={[0.26, 0.12, 0.62]} />
           <meshStandardMaterial color="#ea580c" roughness={0.4} metalness={0.3} />
@@ -448,10 +448,10 @@ const GarageLighting: React.FC = () => {
         shadow-mapSize={[2048, 2048]}
         shadow-camera-near={0.5}
         shadow-camera-far={9}
-        shadow-camera-left={-4.5}
-        shadow-camera-right={4.5}
-        shadow-camera-top={4.5}
-        shadow-camera-bottom={-4.5}
+        shadow-camera-left={-3.2}
+        shadow-camera-right={3.2}
+        shadow-camera-top={3.2}
+        shadow-camera-bottom={-3.2}
         shadow-bias={-0.00015}
       />
 
@@ -461,6 +461,10 @@ const GarageLighting: React.FC = () => {
         intensity={0.9}
         color="#fef3c7"
       />
+
+      {/* Warm Side Wall Bounce Fills to highlight car doors, paint curves & rims */}
+      <pointLight position={[-3.2, 1.8, 0]} intensity={0.5} distance={5.5} color="#fed7aa" />
+      <pointLight position={[3.2, 1.8, 0]} intensity={0.5} distance={5.5} color="#fed7aa" />
 
       {/* Suspended Modern LED Shop Light Fixture 1 (Over Car Hood & Front) */}
       <group position={[0, 3.65, -1.2]}>

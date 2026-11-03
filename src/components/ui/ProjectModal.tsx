@@ -62,6 +62,8 @@ export const ProjectModal: React.FC = () => {
         handleEnterFpv();
       }
       if (e.key === 'Escape' && fpvProject) {
+        e.preventDefault();
+        e.stopPropagation();
         exitFpv();
       }
       if (fpvProject) {

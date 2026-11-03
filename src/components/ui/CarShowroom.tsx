@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGame } from '../../context/GameContext';
 import { VEHICLE_LIST, VEHICLES_DATA, VehicleId } from '../../data/vehiclesData';
@@ -88,14 +88,25 @@ export const CarShowroom: React.FC = () => {
 
   const [hoveredVehicle, setHoveredVehicle] = useState<VehicleId | null>(null);
 
-  if (!isCarSelectOpen) return null;
-
-  const activeConfig = VEHICLES_DATA[hoveredVehicle || selectedVehicleId];
-
   const handleStartDriving = () => {
     soundManager.playChime();
     closeCarSelect();
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isCarSelectOpen) {
+        e.preventDefault();
+        handleStartDriving();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCarSelectOpen]);
+
+  if (!isCarSelectOpen) return null;
+
+  const activeConfig = VEHICLES_DATA[hoveredVehicle || selectedVehicleId];
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-slate-950/95 backdrop-blur-xl select-none font-['Plus_Jakarta_Sans',sans-serif] animate-fadeIn text-white overflow-hidden">
@@ -118,9 +129,11 @@ export const CarShowroom: React.FC = () => {
         {/* Quick Start / Skip Button */}
         <button
           onClick={handleStartDriving}
-          className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700"
+          className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700 flex items-center gap-1.5 cursor-pointer"
+          title="Press Esc to Skip to World"
         >
-          Skip to World ➔
+          <span>Skip to World ➔</span>
+          <kbd className="px-1.5 py-0.5 rounded bg-slate-700 text-[10px] text-slate-300 font-mono">Esc</kbd>
         </button>
       </header>
 
@@ -128,7 +141,7 @@ export const CarShowroom: React.FC = () => {
       <div className="flex-1 relative flex flex-col lg:flex-row items-stretch overflow-hidden">
         {/* 3D RESIDENTIAL GARAGE STAGE (Center / Left) */}
         <div className="flex-1 relative h-64 lg:h-auto flex items-center justify-center">
-          {/* Interactive Three.js Canvas with Warm Beige Background and Static Camera */}
+          {/* Static Three.js Canvas with Warm Beige Background (Zero Mouse Follow) */}
           <Canvas
             shadows
             camera={{ position: [2.5, 1.35, 2.3], fov: 40 }}
@@ -142,7 +155,7 @@ export const CarShowroom: React.FC = () => {
           </Canvas>
 
           {/* Garage Status Badge */}
-          <div className="absolute bottom-4 left-6 px-3.5 py-1.5 rounded-full bg-stone-900/80 border border-stone-700/60 text-xs font-bold text-amber-300 pointer-events-none flex items-center gap-2 shadow-lg backdrop-blur-md">
+          <div className="absolute top-4 left-6 px-3.5 py-1.5 rounded-full bg-stone-900/80 border border-stone-700/60 text-xs font-bold text-amber-300 pointer-events-none flex items-center gap-2 shadow-lg backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>HOME GARAGE // READY TO ROLL</span>
           </div>
