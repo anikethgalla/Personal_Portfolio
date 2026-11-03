@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Project } from '../data/projectsData';
+import { Project, projectsData } from '../data/projectsData';
 import { soundManager } from '../audio/soundManager';
 import { VehicleId, VEHICLES_DATA } from '../data/vehiclesData';
 
@@ -10,6 +10,10 @@ interface GameContextType {
   setActiveZone: (zone: ZoneType) => void;
   activeProject: Project | null;
   setActiveProject: (project: Project | null) => void;
+  currentProjectIndex: number;
+  setCurrentProjectIndex: (index: number) => void;
+  nextProject: () => void;
+  prevProject: () => void;
   fpvProject: Project | null;
   enterFpv: (project: Project) => void;
   exitFpv: () => void;
@@ -43,7 +47,30 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeZone, setActiveZone] = useState<ZoneType>('hero');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [currentProjectIndex, setCurrentProjectIndex] = useState<number>(0);
   const [fpvProject, setFpvProject] = useState<Project | null>(null);
+
+  const nextProject = () => {
+    const nextIdx = (currentProjectIndex + 1) % projectsData.length;
+    setCurrentProjectIndex(nextIdx);
+    const p = projectsData[nextIdx];
+    setActiveProject(p);
+    if (fpvProject) {
+      setFpvProject(p);
+    }
+    soundManager.playChime();
+  };
+
+  const prevProject = () => {
+    const prevIdx = (currentProjectIndex - 1 + projectsData.length) % projectsData.length;
+    setCurrentProjectIndex(prevIdx);
+    const p = projectsData[prevIdx];
+    setActiveProject(p);
+    if (fpvProject) {
+      setFpvProject(p);
+    }
+    soundManager.playChime();
+  };
   const [isRecruiterDrawerOpen, setIsRecruiterDrawerOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(() => soundManager.getMuted());
   const [teleportTarget, setTeleportTarget] = useState<[number, number, number] | null>(null);
@@ -130,6 +157,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setActiveZone,
         activeProject,
         setActiveProject,
+        currentProjectIndex,
+        setCurrentProjectIndex,
+        nextProject,
+        prevProject,
         fpvProject,
         enterFpv,
         exitFpv,

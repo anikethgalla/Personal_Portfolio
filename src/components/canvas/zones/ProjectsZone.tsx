@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
-import { projectsData, Project } from '../../../data/projectsData';
+import { projectsData } from '../../../data/projectsData';
 import { useGame } from '../../../context/GameContext';
 
 interface ProjectsZoneProps {
@@ -11,35 +11,45 @@ interface ProjectsZoneProps {
 }
 
 export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) => {
-  const { setActiveProject, activeProject, markZoneDiscovered } = useGame();
+  const {
+    setActiveProject,
+    activeProject,
+    markZoneDiscovered,
+    currentProjectIndex,
+    nextProject,
+    prevProject,
+    enterFpv,
+    exitFpv,
+    fpvProject
+  } = useGame();
+
+  const driveInBayPos = new THREE.Vector3(20, 0, -16);
+  const isParkedAtCinema = vehiclePosition ? driveInBayPos.distanceTo(vehiclePosition) < 5.2 : false;
+  const currentProject = projectsData[currentProjectIndex] || projectsData[0];
 
   useFrame(() => {
     if (!vehiclePosition) return;
 
-    let closestProject: Project | null = null;
-    let minDistance = 4.5; // Trigger radius for parking spots
+    const dist = driveInBayPos.distanceTo(vehiclePosition);
 
-    projectsData.forEach((project) => {
-      const projPos = new THREE.Vector3(...project.spawnPosition);
-      const dist = projPos.distanceTo(vehiclePosition);
-
-      if (dist < minDistance) {
-        closestProject = project;
-        minDistance = dist;
-      }
-    });
-
-    if (closestProject !== activeProject) {
-      setActiveProject(closestProject);
-      if (closestProject) {
+    if (dist < 5.2) {
+      if (activeProject !== currentProject) {
+        setActiveProject(currentProject);
         markZoneDiscovered('projects');
+      }
+      // Auto-enter FPV when car enters the Drive-In parking bay
+      if (!fpvProject) {
+        enterFpv(currentProject);
+      }
+    } else if (dist > 7.5) {
+      if (activeProject) {
+        setActiveProject(null);
+      }
+      if (fpvProject) {
+        exitFpv();
       }
     }
   });
-
-  const isGravitasActive = activeProject?.id === 'gravitas';
-  const isDevjamsActive = activeProject?.id === 'devjams';
-  const isMiraActive = activeProject?.id === 'mira';
 
   return (
     <group>
@@ -62,12 +72,12 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
           anchorX="center"
           anchorY="middle"
         >
-          PULL UP TO ANY BAY TO LAUNCH FPV VIEW
+          PULL INTO DRIVE-IN THEATER TO BROWSE ALL PROJECTS
         </Text>
       </group>
 
       {/* ======================================================== */}
-      {/* STRUCTURE 1: THE RETRO DRIVE-IN CINEMA (graVITas'26)     */}
+      {/* STRUCTURE 1: THE DRIVE-IN CINEMA SCREEN (ALL PROJECTS)   */}
       {/* ======================================================== */}
       <group position={[28, 0, -16]}>
         {/* Drive-in Parking Bay at [20, 0, -16] (relative: [-8, 0, 0]) */}
@@ -75,17 +85,17 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2.5, 2.8, 36]} />
             <meshBasicMaterial
-              color={isGravitasActive ? '#0284c7' : '#cfc5b5'}
+              color={isParkedAtCinema ? '#f59e0b' : '#cfc5b5'}
               transparent
-              opacity={isGravitasActive ? 0.9 : 0.4}
+              opacity={isParkedAtCinema ? 0.95 : 0.4}
             />
           </mesh>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[3.2, 4.6]} />
             <meshBasicMaterial
-              color={isGravitasActive ? '#0284c7' : '#ded7cb'}
+              color={isParkedAtCinema ? '#f59e0b' : '#ded7cb'}
               transparent
-              opacity={isGravitasActive ? 0.15 : 0.05}
+              opacity={isParkedAtCinema ? 0.18 : 0.05}
             />
           </mesh>
           <Text
@@ -97,7 +107,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             anchorX="center"
             anchorY="middle"
           >
-            {isGravitasActive ? "★ PARKED AT GRAVITAS'26 ★" : 'DRIVE-IN CINEMA BAY'}
+            {isParkedAtCinema ? '★ PARKED AT DRIVE-IN THEATER ★' : 'DRIVE-IN CINEMA BAY'}
           </Text>
 
           {/* Speaker Posts Left & Right */}
@@ -126,69 +136,155 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
 
         {/* Billboard Screen Rigid Body (Fixed) */}
         <RigidBody type="fixed" friction={0.8} position={[0, 0, 0]}>
-          {/* Main Frame */}
+          {/* Main Outer Billboard Frame */}
           <mesh position={[0, 3.2, 0]} castShadow receiveShadow>
-            <boxGeometry args={[0.8, 5.2, 9.2]} />
+            <boxGeometry args={[0.8, 5.2, 9.6]} />
             <meshStandardMaterial color="#bdaea0" roughness={0.8} />
           </mesh>
 
           {/* Projection Screen Surface (Facing -X towards parking bay) */}
           <mesh position={[-0.42, 3.2, 0]} rotation={[0, -Math.PI / 2, 0]}>
-            <planeGeometry args={[8.8, 4.8]} />
-            <meshStandardMaterial color="#0c1222" roughness={0.9} />
+            <planeGeometry args={[9.1, 4.8]} />
+            <meshStandardMaterial color="#0b1120" roughness={0.9} />
           </mesh>
 
-          {/* 3D Native Cinema Screen Typography */}
+          {/* 3D Native Cinema Screen Dynamic Project Typography */}
           <group position={[-0.44, 3.2, 0]} rotation={[0, -Math.PI / 2, 0]}>
+            {/* Slide Index & Category Badge */}
             <Text
-              position={[0, 1.4, 0]}
-              fontSize={0.65}
+              position={[0, 1.85, 0]}
+              fontSize={0.17}
+              fontWeight={800}
+              color="#f59e0b"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.12}
+            >
+              {`[ PROJECT ${currentProjectIndex + 1} OF ${projectsData.length} ] • ${currentProject.category.toUpperCase()}`}
+            </Text>
+
+            {/* Project Title */}
+            <Text
+              position={[0, 1.35, 0]}
+              fontSize={0.52}
               fontWeight={900}
               color="#38bdf8"
               anchorX="center"
               anchorY="middle"
-              letterSpacing={0.05}
+              letterSpacing={0.03}
+              maxWidth={7.8}
             >
-              GRAVITAS'26
+              {currentProject.title.toUpperCase()}
             </Text>
+
+            {/* Project Short Description / Tagline */}
             <Text
-              position={[0, 0.65, 0]}
-              fontSize={0.3}
+              position={[0, 0.72, 0]}
+              fontSize={0.24}
               fontWeight={700}
               color="#f8fafc"
               anchorX="center"
               anchorY="middle"
+              maxWidth={7.6}
             >
-              FLAGSHIP FESTIVAL PORTAL
+              {currentProject.shortDesc}
             </Text>
+
+            {/* Tech Stack List */}
             <Text
-              position={[0, -0.05, 0]}
-              fontSize={0.22}
-              fontWeight={500}
+              position={[0, 0.12, 0]}
+              fontSize={0.19}
+              fontWeight={600}
               color="#94a3b8"
               anchorX="center"
               anchorY="middle"
-              maxWidth={8.0}
+              maxWidth={7.8}
             >
-              Go (Golang) • Next.js • PostgreSQL • Redis • 25,000+ Participants
+              {currentProject.tags.join(' • ')}
             </Text>
 
-            <mesh position={[0, -1.1, 0]}>
-              <boxGeometry args={[4.4, 0.44, 0.04]} />
+            {/* Key Metrics / Highlights */}
+            <Text
+              position={[0, -0.42, 0]}
+              fontSize={0.17}
+              fontWeight={500}
+              color="#cbd5e1"
+              anchorX="center"
+              anchorY="middle"
+              maxWidth={7.6}
+            >
+              {`✓ ${currentProject.metrics[0]}   |   ✓ ${currentProject.metrics[1]}`}
+            </Text>
+
+            {/* Bottom Status / Navigation Guidance Pill */}
+            <mesh position={[0, -1.3, 0]}>
+              <boxGeometry args={[6.8, 0.44, 0.04]} />
               <meshStandardMaterial
-                color={isGravitasActive ? '#0284c7' : '#1e293b'}
+                color={isParkedAtCinema ? '#d97706' : '#1e293b'}
                 roughness={0.3}
               />
             </mesh>
             <Text
-              position={[0, -1.1, 0.03]}
-              fontSize={0.2}
+              position={[0, -1.3, 0.03]}
+              fontSize={0.18}
               fontWeight={800}
               color="#ffffff"
               anchorX="center"
               anchorY="middle"
             >
-              {isGravitasActive ? '★ PARKED — TAP FOR FPV SCREEN ★' : 'DRIVE IN TO VIEW ARCHITECTURE'}
+              {isParkedAtCinema
+                ? 'USE ◀ ARROWS ▶ TO FLIP PROJECTS • PRESS ESC TO EXIT'
+                : 'PULL INTO BAY FOR FPV SCREEN'}
+            </Text>
+          </group>
+
+          {/* Interactive Left Arrow Button Next to Screen (3D Clickable) */}
+          <group
+            position={[-0.45, 3.2, -5.1]}
+            rotation={[0, -Math.PI / 2, 0]}
+            onClick={(e) => {
+              e.stopPropagation();
+              prevProject();
+            }}
+          >
+            <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.42, 0.42, 0.12, 24]} />
+              <meshStandardMaterial color="#f59e0b" roughness={0.3} emissive="#f59e0b" emissiveIntensity={0.2} />
+            </mesh>
+            <Text
+              position={[0, 0, 0.08]}
+              fontSize={0.42}
+              fontWeight={900}
+              color="#0f172a"
+              anchorX="center"
+              anchorY="middle"
+            >
+              ◀
+            </Text>
+          </group>
+
+          {/* Interactive Right Arrow Button Next to Screen (3D Clickable) */}
+          <group
+            position={[-0.45, 3.2, 5.1]}
+            rotation={[0, -Math.PI / 2, 0]}
+            onClick={(e) => {
+              e.stopPropagation();
+              nextProject();
+            }}
+          >
+            <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.42, 0.42, 0.12, 24]} />
+              <meshStandardMaterial color="#f59e0b" roughness={0.3} emissive="#f59e0b" emissiveIntensity={0.2} />
+            </mesh>
+            <Text
+              position={[0, 0, 0.08]}
+              fontSize={0.42}
+              fontWeight={900}
+              color="#0f172a"
+              anchorX="center"
+              anchorY="middle"
+            >
+              ▶
             </Text>
           </group>
 
@@ -205,41 +301,10 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       </group>
 
       {/* ======================================================== */}
-      {/* STRUCTURE 2: THE DEVJAMS'26 FOOD TRUCK (DevJams'26)      */}
-      {/* Stationary Fixed Physics Body - Cannot be moved by WASD  */}
+      {/* STRUCTURE 2: THE ROADSIDE STREET FOOD TRUCK              */}
+      {/* Authentic Town Food Truck - No Projects                  */}
       {/* ======================================================== */}
       <group position={[30, 0, 0]}>
-        {/* Customer Parking Bay at [23, 0, 0] (relative: [-7, 0, 0]) */}
-        <group position={[-7, 0.035, 0]}>
-          <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <ringGeometry args={[2.5, 2.8, 36]} />
-            <meshBasicMaterial
-              color={isDevjamsActive ? '#f59e0b' : '#cfc5b5'}
-              transparent
-              opacity={isDevjamsActive ? 0.9 : 0.4}
-            />
-          </mesh>
-          <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[3.2, 4.6]} />
-            <meshBasicMaterial
-              color={isDevjamsActive ? '#f59e0b' : '#ded7cb'}
-              transparent
-              opacity={isDevjamsActive ? 0.15 : 0.05}
-            />
-          </mesh>
-          <Text
-            position={[0, 0.01, 1.8]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            fontSize={0.24}
-            fontWeight={700}
-            color="#786c62"
-            anchorX="center"
-            anchorY="middle"
-          >
-            {isDevjamsActive ? "★ PARKED AT DEVJAMS'26 ★" : 'DEVJAMS ORDER BAY'}
-          </Text>
-        </group>
-
         {/* Stationary Food Truck Physics Body (FIXED, IMMOVABLE) */}
         <RigidBody type="fixed" friction={0.9} position={[0, 0, 0]}>
           {/* Main Truck Body Box (Rear Kitchen) */}
@@ -274,7 +339,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             <meshStandardMaterial color="#fef08a" roughness={0.3} />
           </mesh>
 
-          {/* Flipped-Up Serving Hatch Awning (Props up on two struts) */}
+          {/* Flipped-Up Serving Hatch Awning */}
           <mesh position={[-1.5, 2.2, 0]} rotation={[0, 0, -0.45]} castShadow>
             <boxGeometry args={[0.1, 0.05, 3.0]} />
             <meshStandardMaterial color="#ea580c" roughness={0.4} />
@@ -298,38 +363,38 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </mesh>
             <Text
               position={[0, 0.45, 0.01]}
-              fontSize={0.11}
+              fontSize={0.095}
               fontWeight={800}
               color="#f59e0b"
               anchorX="center"
               anchorY="middle"
             >
-              DEVJAMS'26
+              STREET FOOD
             </Text>
             <Text
-              position={[0, 0.22, 0.01]}
-              fontSize={0.075}
+              position={[0, 0.24, 0.01]}
+              fontSize={0.07}
               fontWeight={700}
               color="#ffffff"
               anchorX="center"
               anchorY="middle"
             >
-              GDG HACKATHON
+              TACOS & BURGERS
             </Text>
             <Text
-              position={[0, -0.05, 0.01]}
-              fontSize={0.06}
+              position={[0, -0.08, 0.01]}
+              fontSize={0.055}
               fontWeight={500}
-              color="#94a3b8"
+              color="#cbd5e1"
               anchorX="center"
               anchorY="middle"
               maxWidth={0.8}
             >
-              • 4,000+ Registrations{'\n'}• 60 FPS Lenis Scroll{'\n'}• Next.js + GSAP
+              • Smash Burger{'\n'}• Birria Tacos{'\n'}• Fresh Horchata{'\n'}• Cold Brew Coffee
             </Text>
           </group>
 
-          {/* In-Counter Terminal Monitor Mesh (Clean & Physically Bounded) */}
+          {/* In-Counter Kitchen Serving Window Display */}
           <group position={[-0.88, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh castShadow>
               <boxGeometry args={[2.5, 1.3, 0.08]} />
@@ -337,7 +402,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </mesh>
             <mesh position={[0, 0, 0.045]}>
               <planeGeometry args={[2.4, 1.2]} />
-              <meshStandardMaterial color="#080d1a" roughness={0.2} emissive="#f59e0b" emissiveIntensity={0.08} />
+              <meshStandardMaterial color="#080d1a" roughness={0.2} emissive="#f59e0b" emissiveIntensity={0.05} />
             </mesh>
             <Text
               position={[0, 0.35, 0.05]}
@@ -347,7 +412,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               anchorX="center"
               anchorY="middle"
             >
-              DEVJAMS'26 PLATFORM
+              TOWN STREET KITCHEN
             </Text>
             <Text
               position={[0, 0.12, 0.05]}
@@ -357,7 +422,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               anchorX="center"
               anchorY="middle"
             >
-              ● PRODUCTION PORTAL (4K+ USERS)
+              ● KITCHEN GRILL OPEN
             </Text>
             <Text
               position={[0, -0.12, 0.05]}
@@ -367,21 +432,21 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               anchorX="center"
               anchorY="middle"
             >
-              React • Next.js • GSAP • Lenis
+              Handcrafted Burgers & Tacos
             </Text>
             <mesh position={[0, -0.38, 0.05]}>
               <boxGeometry args={[1.8, 0.22, 0.01]} />
-              <meshStandardMaterial color={isDevjamsActive ? '#f59e0b' : '#1e293b'} />
+              <meshStandardMaterial color="#334155" />
             </mesh>
             <Text
               position={[0, -0.38, 0.06]}
               fontSize={0.075}
               fontWeight={800}
-              color="#ffffff"
+              color="#94a3b8"
               anchorX="center"
               anchorY="middle"
             >
-              {isDevjamsActive ? 'TAP FOR FPV SCREEN' : 'PULL UP TO VIEW'}
+              OPEN DAILY 11AM - 10PM
             </Text>
           </group>
 
@@ -410,40 +475,10 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       </group>
 
       {/* ======================================================== */}
-      {/* STRUCTURE 3: THE MIRA 2.0 CLAY DINER (AI Fashion Try-On) */}
+      {/* STRUCTURE 3: THE SUNSET HIGHWAY DINER                    */}
+      {/* Authentic Roadside Diner - No Projects                   */}
       {/* ======================================================== */}
       <group position={[28, 0, 16]}>
-        {/* Drive-Up Parking Stall at [20, 0, 16] (relative: [-8, 0, 0]) */}
-        <group position={[-8, 0.035, 0]}>
-          <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <ringGeometry args={[2.5, 2.8, 36]} />
-            <meshBasicMaterial
-              color={isMiraActive ? '#ec4899' : '#cfc5b5'}
-              transparent
-              opacity={isMiraActive ? 0.9 : 0.4}
-            />
-          </mesh>
-          <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[3.2, 4.6]} />
-            <meshBasicMaterial
-              color={isMiraActive ? '#ec4899' : '#ded7cb'}
-              transparent
-              opacity={isMiraActive ? 0.15 : 0.05}
-            />
-          </mesh>
-          <Text
-            position={[0, 0.01, 1.8]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            fontSize={0.24}
-            fontWeight={700}
-            color="#786c62"
-            anchorX="center"
-            anchorY="middle"
-          >
-            {isMiraActive ? '★ PARKED AT MIRA 2.0 ★' : 'MIRA AI DRIVE-UP BAY'}
-          </Text>
-        </group>
-
         {/* Diner Architecture Physics Body (FIXED) */}
         <RigidBody type="fixed" friction={0.8} position={[0, 0, 0]}>
           {/* Main Clay Building Block */}
@@ -452,17 +487,17 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             <meshStandardMaterial color="#ede6dc" roughness={0.7} />
           </mesh>
 
-          {/* Roof Parapet Trim (Warm Terracotta Deco Styling) */}
+          {/* Roof Parapet Trim */}
           <mesh position={[0, 3.65, 0]} castShadow receiveShadow>
             <boxGeometry args={[5.5, 0.4, 8.1]} />
-            <meshStandardMaterial color="#db2777" roughness={0.5} />
+            <meshStandardMaterial color="#c2410c" roughness={0.5} />
           </mesh>
 
-          {/* Striped Clay Awning along the front (-X side) */}
+          {/* Striped Awning along the front (-X side) */}
           <group position={[-2.7, 2.65, 0]}>
             <mesh rotation={[0, 0, -0.32]} castShadow>
               <boxGeometry args={[1.6, 0.06, 6.8]} />
-              <meshStandardMaterial color="#ec4899" roughness={0.5} />
+              <meshStandardMaterial color="#ea580c" roughness={0.5} />
             </mesh>
             {[-2.8, -1.8, -0.8, 0.2, 1.2, 2.2].map((z, i) => (
               <mesh key={`awn-stripe-${i}`} position={[0, 0.04, z]} rotation={[0, 0, -0.32]}>
@@ -478,7 +513,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             <meshStandardMaterial color="#c5b9a8" roughness={0.5} />
           </mesh>
 
-          {/* 3D Embossed Clay Roof Sign: "MIRA 2.0" */}
+          {/* 3D Embossed Roof Sign: "SUNSET DINER" */}
           <group position={[-1.2, 4.3, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh castShadow>
               <boxGeometry args={[4.2, 0.9, 0.25]} />
@@ -488,12 +523,12 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               position={[0, 0.08, 0.14]}
               fontSize={0.42}
               fontWeight={900}
-              color="#db2777"
+              color="#c2410c"
               anchorX="center"
               anchorY="middle"
               letterSpacing={0.08}
             >
-              MIRA 2.0
+              SUNSET DINER
             </Text>
             <Text
               position={[0, -0.25, 0.14]}
@@ -504,11 +539,11 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               anchorY="middle"
               letterSpacing={0.12}
             >
-              AI VIRTUAL TRY-ON
+              24/7 COFFEE & HOT MEALS
             </Text>
           </group>
 
-          {/* In-Counter Terminal Display Mesh (Clean & Physically Bounded) */}
+          {/* In-Counter Terminal Display Mesh */}
           <group position={[-2.45, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh castShadow>
               <boxGeometry args={[2.8, 1.4, 0.08]} />
@@ -516,17 +551,17 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </mesh>
             <mesh position={[0, 0, 0.045]}>
               <planeGeometry args={[2.7, 1.3]} />
-              <meshStandardMaterial color="#090d16" roughness={0.2} emissive="#ec4899" emissiveIntensity={0.08} />
+              <meshStandardMaterial color="#090d16" roughness={0.2} emissive="#ea580c" emissiveIntensity={0.06} />
             </mesh>
             <Text
               position={[0, 0.38, 0.05]}
               fontSize={0.14}
               fontWeight={800}
-              color="#f472b6"
+              color="#fb923c"
               anchorX="center"
               anchorY="middle"
             >
-              MIRA GENERATIVE ENGINE
+              ROADSIDE DINER & CAFE
             </Text>
             <Text
               position={[0, 0.14, 0.05]}
@@ -536,7 +571,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               anchorX="center"
               anchorY="middle"
             >
-              ● DIFFUSION WARPING (&lt;3s)
+              ● FRESH COFFEE & WARM PIE
             </Text>
             <Text
               position={[0, -0.1, 0.05]}
@@ -546,21 +581,21 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
               anchorX="center"
               anchorY="middle"
             >
-              PyTorch • Diffusion Models • OpenPose
+              Classic American Comfort Food
             </Text>
             <mesh position={[0, -0.38, 0.05]}>
               <boxGeometry args={[1.8, 0.22, 0.01]} />
-              <meshStandardMaterial color={isMiraActive ? '#ec4899' : '#1e293b'} />
+              <meshStandardMaterial color="#1e293b" />
             </mesh>
             <Text
               position={[0, -0.38, 0.06]}
               fontSize={0.075}
               fontWeight={800}
-              color="#ffffff"
+              color="#94a3b8"
               anchorX="center"
               anchorY="middle"
             >
-              {isMiraActive ? 'TAP FOR FPV SCREEN' : 'PULL UP TO VIEW'}
+              SERVING 24 HOURS DAILY
             </Text>
           </group>
         </RigidBody>

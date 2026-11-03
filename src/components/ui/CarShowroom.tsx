@@ -1,65 +1,50 @@
-import React, { useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
+import React, { useState } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { useGame } from '../../context/GameContext';
 import { VEHICLE_LIST, VEHICLES_DATA, VehicleId } from '../../data/vehiclesData';
 import { VehicleModelSwitch } from '../canvas/vehicle/VehicleModels';
+import { GarageEnvironment } from '../canvas/environment/GarageEnvironment';
 import { soundManager } from '../../audio/soundManager';
 
 // -------------------------------------------------------------
-// 3D SHOWROOM TURNTABLE & STAGE
+// VEHICLE GROUND CONTACT ALIGNMENT OFFSETS
+// (Calibrated to each vehicle's wheel radius and suspension)
+// -------------------------------------------------------------
+export const VEHICLE_GROUND_OFFSETS: Record<VehicleId, number> = {
+  pickup: 0.17,
+  sports: 0.17,
+  offroad: 0.16,
+  kart: 0.11,
+  roadster: 0.17,
+  van: 0.18,
+};
+
+// -------------------------------------------------------------
+// 3D SHOWROOM GARAGE STAGE
 // -------------------------------------------------------------
 const ShowroomStage: React.FC<{
   vehicleId: VehicleId;
   color: string;
 }> = ({ vehicleId, color }) => {
-  const turntableRef = useRef<THREE.Group>(null);
-
-  // Gentle automatic idle rotation
-  useFrame((_, delta) => {
-    if (turntableRef.current) {
-      turntableRef.current.rotation.y += delta * 0.45;
-    }
-  });
+  const groundY = VEHICLE_GROUND_OFFSETS[vehicleId] ?? 0.17;
 
   return (
     <group>
-      {/* Studio Lighting */}
-      <ambientLight intensity={0.7} color="#fffbeb" />
-      {/* Primary Key Light */}
-      <directionalLight position={[6, 10, 6]} intensity={1.6} castShadow />
-      {/* Rim / Backlight */}
-      <directionalLight position={[-6, 6, -6]} intensity={1.0} color="#38bdf8" />
-      {/* Soft Ground Bounce Fill */}
-      <directionalLight position={[0, -4, 0]} intensity={0.4} color="#f8fafc" />
+      {/* Indoor Residential Garage Architecture, Fixtures & Warm Lighting */}
+      <GarageEnvironment vehicleId={vehicleId} />
 
-      {/* Rotating Turntable Group */}
-      <group ref={turntableRef} position={[0, -0.4, 0]}>
-        {/* The 3D Vehicle Model */}
-        <group position={[0, 0.1, 0]}>
-          <VehicleModelSwitch
-            vehicleId={vehicleId}
-            color={color}
-            showHeadlightBeams={false}
-          />
-        </group>
-
-        {/* Circular Display Podium */}
-        <mesh position={[0, -0.06, 0]} receiveShadow>
-          <cylinderGeometry args={[2.8, 3.0, 0.16, 48]} />
-          <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
-        </mesh>
-
-        {/* Luminous Glow Ring Around Turntable Edge */}
-        <mesh position={[0, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[2.65, 2.75, 48]} />
-          <meshBasicMaterial color="#38bdf8" />
-        </mesh>
+      {/* Parked Vehicle - Statically Positioned on Polished Epoxy Garage Floor */}
+      <group position={[0, groundY, 0]} rotation={[0, Math.PI, 0]}>
+        <VehicleModelSwitch
+          vehicleId={vehicleId}
+          color={color}
+          showHeadlightBeams={false}
+        />
       </group>
     </group>
   );
 };
+
 
 // -------------------------------------------------------------
 // STAT BAR COMPONENT
@@ -141,32 +126,25 @@ export const CarShowroom: React.FC = () => {
 
       {/* MAIN SHOWROOM CONTENT (Split into 3D Stage + Vehicle Specs) */}
       <div className="flex-1 relative flex flex-col lg:flex-row items-stretch overflow-hidden">
-        {/* 3D CANVAS TURNTABLE (Center / Left) */}
+        {/* 3D RESIDENTIAL GARAGE STAGE (Center / Left) */}
         <div className="flex-1 relative h-64 lg:h-auto flex items-center justify-center">
-          {/* Subtle Stage Background Gradient Radial */}
-          <div className="absolute inset-0 bg-radial-gradient from-sky-900/15 via-transparent to-slate-950 pointer-events-none" />
-
-          {/* Interactive Three.js Canvas */}
+          {/* Interactive Three.js Canvas with Warm Beige Background and Static Camera */}
           <Canvas
             shadows
-            camera={{ position: [3.8, 2.5, 4.2], fov: 42 }}
-            className="w-full h-full cursor-grab active:cursor-grabbing"
+            camera={{ position: [2.5, 1.35, 2.3], fov: 40 }}
+            className="w-full h-full"
           >
+            <color attach="background" args={['#e8dfd1']} />
             <ShowroomStage
               vehicleId={hoveredVehicle || selectedVehicleId}
               color={selectedVehicleColor}
             />
-            <OrbitControls
-              enablePan={false}
-              minDistance={3.2}
-              maxDistance={6.5}
-              maxPolarAngle={Math.PI / 2 - 0.05} // Prevent camera going beneath floor
-            />
           </Canvas>
 
-          {/* Drag instruction pill */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700/60 text-[11px] font-semibold text-slate-300 pointer-events-none flex items-center gap-1.5 shadow-lg backdrop-blur-md">
-            <span>🖱️</span> Drag to rotate 3D view
+          {/* Garage Status Badge */}
+          <div className="absolute bottom-4 left-6 px-3.5 py-1.5 rounded-full bg-stone-900/80 border border-stone-700/60 text-xs font-bold text-amber-300 pointer-events-none flex items-center gap-2 shadow-lg backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>HOME GARAGE // READY TO ROLL</span>
           </div>
         </div>
 

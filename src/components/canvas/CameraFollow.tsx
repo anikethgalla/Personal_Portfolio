@@ -40,29 +40,16 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
 
   useFrame((_, delta) => {
     // ========================================================
-    // 1. FPV Camera Mode (Inside Food Truck, Drive-In, or Diner)
+    // 1. FPV Camera Mode (Drive-In Cinema Screen)
     // ========================================================
     if (fpvProject) {
       if (controlsRef.current) {
         controlsRef.current.enabled = false;
       }
 
-      let desiredFpvPos = new THREE.Vector3(14.6, 1.62, -2.0);
-      let desiredFpvLookAt = new THREE.Vector3(17.4, 1.62, -2.0);
-
-      if (fpvProject.id === 'robosurge') {
-        // Food Truck FPV: Facing counter terminal monitor
-        desiredFpvPos.set(25.8, 1.62, 0.0);
-        desiredFpvLookAt.set(29.12, 1.62, 0.0);
-      } else if (fpvProject.id === 'trueforge') {
-        // Drive-In Cinema FPV: Driver seat looking up at billboard
-        desiredFpvPos.set(19.0, 1.8, -16.0);
-        desiredFpvLookAt.set(27.58, 3.2, -16.0);
-      } else if (fpvProject.id === 'distributed-backend') {
-        // Diner FPV: Peering into diner counter
-        desiredFpvPos.set(22.2, 1.65, 16.0);
-        desiredFpvLookAt.set(25.55, 1.65, 16.0);
-      }
+      // Drive-In Cinema FPV: Driver seat looking directly up at the billboard screen
+      const desiredFpvPos = new THREE.Vector3(19.0, 1.8, -16.0);
+      const desiredFpvLookAt = new THREE.Vector3(27.58, 3.2, -16.0);
 
       camera.position.lerp(desiredFpvPos, delta * 4.8);
       currentLookAt.current.lerp(desiredFpvLookAt, delta * 6.0);
