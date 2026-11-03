@@ -41,7 +41,7 @@ export const HeaderHUD: React.FC = () => {
           </span>
         </div>
         <p className="text-xs text-[#6e6359] font-medium hidden sm:block">
-          Backend Systems & Autonomous AI
+          Full Stack Developer
         </p>
       </div>
 

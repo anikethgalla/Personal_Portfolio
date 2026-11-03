@@ -1,33 +1,13 @@
 import React from 'react';
 import { Text } from '@react-three/drei';
+import { HollywoodSign } from '../environment/HollywoodSign';
 
 export const HeroZone: React.FC = () => {
   return (
     <group position={[0, 0, 0]}>
-      {/* 3D Elevated Hero Typography - Positioned grandly on the northern city horizon */}
-      <group position={[0, 5.2, -28]}>
-        <Text
-          fontSize={3.2}
-          fontWeight={800}
-          color="#332d29"
-          anchorX="center"
-          anchorY="middle"
-          letterSpacing={0.06}
-        >
-          ANIKETH GALLA
-        </Text>
-        <Text
-          position={[0, -2.0, 0]}
-          fontSize={1.0}
-          fontWeight={600}
-          color="#786c62"
-          anchorX="center"
-          anchorY="middle"
-          letterSpacing={0.12}
-        >
-          BACKEND SYSTEMS & AUTONOMOUS AI AGENTS
-        </Text>
-      </group>
+      {/* Iconic Hollywood-Style Mountain Landmark Sign */}
+      {/* Perched on the eastern mountain slope (Peak E1) overlooking the valley & town */}
+      <HollywoodSign position={[21, 9.4, -60]} rotation={[0.06, -0.34, 0]} />
 
       {/* Starting Grid Decal on Floor (Spacious starting zone) */}
       <group position={[0, 0.032, 14]}>
