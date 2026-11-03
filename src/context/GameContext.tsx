@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Project, projectsData } from '../data/projectsData';
 import { ExperienceItem, experienceData } from '../data/experienceData';
 import { soundManager } from '../audio/soundManager';
@@ -205,6 +205,45 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return next;
     });
   };
+
+  // Global Keyboard Navigation for FPV Screens (Esc to exit, Arrows/A/D to cycle)
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // 1. Exit FPV on Escape
+      if (e.key === 'Escape') {
+        if (fpvProject) {
+          e.preventDefault();
+          exitFpv();
+        } else if (fpvExperience) {
+          e.preventDefault();
+          exitExperienceFpv();
+        }
+      }
+      // 2. Cycle Cinema Projects in FPV
+      else if (fpvProject) {
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+          e.preventDefault();
+          nextProject();
+        } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          prevProject();
+        }
+      }
+      // 3. Cycle Diner Experiences in FPV
+      else if (fpvExperience) {
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+          e.preventDefault();
+          nextExperience();
+        } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          prevExperience();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [fpvProject, fpvExperience, currentProjectIndex, currentExperienceIndex]);
 
   return (
     <GameContext.Provider

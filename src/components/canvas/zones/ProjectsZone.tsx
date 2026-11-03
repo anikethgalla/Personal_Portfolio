@@ -655,39 +655,39 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
         {/* Diner Architecture Physics Body (FIXED) */}
         <RigidBody type="fixed" friction={0.8} position={[0, 0, 0]}>
           {/* Main Building Block */}
-          <mesh position={[0, 1.8, 0]} castShadow receiveShadow>
-            <boxGeometry args={[5.2, 3.6, 7.8]} />
+          <mesh position={[0, 2.2, 0]} castShadow receiveShadow>
+            <boxGeometry args={[5.2, 4.4, 8.4]} />
             <meshStandardMaterial color="#ede6dc" roughness={0.7} />
           </mesh>
 
           {/* Roof Parapet Trim */}
-          <mesh position={[0, 3.65, 0]} castShadow receiveShadow>
-            <boxGeometry args={[5.5, 0.4, 8.1]} />
+          <mesh position={[0, 4.45, 0]} castShadow receiveShadow>
+            <boxGeometry args={[5.5, 0.4, 8.7]} />
             <meshStandardMaterial color="#c2410c" roughness={0.5} />
           </mesh>
 
           {/* Striped Awning along the front (-X side) */}
-          <group position={[-2.7, 2.65, 0]}>
-            <mesh rotation={[0, 0, -0.32]} castShadow>
-              <boxGeometry args={[1.6, 0.06, 6.8]} />
+          <group position={[-2.7, 3.65, 0]}>
+            <mesh rotation={[0, 0, -0.28]} castShadow>
+              <boxGeometry args={[1.5, 0.06, 7.4]} />
               <meshStandardMaterial color="#10b981" roughness={0.5} />
             </mesh>
-            {[-2.8, -1.8, -0.8, 0.2, 1.2, 2.2].map((z, i) => (
-              <mesh key={`awn-stripe-${i}`} position={[0, 0.04, z]} rotation={[0, 0, -0.32]}>
-                <boxGeometry args={[1.62, 0.07, 0.5]} />
+            {[-3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0].map((z, i) => (
+              <mesh key={`awn-stripe-${i}`} position={[0, 0.04, z]} rotation={[0, 0, -0.28]}>
+                <boxGeometry args={[1.52, 0.07, 0.5]} />
                 <meshStandardMaterial color="#fcfbf7" roughness={0.5} />
               </mesh>
             ))}
           </group>
 
           {/* Drive-Through Service Counter Window & Shelf */}
-          <mesh position={[-2.75, 1.0, 0]} castShadow>
-            <boxGeometry args={[0.4, 0.1, 2.6]} />
+          <mesh position={[-2.75, 0.22, 0]} castShadow>
+            <boxGeometry args={[0.35, 0.08, 6.2]} />
             <meshStandardMaterial color="#c5b9a8" roughness={0.5} />
           </mesh>
 
           {/* 3D Embossed Roof Sign: "EXPERIENCE DINER" */}
-          <group position={[-1.2, 4.3, 0]} rotation={[0, -Math.PI / 2, 0]}>
+          <group position={[-1.2, 5.15, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh castShadow>
               <boxGeometry args={[4.4, 0.9, 0.25]} />
               <meshStandardMaterial color="#fcfbf7" roughness={0.6} />
@@ -717,43 +717,45 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
           </group>
 
           {/* In-Counter Terminal Display Mesh (Dynamic Experience Showcase) */}
-          <group position={[-2.45, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
+          <group position={[-2.62, 1.7, 0]} rotation={[0, -Math.PI / 2, 0]}>
+            {/* Outer Mounting Frame */}
             <mesh castShadow>
-              <boxGeometry args={[4.4, 2.3, 0.08]} />
-              <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
+              <boxGeometry args={[5.9, 2.95, 0.12]} />
+              <meshStandardMaterial color="#0b1320" roughness={0.4} metalness={0.7} />
             </mesh>
-            <mesh position={[0, 0, 0.045]}>
-              <planeGeometry args={[4.3, 2.2]} />
-              <meshStandardMaterial color="#06121e" roughness={0.2} emissive="#10b981" emissiveIntensity={0.06} />
+            {/* Inner Backing Surface Plane */}
+            <mesh position={[0, 0, 0.062]}>
+              <planeGeometry args={[5.8, 2.85]} />
+              <meshStandardMaterial color="#040d16" roughness={0.2} emissive="#10b981" emissiveIntensity={0.04} />
             </mesh>
 
             {/* 3D Native Diner Terminal Screen Dynamic Interactive UI via Html transform */}
             <Html
               transform
               occlude={false}
-              position={[0, 0, 0.05]}
-              distanceFactor={2.7}
+              position={[0, 0, 0.065]}
+              distanceFactor={2.8}
               pointerEvents="auto"
             >
               <div
                 style={{
-                  width: '940px',
-                  height: '480px',
+                  width: '828px',
+                  height: '407px',
                 }}
-                className="bg-[#07131e] text-gray-100 rounded-2xl border-4 border-emerald-900/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-5 select-none font-['Plus_Jakarta_Sans',sans-serif]"
+                className="bg-[#050f18] text-gray-100 rounded-2xl border-4 border-emerald-900/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-4 select-none font-['Plus_Jakarta_Sans',sans-serif]"
               >
                 {/* Header Bar */}
-                <div className="flex items-center justify-between pb-2.5 border-b border-emerald-500/20">
-                  <div className="flex items-center gap-2.5">
+                <div className="flex items-center justify-between pb-2 border-b border-emerald-500/20">
+                  <div className="flex items-center gap-2">
                     <span className="font-mono text-xs text-emerald-400 font-bold tracking-wider flex items-center gap-1.5">
                       <Terminal className="w-4 h-4 text-emerald-400" />
                       WORK_HISTORY_LOG // {currentExp.category.toUpperCase()}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2">
                     <span
-                      className="px-2.5 py-0.5 rounded text-xs font-mono font-bold uppercase border"
+                      className="px-2 py-0.5 rounded text-[11px] font-mono font-bold uppercase border"
                       style={{
                         backgroundColor: `${currentExp.badgeColor}20`,
                         color: currentExp.badgeColor,
@@ -766,20 +768,20 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
                       <Building2 className="w-3.5 h-3.5" />
                       {currentExp.organization}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded bg-slate-800 text-xs font-mono text-emerald-300 border border-slate-700">
+                    <span className="px-2 py-0.5 rounded bg-slate-800 text-xs font-mono text-emerald-300 border border-slate-700">
                       {currentExperienceIndex + 1}/{experienceData.length}
                     </span>
                   </div>
                 </div>
 
                 {/* Role, Period & Location */}
-                <div className="flex items-start justify-between gap-3 mt-2.5">
+                <div className="flex items-start justify-between gap-3 mt-2">
                   <div>
-                    <h2 className="text-xl font-black text-white tracking-tight">
+                    <h2 className="text-lg font-black text-white tracking-tight">
                       {currentExp.role}
                     </h2>
                   </div>
-                  <div className="text-right text-xs text-gray-400 font-medium space-y-0.5">
+                  <div className="text-right text-xs text-gray-400 font-medium space-y-0.5 shrink-0">
                     <div className="flex items-center gap-1 text-amber-300 font-semibold justify-end">
                       <Calendar className="w-3.5 h-3.5" />
                       <span>{currentExp.period}</span>
@@ -792,20 +794,20 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
                 </div>
 
                 {/* Description */}
-                <p className="mt-2 text-xs text-gray-300 leading-relaxed bg-[#0b1b2a]/80 p-3 rounded-xl border border-white/5">
+                <p className="mt-1.5 text-[11px] text-gray-300 leading-relaxed bg-[#0b1b2a]/80 p-2.5 rounded-xl border border-white/5">
                   {currentExp.description}
                 </p>
 
                 {/* Key Accomplishments (2-column grid) */}
-                <div className="mt-2">
+                <div className="mt-1.5">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-400 mb-1 block">
                     Key Accomplishments & Impact Highlights
                   </span>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-1.5">
                     {currentExp.highlights.map((highlight, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-2 p-2 rounded-lg bg-[#0b1b2a] border border-white/5 text-xs text-gray-200"
+                        className="flex items-start gap-1.5 p-2 rounded-lg bg-[#0b1b2a] border border-white/5 text-xs text-gray-200"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                         <span className="leading-snug text-[11px]">{highlight}</span>
@@ -815,7 +817,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
                 </div>
 
                 {/* Applied Skills Pills */}
-                <div className="mt-2 flex items-center gap-2">
+                <div className="mt-1.5 flex items-center gap-2">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-400 shrink-0">
                     Skills:
                   </span>
@@ -835,7 +837,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
                 <div className="mt-auto pt-2 border-t border-emerald-500/20 flex items-center justify-between">
                   <button
                     onClick={prevExperience}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-xs font-bold text-white transition border border-emerald-700/50 cursor-pointer"
+                    className="flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-950 hover:bg-emerald-900 active:scale-95 text-xs font-bold text-white transition border border-emerald-700/50 cursor-pointer"
                   >
                     <ChevronLeft className="w-4 h-4 text-emerald-400" />
                     <span>PREV [A]</span>
@@ -864,14 +866,14 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
                     {fpvExperience ? (
                       <button
                         onClick={exitExperienceFpv}
-                        className="px-3 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-xs font-bold text-white transition cursor-pointer"
+                        className="px-3 py-1 rounded-lg bg-rose-600/80 hover:bg-rose-600 active:scale-95 text-xs font-bold text-white transition cursor-pointer"
                       >
                         Return to Car (Esc)
                       </button>
                     ) : (
                       <button
                         onClick={() => enterExperienceFpv(currentExp)}
-                        className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition cursor-pointer"
+                        className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-xs font-bold text-white transition cursor-pointer"
                       >
                         Enter FPV [E]
                       </button>
@@ -879,7 +881,7 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
 
                     <button
                       onClick={nextExperience}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-xs font-bold text-white transition border border-emerald-700/50 cursor-pointer"
+                      className="flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-950 hover:bg-emerald-900 active:scale-95 text-xs font-bold text-white transition border border-emerald-700/50 cursor-pointer"
                     >
                       <span>NEXT [D]</span>
                       <ChevronRight className="w-4 h-4 text-emerald-400" />
@@ -890,9 +892,9 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </Html>
           </group>
 
-          {/* 3D Interactive Left Arrow Button Next to Counter Window */}
+          {/* 3D Interactive Left Arrow Button Next to Display */}
           <group
-            position={[-2.48, 1.62, -1.8]}
+            position={[-2.65, 1.7, -3.25]}
             rotation={[0, -Math.PI / 2, 0]}
             onClick={(e) => {
               e.stopPropagation();
@@ -900,12 +902,12 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             }}
           >
             <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.24, 0.24, 0.08, 20]} />
+              <cylinderGeometry args={[0.26, 0.26, 0.08, 20]} />
               <meshStandardMaterial color="#10b981" roughness={0.3} emissive="#10b981" emissiveIntensity={0.25} />
             </mesh>
             <Text
               position={[0, 0, 0.05]}
-              fontSize={0.24}
+              fontSize={0.26}
               fontWeight={900}
               color="#06121e"
               anchorX="center"
@@ -915,9 +917,9 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             </Text>
           </group>
 
-          {/* 3D Interactive Right Arrow Button Next to Counter Window */}
+          {/* 3D Interactive Right Arrow Button Next to Display */}
           <group
-            position={[-2.48, 1.62, 1.8]}
+            position={[-2.65, 1.7, 3.25]}
             rotation={[0, -Math.PI / 2, 0]}
             onClick={(e) => {
               e.stopPropagation();
@@ -925,12 +927,12 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             }}
           >
             <mesh castShadow rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.24, 0.24, 0.08, 20]} />
+              <cylinderGeometry args={[0.26, 0.26, 0.08, 20]} />
               <meshStandardMaterial color="#10b981" roughness={0.3} emissive="#10b981" emissiveIntensity={0.25} />
             </mesh>
             <Text
               position={[0, 0, 0.05]}
-              fontSize={0.24}
+              fontSize={0.26}
               fontWeight={900}
               color="#06121e"
               anchorX="center"

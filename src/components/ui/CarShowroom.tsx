@@ -157,12 +157,6 @@ export const CarShowroom: React.FC = () => {
               color={selectedVehicleColor}
             />
           </Canvas>
-
-          {/* Garage Status Badge (Matching Warm Beige Architectural Aesthetic) */}
-          <div className="absolute top-4 left-6 px-3.5 py-1.5 rounded-full bg-[#f4ece1]/90 border border-[#d8cec0] text-xs font-bold text-[#9a3412] pointer-events-none flex items-center gap-2 shadow-md backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>HOME GARAGE // READY TO ROLL</span>
-          </div>
         </div>
 
         {/* SIDEBAR: VEHICLE SPECS & CUSTOMIZATION PANEL (Right) */}

@@ -124,7 +124,7 @@ const Skyscraper: React.FC<BuildingProps> = ({
 // -------------------------------------------------------------
 const SuspensionBayBridge: React.FC = () => {
   return (
-    <group position={[-98, 0, -85]} rotation={[0, 0.35, 0]}>
+    <group position={[32, 0, -68]} rotation={[0, 0.4, 0]}>
       {/* Elevated Highway Deck (Spanning 75 units across the bay) */}
       <mesh position={[0, 7.2, 0]}>
         <boxGeometry args={[75, 0.8, 4.2]} />
@@ -215,8 +215,8 @@ const SuspensionBayBridge: React.FC = () => {
 const BayVessels: React.FC = () => {
   return (
     <group>
-      {/* Vessel 1: Large Distant Container Cargo Ship at [-86, 0, -42] */}
-      <group position={[-86, 0, -42]} rotation={[0, -0.25, 0]}>
+      {/* Vessel 1: Large Distant Container Cargo Ship cruising the bay */}
+      <group position={[46, 0, -36]} rotation={[0, -0.25, 0]}>
         {/* Red Anti-Fouling Lower Hull */}
         <mesh position={[0, 0.35, 0]}>
           <boxGeometry args={[24, 0.7, 5.4]} />
@@ -281,8 +281,8 @@ const BayVessels: React.FC = () => {
         ))}
       </group>
 
-      {/* Vessel 2: Elegant White Sailboat Cruising Bay Waters at [-62, 0, 24] */}
-      <group position={[-62, 0, 24]} rotation={[0, 0.45, 0]}>
+      {/* Vessel 2: Elegant White Sailboat Cruising Bay Waters */}
+      <group position={[56, 0, 20]} rotation={[0, 0.45, 0]}>
         {/* Sleek Boat Hull */}
         <mesh position={[0, 0.35, 0]}>
           <boxGeometry args={[6.2, 0.65, 1.8]} />
@@ -309,8 +309,8 @@ const BayVessels: React.FC = () => {
         </mesh>
       </group>
 
-      {/* Vessel 3: Second Sailboat on Northern Water at [-72, 0, -20] */}
-      <group position={[-72, 0, -20]} rotation={[0, -0.6, 0]}>
+      {/* Vessel 3: Second Sailboat on Northern Water */}
+      <group position={[48, 0, -12]} rotation={[0, -0.6, 0]}>
         <mesh position={[0, 0.35, 0]}>
           <boxGeometry args={[5.2, 0.6, 1.6]} />
           <meshStandardMaterial color="#0284c7" roughness={0.4} />
@@ -337,7 +337,7 @@ const BayVessels: React.FC = () => {
 // -------------------------------------------------------------
 export const DistantMetropolis: React.FC = () => {
   return (
-    <group position={[-132, 0, 0]}>
+    <group position={[-115, 0, 0]}>
       {/* Distant Shoreline Embankment / Seawall Foundation */}
       <mesh position={[0, 0.6, -15]} receiveShadow>
         <boxGeometry args={[26, 1.2, 145]} />
@@ -500,3 +500,4 @@ export const DistantMetropolis: React.FC = () => {
     </group>
   );
 };
+

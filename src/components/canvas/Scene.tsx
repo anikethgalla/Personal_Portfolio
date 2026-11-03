@@ -34,7 +34,7 @@ export const Scene: React.FC = () => {
       >
         {/* Vibrant Blue Sky Background & Atmospheric Horizon Fog */}
         <color attach="background" args={['#7dd3fc']} />
-        <fog attach="fog" args={['#bae6fd', 120, 380]} />
+        <fog attach="fog" args={['#bae6fd', 150, 420]} />
 
         {/* Vibrant Sky Dome & Drifting Puffy 3D Clay Clouds */}
         <SkyDome />

@@ -66,8 +66,8 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
       }
 
       // Diner FPV: Driver seat looking directly at the Diner counter showcase
-      const desiredFpvPos = new THREE.Vector3(20.2, 1.65, 16.0);
-      const desiredFpvLookAt = new THREE.Vector3(25.55, 1.62, 16.0);
+      const desiredFpvPos = new THREE.Vector3(19.2, 1.7, 16.0);
+      const desiredFpvLookAt = new THREE.Vector3(25.38, 1.7, 16.0);
 
       camera.position.lerp(desiredFpvPos, delta * 4.8);
       currentLookAt.current.lerp(desiredFpvLookAt, delta * 6.0);

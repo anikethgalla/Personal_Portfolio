@@ -7,15 +7,15 @@ export const CoastalPort: React.FC = () => {
     <group>
       {/* 1. Expansive Ocean Water Basin (Extends out to Western Horizon) */}
       <group position={[-78, 0, 0]}>
-        {/* Ocean Deep Seabed Floor (Replaces grass beneath ocean) */}
-        <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[94, 240]} />
+        {/* Ocean Deep Seabed Floor (Replaces grass beneath ocean all the way to horizon) */}
+        <mesh position={[-58, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[210, 280]} />
           <meshStandardMaterial color="#075985" roughness={0.9} />
         </mesh>
 
-        {/* Ocean Water Surface Plane (Boundless Open Sea to Horizon) */}
-        <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[94, 240]} />
+        {/* Ocean Water Surface Plane (Boundless Open Sea to Western Horizon) */}
+        <mesh position={[-58, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[210, 280]} />
           <meshStandardMaterial
             color="#0ea5e9"
             roughness={0.08}

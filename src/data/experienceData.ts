@@ -66,7 +66,7 @@ export const experienceData: ExperienceItem[] = [
   },
   {
     id: "vit-cse",
-    role: "Undergraduate(CGPA 9.51)",
+    role: "B.Tech Computer Science & Engineering (CGPA 9.51 / 10.0)",
     organization: "Vellore Institute of Technology",
     category: "Academic",
     badgeColor: "#8b5cf6",
