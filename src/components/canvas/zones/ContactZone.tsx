@@ -41,6 +41,32 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
     }, 400);
   };
 
+  const handleLinkedInClick = () => {
+    try {
+      confetti({
+        particleCount: 20,
+        spread: 45,
+        origin: { y: 0.6 }
+      });
+    } catch {
+      // Fallback
+    }
+    window.open(profileData.linkedin, '_blank');
+  };
+
+  const handleGitHubClick = () => {
+    try {
+      confetti({
+        particleCount: 20,
+        spread: 45,
+        origin: { y: 0.6 }
+      });
+    } catch {
+      // Fallback
+    }
+    window.open(profileData.github, '_blank');
+  };
+
   return (
     <group>
       {/* ======================================================== */}
@@ -102,7 +128,7 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
               anchorY="middle"
               letterSpacing={0.1}
             >
-              PULL UP TO PUMPS // GITHUB • EMAIL • RESUME
+              PULL UP TO PUMPS // LINKEDIN • GITHUB • MAIL
             </Text>
             {/* Reverse side facing pumps & mart */}
             <Text
@@ -127,7 +153,7 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
               anchorY="middle"
               letterSpacing={0.1}
             >
-              24/7 DEVELOPER FUEL SERVICE
+              LINKEDIN • GITHUB • OUTLOOK MAIL
             </Text>
           </group>
         </group>
@@ -156,12 +182,81 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
           <meshStandardMaterial color="#eab308" roughness={0.6} />
         </mesh>
 
-        {/* PUMP 1: GITHUB FUEL PUMP (Left) */}
+        {/* PUMP 1: LINKEDIN CONNECT PUMP (Left) */}
         <group
           position={[-2.8, 0, 0]}
           onClick={(e) => {
             e.stopPropagation();
-            window.open(profileData.github, '_blank');
+            handleLinkedInClick();
+          }}
+        >
+          <RigidBody type="fixed" friction={0.6} position={[0, 1.25, 0]}>
+            <mesh castShadow receiveShadow>
+              <boxGeometry args={[1.2, 2.0, 0.85]} />
+              <meshStandardMaterial color="#0a66c2" roughness={0.3} metalness={0.4} />
+            </mesh>
+            <mesh position={[0, 1.25, 0]}>
+              <sphereGeometry args={[0.26, 16, 16]} />
+              <meshStandardMaterial color="#0077b5" emissive="#0077b5" emissiveIntensity={0.8} />
+            </mesh>
+            <mesh position={[0, 0.45, -0.44]}>
+              <planeGeometry args={[0.9, 0.55]} />
+              <meshStandardMaterial color="#020617" roughness={0.2} emissive="#0a66c2" emissiveIntensity={0.2} />
+            </mesh>
+            <Text
+              position={[0, 0.55, -0.46]}
+              rotation={[0, Math.PI, 0]}
+              fontSize={0.13}
+              fontWeight={900}
+              color="#38bdf8"
+              anchorX="center"
+              anchorY="middle"
+            >
+              LINKEDIN CONNECT
+            </Text>
+            <Text
+              position={[0, 0.35, -0.46]}
+              rotation={[0, Math.PI, 0]}
+              fontSize={0.075}
+              fontWeight={700}
+              color="#bae6fd"
+              anchorX="center"
+              anchorY="middle"
+            >
+              in/aniketh-galla-5b23611bb
+            </Text>
+            <mesh position={[0, -0.15, -0.44]}>
+              <boxGeometry args={[0.85, 0.32, 0.04]} />
+              <meshStandardMaterial color="#004182" roughness={0.3} />
+            </mesh>
+            <Text
+              position={[0, -0.15, -0.47]}
+              rotation={[0, Math.PI, 0]}
+              fontSize={0.10}
+              fontWeight={800}
+              color="#ffffff"
+              anchorX="center"
+              anchorY="middle"
+            >
+              TAP FOR LINKEDIN
+            </Text>
+            <mesh position={[-0.65, 0.2, 0]} castShadow>
+              <cylinderGeometry args={[0.04, 0.04, 1.3, 8]} />
+              <meshStandardMaterial color="#0f172a" roughness={0.8} />
+            </mesh>
+            <mesh position={[-0.65, -0.5, 0]} castShadow>
+              <boxGeometry args={[0.08, 0.25, 0.15]} />
+              <meshStandardMaterial color="#38bdf8" roughness={0.4} metalness={0.8} />
+            </mesh>
+          </RigidBody>
+        </group>
+
+        {/* PUMP 2: GITHUB OCTANE PUMP (Center) */}
+        <group
+          position={[0, 0, 0]}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleGitHubClick();
           }}
         >
           <RigidBody type="fixed" friction={0.6} position={[0, 1.25, 0]}>
@@ -191,13 +286,13 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
             <Text
               position={[0, 0.35, -0.46]}
               rotation={[0, Math.PI, 0]}
-              fontSize={0.1}
+              fontSize={0.085}
               fontWeight={700}
               color="#a5f3fc"
               anchorX="center"
               anchorY="middle"
             >
-              CODE REPOSITORIES
+              github.com/anikethgalla
             </Text>
             <mesh position={[0, -0.15, -0.44]}>
               <boxGeometry args={[0.85, 0.32, 0.04]} />
@@ -206,13 +301,13 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
             <Text
               position={[0, -0.15, -0.47]}
               rotation={[0, Math.PI, 0]}
-              fontSize={0.11}
+              fontSize={0.10}
               fontWeight={800}
               color="#ffffff"
               anchorX="center"
               anchorY="middle"
             >
-              TAP TO PUMP CODE
+              TAP FOR GITHUB
             </Text>
             <mesh position={[-0.65, 0.2, 0]} castShadow>
               <cylinderGeometry args={[0.04, 0.04, 1.3, 8]} />
@@ -225,9 +320,9 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
           </RigidBody>
         </group>
 
-        {/* PUMP 2: EMAIL PREMIUM PUMP (Center) */}
+        {/* PUMP 3: DIRECT MAIL PUMP (Right) */}
         <group
-          position={[0, 0, 0]}
+          position={[2.8, 0, 0]}
           onClick={(e) => {
             e.stopPropagation();
             handleEmailClick();
@@ -255,18 +350,18 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
               anchorX="center"
               anchorY="middle"
             >
-              EMAIL PREMIUM
+              OUTLOOK MAIL
             </Text>
             <Text
               position={[0, 0.35, -0.46]}
               rotation={[0, Math.PI, 0]}
-              fontSize={0.1}
+              fontSize={0.085}
               fontWeight={700}
               color="#fed7aa"
               anchorX="center"
               anchorY="middle"
             >
-              DIRECT PIPELINE
+              anikethgalla@outlook.com
             </Text>
             <mesh position={[0, -0.15, -0.44]}>
               <boxGeometry args={[0.85, 0.32, 0.04]} />
@@ -275,82 +370,13 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
             <Text
               position={[0, -0.15, -0.47]}
               rotation={[0, Math.PI, 0]}
-              fontSize={0.11}
+              fontSize={0.10}
               fontWeight={800}
               color="#ffffff"
               anchorX="center"
               anchorY="middle"
             >
-              {copiedEmail ? 'COPIED TO CLIPBOARD!' : 'TAP TO DISPATCH'}
-            </Text>
-            <mesh position={[-0.65, 0.2, 0]} castShadow>
-              <cylinderGeometry args={[0.04, 0.04, 1.3, 8]} />
-              <meshStandardMaterial color="#0f172a" roughness={0.8} />
-            </mesh>
-            <mesh position={[-0.65, -0.5, 0]} castShadow>
-              <boxGeometry args={[0.08, 0.25, 0.15]} />
-              <meshStandardMaterial color="#ea580c" roughness={0.4} />
-            </mesh>
-          </RigidBody>
-        </group>
-
-        {/* PUMP 3: RESUME SUPER PUMP (Right) */}
-        <group
-          position={[2.8, 0, 0]}
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsRecruiterDrawerOpen(true);
-          }}
-        >
-          <RigidBody type="fixed" friction={0.6} position={[0, 1.25, 0]}>
-            <mesh castShadow receiveShadow>
-              <boxGeometry args={[1.2, 2.0, 0.85]} />
-              <meshStandardMaterial color="#0284c7" roughness={0.3} metalness={0.4} />
-            </mesh>
-            <mesh position={[0, 1.25, 0]}>
-              <sphereGeometry args={[0.26, 16, 16]} />
-              <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.8} />
-            </mesh>
-            <mesh position={[0, 0.45, -0.44]}>
-              <planeGeometry args={[0.9, 0.55]} />
-              <meshStandardMaterial color="#020617" roughness={0.2} emissive="#0284c7" emissiveIntensity={0.2} />
-            </mesh>
-            <Text
-              position={[0, 0.55, -0.46]}
-              rotation={[0, Math.PI, 0]}
-              fontSize={0.14}
-              fontWeight={900}
-              color="#38bdf8"
-              anchorX="center"
-              anchorY="middle"
-            >
-              RESUME SUPER
-            </Text>
-            <Text
-              position={[0, 0.35, -0.46]}
-              rotation={[0, Math.PI, 0]}
-              fontSize={0.1}
-              fontWeight={700}
-              color="#bae6fd"
-              anchorX="center"
-              anchorY="middle"
-            >
-              RECRUITER DOSSIER
-            </Text>
-            <mesh position={[0, -0.15, -0.44]}>
-              <boxGeometry args={[0.85, 0.32, 0.04]} />
-              <meshStandardMaterial color="#ea580c" roughness={0.3} />
-            </mesh>
-            <Text
-              position={[0, -0.15, -0.47]}
-              rotation={[0, Math.PI, 0]}
-              fontSize={0.11}
-              fontWeight={800}
-              color="#ffffff"
-              anchorX="center"
-              anchorY="middle"
-            >
-              TAP FOR DOSSIER
+              {copiedEmail ? 'COPIED TO CLIPBOARD!' : 'TAP TO SEND MAIL'}
             </Text>
             <mesh position={[0.65, 0.2, 0]} castShadow>
               <cylinderGeometry args={[0.04, 0.04, 1.3, 8]} />
@@ -358,7 +384,7 @@ export const ContactZone: React.FC<ContactZoneProps> = ({ vehiclePosition }) => 
             </mesh>
             <mesh position={[0.65, -0.5, 0]} castShadow>
               <boxGeometry args={[0.08, 0.25, 0.15]} />
-              <meshStandardMaterial color="#38bdf8" roughness={0.4} />
+              <meshStandardMaterial color="#ea580c" roughness={0.4} />
             </mesh>
           </RigidBody>
         </group>

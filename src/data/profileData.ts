@@ -42,7 +42,7 @@ export const profileData: ProfileData = {
   email: "anikethgalla@outlook.com",
   phone: "+91 9902550343",
   github: "https://github.com/anikethgalla",
-  linkedin: "https://linkedin.com/in/aniketh-galla",
+  linkedin: "https://www.linkedin.com/in/aniketh-galla-5b23611bb/",
   resumeUrl: "/AnikethGallaResumev4.pdf",
   education: {
     institution: "Vellore Institute of Technology",
