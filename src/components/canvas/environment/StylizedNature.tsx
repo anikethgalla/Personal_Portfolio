@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 
@@ -385,3 +386,186 @@ export const SidewalkPlanterBox: React.FC<{
     </group>
   );
 };
+
+// -------------------------------------------------------------
+// 9. GRAND STYLIZED TIERED WATER FOUNTAIN
+// -------------------------------------------------------------
+export const StylizedFountain: React.FC<{
+  position?: [number, number, number];
+  scale?: number;
+}> = ({ position = [0, 0, 0], scale = 1 }) => {
+  const waterJetRef = useRef<THREE.Group>(null);
+  const rippleRef = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    if (waterJetRef.current) {
+      waterJetRef.current.scale.y = 1 + Math.sin(t * 7) * 0.09;
+      waterJetRef.current.rotation.y = t * 0.4;
+    }
+    if (rippleRef.current) {
+      const s = 1 + Math.sin(t * 3.5) * 0.025;
+      rippleRef.current.scale.set(s, 1, s);
+    }
+  });
+
+  return (
+    <group position={position} scale={scale}>
+      {/* Stone Plaza Cobblestone Apron Ring */}
+      <mesh position={[0, 0.02, 0]} receiveShadow>
+        <cylinderGeometry args={[5.2, 5.4, 0.04, 36]} />
+        <meshStandardMaterial color="#cbd5e1" roughness={0.75} />
+      </mesh>
+
+      {/* Physics Solid Basin Wall */}
+      <RigidBody type="fixed" colliders="hull" friction={0.8}>
+        {/* Outer Stone Basin Wall */}
+        <mesh position={[0, 0.38, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[4.1, 4.3, 0.74, 32]} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.7} />
+        </mesh>
+        {/* Carved Beveled Outer Rim Lip */}
+        <mesh position={[0, 0.78, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[4.28, 4.08, 0.14, 32]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.6} />
+        </mesh>
+      </RigidBody>
+
+      {/* Main Lower Basin Water Pool (Shimmering Cyan) */}
+      <mesh ref={rippleRef} position={[0, 0.68, 0]} receiveShadow>
+        <cylinderGeometry args={[3.92, 3.92, 0.04, 32]} />
+        <meshStandardMaterial
+          color="#0284c7"
+          roughness={0.06}
+          metalness={0.75}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+
+      {/* Central Pedestal Column */}
+      <mesh position={[0, 0.8, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.0, 1.35, 0.8, 16]} />
+        <meshStandardMaterial color="#64748b" roughness={0.75} />
+      </mesh>
+      <mesh position={[0, 1.35, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[0.6, 0.8, 0.7, 16]} />
+        <meshStandardMaterial color="#94a3b8" roughness={0.65} />
+      </mesh>
+
+      {/* Tier 2 Middle Carved Stone Bowl */}
+      <mesh position={[0, 1.78, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[2.2, 0.8, 0.4, 24]} />
+        <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
+      </mesh>
+      <mesh position={[0, 1.94, 0]} castShadow>
+        <cylinderGeometry args={[2.3, 2.15, 0.09, 24]} />
+        <meshStandardMaterial color="#e2e8f0" roughness={0.5} />
+      </mesh>
+      {/* Tier 2 Water Surface */}
+      <mesh position={[0, 1.88, 0]}>
+        <cylinderGeometry args={[2.08, 2.08, 0.04, 24]} />
+        <meshStandardMaterial
+          color="#38bdf8"
+          roughness={0.08}
+          metalness={0.7}
+          transparent
+          opacity={0.88}
+        />
+      </mesh>
+
+      {/* Tier 2 to Tier 3 Column */}
+      <mesh position={[0, 2.3, 0]} castShadow>
+        <cylinderGeometry args={[0.38, 0.5, 0.72, 12]} />
+        <meshStandardMaterial color="#64748b" roughness={0.7} />
+      </mesh>
+
+      {/* Tier 3 Top Carved Stone Bowl */}
+      <mesh position={[0, 2.72, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.15, 0.45, 0.32, 16]} />
+        <meshStandardMaterial color="#cbd5e1" roughness={0.6} />
+      </mesh>
+      <mesh position={[0, 2.82, 0]}>
+        <cylinderGeometry args={[1.08, 1.08, 0.04, 16]} />
+        <meshStandardMaterial color="#7dd3fc" roughness={0.08} metalness={0.8} />
+      </mesh>
+
+      {/* Top Golden Finial Spire */}
+      <mesh position={[0, 3.05, 0]} castShadow>
+        <cylinderGeometry args={[0.12, 0.22, 0.38, 12]} />
+        <meshStandardMaterial color="#f59e0b" roughness={0.3} metalness={0.85} />
+      </mesh>
+      <mesh position={[0, 3.28, 0]} castShadow>
+        <sphereGeometry args={[0.18, 12, 12]} />
+        <meshStandardMaterial color="#f59e0b" roughness={0.3} metalness={0.85} />
+      </mesh>
+
+      {/* Animated Upward Water Geyser Jet */}
+      <group ref={waterJetRef} position={[0, 3.36, 0]}>
+        <mesh position={[0, 0.5, 0]}>
+          <coneGeometry args={[0.24, 1.0, 12]} />
+          <meshStandardMaterial
+            color="#bae6fd"
+            emissive="#38bdf8"
+            emissiveIntensity={0.6}
+            roughness={0.1}
+            transparent
+            opacity={0.85}
+          />
+        </mesh>
+        <mesh position={[0, 1.05, 0]}>
+          <sphereGeometry args={[0.28, 8, 8]} />
+          <meshStandardMaterial
+            color="#ffffff"
+            emissive="#e0f2fe"
+            emissiveIntensity={0.8}
+            roughness={0.1}
+            transparent
+            opacity={0.9}
+          />
+        </mesh>
+      </group>
+
+      {/* Cascading Water Streams: Top Bowl into Middle Bowl (4 streams) */}
+      {[0, Math.PI / 2, Math.PI, (Math.PI * 3) / 2].map((angle, i) => {
+        const sx = Math.cos(angle) * 1.1;
+        const sz = Math.sin(angle) * 1.1;
+        return (
+          <mesh key={`stream-top-${i}`} position={[sx, 2.3, sz]}>
+            <cylinderGeometry args={[0.045, 0.085, 0.85, 6]} />
+            <meshStandardMaterial
+              color="#e0f2fe"
+              emissive="#38bdf8"
+              emissiveIntensity={0.5}
+              transparent
+              opacity={0.75}
+            />
+          </mesh>
+        );
+      })}
+
+      {/* Cascading Water Streams: Middle Bowl into Lower Basin (8 streams) */}
+      {Array.from({ length: 8 }).map((_, i) => {
+        const angle = (i * Math.PI * 2) / 8;
+        const sx = Math.cos(angle) * 2.15;
+        const sz = Math.sin(angle) * 2.15;
+        return (
+          <mesh key={`stream-mid-${i}`} position={[sx, 1.25, sz]}>
+            <cylinderGeometry args={[0.05, 0.11, 1.1, 6]} />
+            <meshStandardMaterial
+              color="#e0f2fe"
+              emissive="#38bdf8"
+              emissiveIntensity={0.5}
+              transparent
+              opacity={0.7}
+            />
+          </mesh>
+        );
+      })}
+
+      {/* Under-Water Point Light (Glows with rich turquoise-cyan light in the evening) */}
+      <pointLight position={[0, 1.4, 0]} color="#38bdf8" intensity={2.2} distance={8} decay={2} />
+    </group>
+  );
+};
+

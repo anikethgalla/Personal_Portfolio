@@ -1,6 +1,12 @@
 import React from 'react';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
-import { StylizedOakTree, FireHydrant, WarmStreetLamp, SidewalkPlanterBox } from './StylizedNature';
+import {
+  StylizedOakTree,
+  StylizedFountain,
+  FireHydrant,
+  WarmStreetLamp,
+  SidewalkPlanterBox
+} from './StylizedNature';
 
 export const Ground: React.FC = () => {
   return (
@@ -42,24 +48,24 @@ export const Ground: React.FC = () => {
         {/* Inner Island Raised Green Lawn (Gentle Mound) */}
         <mesh position={[0, 0.22, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[6.4, 6.55, 0.16, 48]} />
-          <meshStandardMaterial color="#65a30d" roughness={0.85} />
+          <meshStandardMaterial color="#559c19" roughness={0.85} />
         </mesh>
 
-        {/* Roundabout Centerpiece Oak Tree & Bench */}
-        <StylizedOakTree position={[0, 0.3, 0]} scale={1.35} color="#559c19" />
+        {/* Grand Stylized Tiered Water Fountain Centerpiece */}
+        <StylizedFountain position={[0, 0.26, 0]} scale={0.92} />
 
-        {/* Flower Ring inside Roundabout Island */}
-        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+        {/* Flower Ring Framing the Fountain Plaza */}
+        {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, i) => {
           const rad = (angle * Math.PI) / 180;
-          const fx = Math.cos(rad) * 4.4;
-          const fz = Math.sin(rad) * 4.4;
+          const fx = Math.cos(rad) * 5.3;
+          const fz = Math.sin(rad) * 5.3;
           return (
             <mesh key={`rb-flower-${i}`} position={[fx, 0.32, fz]}>
               <dodecahedronGeometry args={[0.22, 0]} />
               <meshStandardMaterial
-                color={i % 2 === 0 ? '#f59e0b' : '#ef4444'}
-                emissive={i % 2 === 0 ? '#f59e0b' : '#ef4444'}
-                emissiveIntensity={0.2}
+                color={i % 3 === 0 ? '#f43f5e' : i % 3 === 1 ? '#fbbf24' : '#a855f7'}
+                emissive={i % 3 === 0 ? '#f43f5e' : i % 3 === 1 ? '#fbbf24' : '#a855f7'}
+                emissiveIntensity={0.25}
                 roughness={0.6}
                 flatShading
               />
