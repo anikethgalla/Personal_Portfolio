@@ -49,7 +49,7 @@ export const experienceData: ExperienceItem[] = [
   },
   {
     id: "gravitas-fest",
-    role: "Lead Platform Engineer",
+    role: "Web & Tech Volunteer",
     organization: "graVITas'26 International Tech Fest",
     category: "University Leadership",
     badgeColor: "#f59e0b",
