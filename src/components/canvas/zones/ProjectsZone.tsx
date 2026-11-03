@@ -15,7 +15,10 @@ import {
   Calendar,
   MapPin,
   Film,
-  Briefcase
+  Briefcase,
+  GraduationCap,
+  Award,
+  BookOpen
 } from 'lucide-react';
 import { projectsData } from '../../../data/projectsData';
 import { experienceData } from '../../../data/experienceData';
@@ -45,26 +48,34 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
     prevExperience,
     enterExperienceFpv,
     exitExperienceFpv,
-    fpvExperience
+    fpvExperience,
+    fpvEducation,
+    enterEducationFpv,
+    exitEducationFpv
   } = useGame();
 
   const driveInBayPos = new THREE.Vector3(20, 0, -16);
   const dinerBayPos = new THREE.Vector3(20, 0, 16);
+  const educationBayPos = new THREE.Vector3(20, 0, 0);
 
   const isParkedAtCinema = vehiclePosition ? driveInBayPos.distanceTo(vehiclePosition) < 5.2 : false;
   const isParkedAtDiner = vehiclePosition ? dinerBayPos.distanceTo(vehiclePosition) < 5.2 : false;
+  const isParkedAtEducation = vehiclePosition ? educationBayPos.distanceTo(vehiclePosition) < 5.2 : false;
 
   const currentProject = projectsData[currentProjectIndex] || projectsData[0];
   const currentExp = experienceData[currentExperienceIndex] || experienceData[0];
 
   const hasAutoEnteredCinema = React.useRef(false);
   const hasAutoEnteredDiner = React.useRef(false);
+  const hasAutoEnteredEducation = React.useRef(false);
 
   // Occlude/cull 3D in-world HTML screens when camera is behind the buildings
   const [cinemaVisible, setCinemaVisible] = React.useState(true);
   const cinemaVisibleRef = React.useRef(true);
   const [dinerVisible, setDinerVisible] = React.useState(true);
   const dinerVisibleRef = React.useRef(true);
+  const [educationVisible, setEducationVisible] = React.useState(true);
+  const educationVisibleRef = React.useRef(true);
 
   useFrame(({ camera }) => {
     // 0. Screen Culling Check (Cinema Billboard at x = 27.57, Diner at x = 25.38; both face -X)
@@ -78,6 +89,13 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
     if (canSeeDiner !== dinerVisibleRef.current) {
       dinerVisibleRef.current = canSeeDiner;
       setDinerVisible(canSeeDiner);
+    }
+
+    // Food Truck at x = 30. Front board faces -X at x = 28.93
+    const canSeeEducation = camera.position.x < 28.9;
+    if (canSeeEducation !== educationVisibleRef.current) {
+      educationVisibleRef.current = canSeeEducation;
+      setEducationVisible(canSeeEducation);
     }
 
     if (!vehiclePosition) return;
@@ -125,6 +143,23 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       }
       if (fpvExperience) {
         exitExperienceFpv();
+      }
+    }
+
+    // 3. Education Food Truck Bay Detection
+    const distEducation = educationBayPos.distanceTo(vehiclePosition);
+    if (distEducation < 5.2) {
+      markZoneDiscovered('projects');
+      if (!hasAutoEnteredEducation.current) {
+        hasAutoEnteredEducation.current = true;
+        if (!fpvEducation) {
+          enterEducationFpv();
+        }
+      }
+    } else if (distEducation > 7.0) {
+      hasAutoEnteredEducation.current = false;
+      if (fpvEducation) {
+        exitEducationFpv();
       }
     }
   });
@@ -474,21 +509,52 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
       </group>
 
       {/* ======================================================== */}
-      {/* STRUCTURE 2: THE ROADSIDE STREET FOOD TRUCK              */}
-      {/* Authentic Town Food Truck                                */}
+      {/* STRUCTURE 2: THE ACADEMIC & EDUCATION FOOD TRUCK         */}
+      {/* Authentic University Academic & Education Hub            */}
       {/* ======================================================== */}
       <group position={[30, 0, 0]}>
+        {/* Drive-Up Parking Stall at [20, 0, 0] (relative: [-10, 0, 0]) */}
+        <group position={[-10, 0.035, 0]}>
+          <mesh rotation={[-Math.PI / 2, 0, 0]}>
+            <ringGeometry args={[2.5, 2.8, 36]} />
+            <meshBasicMaterial
+              color={isParkedAtEducation ? '#38bdf8' : '#cfc5b5'}
+              transparent
+              opacity={isParkedAtEducation ? 0.95 : 0.4}
+            />
+          </mesh>
+          <mesh rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[3.2, 4.6]} />
+            <meshBasicMaterial
+              color={isParkedAtEducation ? '#38bdf8' : '#ded7cb'}
+              transparent
+              opacity={isParkedAtEducation ? 0.18 : 0.05}
+            />
+          </mesh>
+          <Text
+            position={[0, 0.01, 1.8]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            fontSize={0.24}
+            fontWeight={700}
+            color="#786c62"
+            anchorX="center"
+            anchorY="middle"
+          >
+            {isParkedAtEducation ? '★ PARKED AT ACADEMIC TRUCK ★' : 'ACADEMIC & EDUCATION BAY'}
+          </Text>
+        </group>
+
         <RigidBody type="fixed" friction={0.9} position={[0, 0, 0]}>
-          {/* Main Truck Body Box (Rear Kitchen) */}
+          {/* Main Truck Body Box (Academic Station) */}
           <mesh position={[0.2, 1.6, 0]} castShadow receiveShadow>
             <boxGeometry args={[2.5, 2.4, 5.0]} />
-            <meshStandardMaterial color="#4a7c82" roughness={0.5} metalness={0.1} />
+            <meshStandardMaterial color="#1e3a5f" roughness={0.5} metalness={0.2} />
           </mesh>
 
           {/* Front Cab */}
           <mesh position={[0.2, 1.15, 3.2]} castShadow receiveShadow>
             <boxGeometry args={[2.4, 1.5, 1.6]} />
-            <meshStandardMaterial color="#3f6c71" roughness={0.5} metalness={0.1} />
+            <meshStandardMaterial color="#172e4c" roughness={0.5} metalness={0.2} />
           </mesh>
 
           {/* Cab Windshield */}
@@ -511,115 +577,328 @@ export const ProjectsZone: React.FC<ProjectsZoneProps> = ({ vehiclePosition }) =
             <meshStandardMaterial color="#fef08a" roughness={0.3} />
           </mesh>
 
-          {/* Flipped-Up Serving Hatch Awning */}
-          <mesh position={[-1.5, 2.2, 0]} rotation={[0, 0, -0.45]} castShadow>
-            <boxGeometry args={[0.1, 0.05, 3.0]} />
-            <meshStandardMaterial color="#ea580c" roughness={0.4} />
+          {/* Flipped-Up Serving Hatch Awning (University Navy & Amber) */}
+          <mesh position={[-1.5, 2.2, 0.15]} rotation={[0, 0, -0.45]} castShadow>
+            <boxGeometry args={[0.1, 0.05, 3.2]} />
+            <meshStandardMaterial color="#f59e0b" roughness={0.4} />
           </mesh>
-          <mesh position={[-1.5, 2.2, 0]} rotation={[0, 0, -0.45]} castShadow>
-            <planeGeometry args={[0.9, 2.9]} />
-            <meshStandardMaterial color="#ea580c" roughness={0.4} side={THREE.DoubleSide} />
+          <mesh position={[-1.5, 2.2, 0.15]} rotation={[0, 0, -0.45]} castShadow>
+            <planeGeometry args={[0.9, 3.1]} />
+            <meshStandardMaterial color="#1e3a5f" roughness={0.4} side={THREE.DoubleSide} />
           </mesh>
 
           {/* Serving Counter Ledge */}
-          <mesh position={[-1.2, 1.0, 0]} castShadow>
-            <boxGeometry args={[0.35, 0.08, 3.0]} />
+          <mesh position={[-1.2, 0.95, 0.15]} castShadow>
+            <boxGeometry args={[0.35, 0.08, 3.2]} />
             <meshStandardMaterial color="#f1ece4" roughness={0.4} />
           </mesh>
 
-          {/* Menu Chalkboard next to window */}
+          {/* Academic Chalkboard next to window */}
           <group position={[-1.07, 1.6, -1.8]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh>
               <planeGeometry args={[0.9, 1.4]} />
-              <meshStandardMaterial color="#1e242b" roughness={0.9} />
+              <meshStandardMaterial color="#081320" roughness={0.9} />
             </mesh>
             <Text
-              position={[0, 0.45, 0.01]}
-              fontSize={0.095}
-              fontWeight={800}
-              color="#f59e0b"
+              position={[0, 0.52, 0.01]}
+              fontSize={0.09}
+              fontWeight={900}
+              color="#38bdf8"
               anchorX="center"
               anchorY="middle"
             >
-              STREET FOOD
+              VIT VELLORE
             </Text>
             <Text
-              position={[0, 0.24, 0.01]}
-              fontSize={0.07}
-              fontWeight={700}
-              color="#ffffff"
-              anchorX="center"
-              anchorY="middle"
-            >
-              TACOS & BURGERS
-            </Text>
-            <Text
-              position={[0, -0.08, 0.01]}
-              fontSize={0.055}
-              fontWeight={500}
-              color="#cbd5e1"
-              anchorX="center"
-              anchorY="middle"
-              maxWidth={0.8}
-            >
-              • Smash Burger{'\n'}• Birria Tacos{'\n'}• Fresh Horchata{'\n'}• Cold Brew Coffee
-            </Text>
-          </group>
-
-          {/* In-Counter Kitchen Serving Window Display */}
-          <group position={[-0.88, 1.62, 0]} rotation={[0, -Math.PI / 2, 0]}>
-            <mesh castShadow>
-              <boxGeometry args={[2.5, 1.3, 0.08]} />
-              <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
-            </mesh>
-            <mesh position={[0, 0, 0.045]}>
-              <planeGeometry args={[2.4, 1.2]} />
-              <meshStandardMaterial color="#080d1a" roughness={0.2} emissive="#f59e0b" emissiveIntensity={0.05} />
-            </mesh>
-            <Text
-              position={[0, 0.35, 0.05]}
-              fontSize={0.14}
+              position={[0, 0.35, 0.01]}
+              fontSize={0.075}
               fontWeight={800}
               color="#fbbf24"
               anchorX="center"
               anchorY="middle"
             >
-              TOWN STREET KITCHEN
+              B.TECH CSE
             </Text>
             <Text
-              position={[0, 0.12, 0.05]}
-              fontSize={0.09}
-              fontWeight={700}
-              color="#10b981"
+              position={[0, 0.18, 0.01]}
+              fontSize={0.07}
+              fontWeight={800}
+              color="#34d399"
               anchorX="center"
               anchorY="middle"
             >
-              ● KITCHEN GRILL OPEN
+              CGPA: 9.51 / 10.0
             </Text>
             <Text
-              position={[0, -0.12, 0.05]}
-              fontSize={0.08}
-              fontWeight={500}
+              position={[0, -0.1, 0.01]}
+              fontSize={0.052}
+              fontWeight={600}
               color="#cbd5e1"
               anchorX="center"
               anchorY="middle"
+              maxWidth={0.8}
             >
-              Handcrafted Burgers & Tacos
+              • Data Structures{'\n'}• Operating Systems{'\n'}• Computer Networks{'\n'}• Software Arch
             </Text>
-            <mesh position={[0, -0.38, 0.05]}>
-              <boxGeometry args={[1.8, 0.22, 0.01]} />
-              <meshStandardMaterial color="#334155" />
-            </mesh>
             <Text
-              position={[0, -0.38, 0.06]}
-              fontSize={0.075}
-              fontWeight={800}
+              position={[0, -0.5, 0.01]}
+              fontSize={0.05}
+              fontWeight={700}
               color="#94a3b8"
               anchorX="center"
               anchorY="middle"
             >
-              OPEN DAILY 11AM - 10PM
+              2025 – PRESENT
             </Text>
+          </group>
+
+          {/* Roof Illuminated Marquee Sign: ACADEMIC STATION */}
+          <group position={[-0.3, 3.25, 0]} rotation={[0, -Math.PI / 2, 0]}>
+            <mesh castShadow>
+              <boxGeometry args={[4.2, 0.85, 0.2]} />
+              <meshStandardMaterial color="#0b1727" roughness={0.5} metalness={0.4} />
+            </mesh>
+            <mesh position={[0, 0, 0.105]}>
+              <planeGeometry args={[4.1, 0.75]} />
+              <meshStandardMaterial color="#071322" emissive="#38bdf8" emissiveIntensity={0.06} />
+            </mesh>
+            <Text
+              position={[0, 0.12, 0.12]}
+              fontSize={0.28}
+              fontWeight={900}
+              color="#38bdf8"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.04}
+            >
+              🎓 ACADEMIC PAVILION
+            </Text>
+            <Text
+              position={[0, -0.18, 0.12]}
+              fontSize={0.14}
+              fontWeight={700}
+              color="#fbbf24"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.08}
+            >
+              VELLORE INSTITUTE OF TECHNOLOGY • CGPA 9.51 / 10.0
+            </Text>
+          </group>
+
+          {/* Main In-Hatch Academic & Education Showcase Board */}
+          <group position={[-0.92, 1.62, 0.15]} rotation={[0, -Math.PI / 2, 0]}>
+            {/* Outer Mounting Frame */}
+            <mesh castShadow>
+              <boxGeometry args={[3.25, 1.65, 0.1]} />
+              <meshStandardMaterial color="#071322" roughness={0.4} metalness={0.7} />
+            </mesh>
+            {/* Inner Backing Surface Plane */}
+            <mesh position={[0, 0, 0.052]}>
+              <planeGeometry args={[3.18, 1.58]} />
+              <meshStandardMaterial color="#030c18" roughness={0.2} emissive="#0284c7" emissiveIntensity={0.04} />
+            </mesh>
+
+            {/* 3D Native Text (Rendered directly in WebGL scene for instant 3D readability) */}
+            <group position={[0, 0, 0.056]}>
+              <Text
+                position={[0, 0.58, 0]}
+                fontSize={0.13}
+                fontWeight={900}
+                color="#fbbf24"
+                anchorX="center"
+                anchorY="middle"
+              >
+                VELLORE INSTITUTE OF TECHNOLOGY
+              </Text>
+              <Text
+                position={[0, 0.38, 0]}
+                fontSize={0.105}
+                fontWeight={800}
+                color="#ffffff"
+                anchorX="center"
+                anchorY="middle"
+              >
+                B.Tech in Computer Science & Engineering
+              </Text>
+              <Text
+                position={[0, 0.19, 0]}
+                fontSize={0.08}
+                fontWeight={800}
+                color="#34d399"
+                anchorX="center"
+                anchorY="middle"
+              >
+                ★ CGPA: 9.51 / 10.0 • Top Academic Percentile
+              </Text>
+              <Text
+                position={[0, -0.02, 0]}
+                fontSize={0.065}
+                fontWeight={600}
+                color="#94a3b8"
+                anchorX="center"
+                anchorY="middle"
+                maxWidth={3.0}
+              >
+                Core: Data Structures & Algorithms • Operating Systems • Networks • System Design
+              </Text>
+              <Text
+                position={[0, -0.25, 0]}
+                fontSize={0.062}
+                fontWeight={600}
+                color="#38bdf8"
+                anchorX="center"
+                anchorY="middle"
+                maxWidth={3.0}
+              >
+                Languages & Tools: C++ • Python • Go • Java • TypeScript • PostgreSQL • Docker
+              </Text>
+              <Text
+                position={[0, -0.48, 0]}
+                fontSize={0.058}
+                fontWeight={500}
+                color="#cbd5e1"
+                anchorX="center"
+                anchorY="middle"
+                maxWidth={3.0}
+              >
+                GDG-VIT Core Developer • graVITas'26 Backend Lead • Academic Peer Mentor
+              </Text>
+            </group>
+
+            {/* High-Fidelity Interactive HTML Overlay (Active and readable when viewing from front) */}
+            {educationVisible && (
+              <Html
+                transform
+                occlude={false}
+                position={[0, 0, 0.062]}
+                distanceFactor={2.7}
+                pointerEvents="auto"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    width: '780px',
+                    height: '385px',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                  className="bg-[#040e1b] text-gray-100 rounded-2xl border-4 border-sky-900/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-4 select-none font-['Plus_Jakarta_Sans',sans-serif]"
+                >
+                  {/* Header Bar */}
+                  <div className="flex items-center justify-between pb-2 border-b border-sky-500/20">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs text-sky-400 font-bold tracking-wider flex items-center gap-1.5">
+                        <Terminal className="w-4 h-4 text-sky-400" />
+                        ACADEMIC_CREDENTIALS // UNDERGRADUATE
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold uppercase border bg-purple-500/20 text-purple-300 border-purple-500/40 flex items-center gap-1">
+                        <GraduationCap className="w-3.5 h-3.5" />
+                        ACADEMIC
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold uppercase border bg-emerald-500/20 text-emerald-300 border-emerald-500/40 flex items-center gap-1">
+                        <Award className="w-3.5 h-3.5" />
+                        CGPA 9.51 / 10.0
+                      </span>
+                      <span className="text-xs text-sky-300 font-mono font-semibold flex items-center gap-1">
+                        <Building2 className="w-3.5 h-3.5" />
+                        Vellore Institute of Technology
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Degree, Period & Location */}
+                  <div className="flex items-start justify-between gap-3 mt-2">
+                    <div>
+                      <h2 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
+                        Bachelor of Technology in Computer Science & Engineering
+                      </h2>
+                    </div>
+                    <div className="text-right text-xs text-gray-400 font-medium space-y-0.5 shrink-0">
+                      <div className="flex items-center gap-1 text-amber-300 font-semibold justify-end">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>2025 – Present</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-gray-400 justify-end">
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>Vellore, Tamil Nadu, India</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="mt-1.5 text-[11px] text-gray-300 leading-relaxed bg-[#081829]/80 p-2.5 rounded-xl border border-white/5">
+                    Pursuing B.Tech in Computer Science and Engineering with an exceptional 9.51 / 10.0 CGPA. Focused on systems programming, distributed backend architectures, high-concurrency cloud infrastructure, and modern AI agent workflows.
+                  </p>
+
+                  {/* Key Highlights Grid */}
+                  <div className="mt-1.5">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-sky-400 mb-1 block">
+                      Academic Distinction & Core Coursework Highlights
+                    </span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <div className="flex items-start gap-1.5 p-2 rounded-lg bg-[#081829] border border-white/5 text-xs text-gray-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                        <span className="leading-snug text-[11px]">
+                          Ranked in top academic percentile of the Computer Science department with <strong className="text-emerald-300">9.51/10.0 CGPA</strong>.
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-1.5 p-2 rounded-lg bg-[#081829] border border-white/5 text-xs text-gray-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
+                        <span className="leading-snug text-[11px]">
+                          Advanced coursework: Data Structures & Algorithms, Operating Systems, Computer Networks, and Software Architecture.
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-1.5 p-2 rounded-lg bg-[#081829] border border-white/5 text-xs text-gray-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                        <span className="leading-snug text-[11px]">
+                          GDG-VIT Core Full Stack Developer; built DevJams'26 hackathon portal supporting 4,000+ registrations.
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-1.5 p-2 rounded-lg bg-[#081829] border border-white/5 text-xs text-gray-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
+                        <span className="leading-snug text-[11px]">
+                          graVITas'26 Tech Fest Lead; architected high-throughput Go microservices for 25,000+ international attendees.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Skills / Tech Stack Chips */}
+                  <div className="mt-2 flex items-center justify-between pt-1 border-t border-sky-500/10">
+                    <div className="flex flex-wrap items-center gap-1">
+                      <span className="text-[10px] font-mono text-gray-400 font-semibold mr-1">
+                        COMPETENCIES:
+                      </span>
+                      {['Data Structures & Algorithms', 'Operating Systems', 'Computer Networks', 'System Design', 'C++', 'Python', 'Go', 'PostgreSQL'].map((sk, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 rounded text-[10px] font-mono bg-sky-950/80 text-sky-300 border border-sky-800/60"
+                        >
+                          {sk}
+                        </span>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        exitEducationFpv();
+                      }}
+                      className="px-3 py-1 rounded-lg text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white transition-colors flex items-center gap-1.5 shadow-md shrink-0 cursor-pointer"
+                    >
+                      <span>Return to Car (Esc)</span>
+                    </button>
+                  </div>
+                </div>
+              </Html>
+            )}
           </group>
 
           {/* Roof Exhaust Vent Chimney */}

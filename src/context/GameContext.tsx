@@ -28,6 +28,10 @@ interface GameContextType {
   fpvExperience: ExperienceItem | null;
   enterExperienceFpv: (exp: ExperienceItem) => void;
   exitExperienceFpv: () => void;
+  // Academic & Education Food Truck State
+  fpvEducation: boolean;
+  enterEducationFpv: () => void;
+  exitEducationFpv: () => void;
   isRecruiterDrawerOpen: boolean;
   setIsRecruiterDrawerOpen: (open: boolean) => void;
   isMuted: boolean;
@@ -110,14 +114,29 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     soundManager.playChime();
   };
 
+  const [fpvEducation, setFpvEducation] = useState(false);
+
   const enterExperienceFpv = (exp: ExperienceItem) => {
     setFpvProject(null);
+    setFpvEducation(false);
     setFpvExperience(exp);
     soundManager.playChime();
   };
 
   const exitExperienceFpv = () => {
     setFpvExperience(null);
+    soundManager.playChime();
+  };
+
+  const enterEducationFpv = () => {
+    setFpvProject(null);
+    setFpvExperience(null);
+    setFpvEducation(true);
+    soundManager.playChime();
+  };
+
+  const exitEducationFpv = () => {
+    setFpvEducation(false);
     soundManager.playChime();
   };
   const [isRecruiterDrawerOpen, setIsRecruiterDrawerOpen] = useState(false);
@@ -153,6 +172,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const enterFpv = (project: Project) => {
     setFpvExperience(null);
+    setFpvEducation(false);
     setFpvProject(project);
     soundManager.playChime();
   };
@@ -174,6 +194,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (fpvExperience) {
       setFpvExperience(null);
     }
+    if (fpvEducation) {
+      setFpvEducation(false);
+    }
     setTeleportTarget(coords);
   };
 
@@ -187,6 +210,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     if (fpvExperience) {
       setFpvExperience(null);
+    }
+    if (fpvEducation) {
+      setFpvEducation(false);
     }
     setResetVehicleTrigger((c) => c + 1);
   };
@@ -217,6 +243,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else if (fpvExperience) {
           e.preventDefault();
           exitExperienceFpv();
+        } else if (fpvEducation) {
+          e.preventDefault();
+          exitEducationFpv();
         }
       }
       // 2. Cycle Cinema Projects in FPV
@@ -243,7 +272,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     window.addEventListener('keydown', handleGlobalKeyDown);
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [fpvProject, fpvExperience, currentProjectIndex, currentExperienceIndex]);
+  }, [fpvProject, fpvExperience, fpvEducation, currentProjectIndex, currentExperienceIndex]);
 
   return (
     <GameContext.Provider
@@ -268,6 +297,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fpvExperience,
         enterExperienceFpv,
         exitExperienceFpv,
+        fpvEducation,
+        enterEducationFpv,
+        exitEducationFpv,
         isRecruiterDrawerOpen,
         setIsRecruiterDrawerOpen,
         isMuted,

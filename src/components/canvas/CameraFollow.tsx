@@ -11,7 +11,7 @@ interface CameraFollowProps {
 
 export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) => {
   const { camera } = useThree();
-  const { fpvProject, fpvExperience } = useGame();
+  const { fpvProject, fpvExperience, fpvEducation } = useGame();
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
   const isDriving = useRef(false);
@@ -76,7 +76,25 @@ export const CameraFollow: React.FC<CameraFollowProps> = ({ targetPosition }) =>
     }
 
     // ========================================================
-    // 2. Interactive Orbit & Pan Camera Mode
+    // 3. FPV Camera Mode (Academic & Education Food Truck)
+    // ========================================================
+    if (fpvEducation) {
+      if (controlsRef.current) {
+        controlsRef.current.enabled = false;
+      }
+
+      // Food Truck at [30, 0, 0]. Front serving hatch is at x = 28.93, y = 1.62, z = 0.
+      const desiredFpvPos = new THREE.Vector3(22.8, 1.65, 0.0);
+      const desiredFpvLookAt = new THREE.Vector3(28.93, 1.62, 0.0);
+
+      camera.position.lerp(desiredFpvPos, delta * 4.8);
+      currentLookAt.current.lerp(desiredFpvLookAt, delta * 6.0);
+      camera.lookAt(currentLookAt.current);
+      return;
+    }
+
+    // ========================================================
+    // 4. Interactive Orbit & Pan Camera Mode
     // ========================================================
     if (controlsRef.current) {
       controlsRef.current.enabled = true;
